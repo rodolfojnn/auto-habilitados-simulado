@@ -1,13 +1,24 @@
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { LeadCaptureComponent } from '../../components/lead-capture/lead-capture';
 
 @Component({
   selector: 'app-duel',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, LeadCaptureComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (!isStarted()) {
+    @if (!leadCaptured()) {
+      <app-lead-capture
+        title="Duelo Multiplayer"
+        description="Para entrar na arena de duelos e competir contra outros alunos na sua região, precisamos de algumas informações rápidas."
+        icon="sports_esports"
+        iconBgClass="bg-indigo-50 dark:bg-indigo-500/20"
+        iconTextClass="text-indigo-600 dark:text-indigo-400"
+        (captured)="leadCaptured.set(true)">
+      </app-lead-capture>
+    } @else {
+      @if (!isStarted()) {
       <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto min-h-[calc(100dvh-80px)] flex flex-col">
         <!-- Top Card -->
         <div class="bg-indigo-600 dark:bg-indigo-700 rounded-[2rem] p-6 text-white mb-8 shadow-lg shadow-indigo-600/20 relative overflow-hidden">
@@ -104,11 +115,31 @@ import { MatIconModule } from '@angular/material/icon';
         </div>
 
       </div>
+      }
     }
   `
 })
-export class DuelComponent {
+export class DuelComponent implements OnInit {
   isStarted = signal<boolean>(false);
+  leadCaptured = signal<boolean>(false);
+
+  ngOnInit() {
+    this.checkLeadStatus();
+  }
+
+  checkLeadStatus() {
+    const data = localStorage.getItem('onboarding_answers');
+    if (data) {
+      try {
+        const answers = JSON.parse(data) as Record<string, unknown>;
+        if (answers && answers['lead_captured'] === true) {
+          this.leadCaptured.set(true);
+        }
+      } catch {
+        // ignore parse error
+      }
+    }
+  }
 
   startDuel() {
     this.isStarted.set(true);

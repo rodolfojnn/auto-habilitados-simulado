@@ -1,13 +1,14 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { ChangeDetectionStrategy, Component, signal, inject } from '@angular/core';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { OnboardingComponent } from './pages/onboarding/onboarding';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, OnboardingComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, OnboardingComponent, ConfirmModalComponent],
   template: `
     @if (!onboardingCompleted()) {
       <app-onboarding (completed)="finishOnboarding($event)"></app-onboarding>
@@ -43,7 +44,7 @@ import { OnboardingComponent } from './pages/onboarding/onboarding';
       >
         <!-- Sidebar Header -->
         <div class="h-16 flex items-center px-6 border-b border-gray-100 dark:border-white/5 shrink-0 lg:h-20 lg:border-none">
-          <mat-icon class="material-icons text-brand-500 mr-2 !text-3xl">directions_car</mat-icon>
+          <mat-icon class="material-icons text-brand-500 mr-4">directions_car</mat-icon>
           <span class="font-bold text-xl text-gray-900 dark:text-white">Simula Detran</span>
           <button (click)="closeSidebar()" class="lg:hidden ml-auto p-2 text-gray-500 hover:text-gray-800 dark:hover:text-white">
             <mat-icon class="material-icons !leading-none">close</mat-icon>
@@ -75,11 +76,21 @@ import { OnboardingComponent } from './pages/onboarding/onboarding';
             <span>Ranking Semanal</span>
           </a>
 
+          <a routerLink="/duelo" routerLinkActive="bg-brand-50 text-brand-600 dark:bg-slate-800 dark:text-emerald-400" (click)="closeSidebar()" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800/50 transition-colors group font-medium">
+            <mat-icon class="material-icons group-hover:text-brand-500 dark:group-hover:text-emerald-400 transition-colors">sports_esports</mat-icon>
+            <span>Duelo</span>
+          </a>
+
           <p class="px-2 text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider mb-2 mt-4">Configurações</p>
 
           <button (click)="toggleTheme()" class="flex items-center w-full gap-3 px-4 py-3 rounded-2xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800/50 transition-colors group font-medium text-left">
             <mat-icon class="material-icons group-hover:text-brand-500 dark:group-hover:text-emerald-400 transition-colors">{{ isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
             <span>Tema {{ isDark() ? 'Claro' : 'Escuro' }}</span>
+          </button>
+
+          <button (click)="resetApp()" class="flex items-center w-full gap-3 px-4 py-3 rounded-2xl text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors group font-medium text-left mt-2">
+            <mat-icon class="material-icons group-hover:text-rose-700 dark:group-hover:text-rose-300 transition-colors">refresh</mat-icon>
+            <span>Refazer Questionário</span>
           </button>
 
         </nav>
@@ -110,6 +121,20 @@ import { OnboardingComponent } from './pages/onboarding/onboarding';
       </main>
 
       </div>
+
+      <app-confirm-modal
+        [isOpen]="showResetModal()"
+        title="Refazer Questionário"
+        description="Tem certeza que deseja apagar todos os seus dados e refazer o questionário inicial? Esta ação não pode ser desfeita."
+        confirmText="Sim, apagar e refazer"
+        cancelText="Cancelar"
+        icon="refresh"
+        iconBgClass="bg-rose-100 dark:bg-rose-500/20"
+        iconTextClass="text-rose-600 dark:text-rose-400"
+        confirmButtonClasses="bg-rose-600 hover:bg-rose-700 shadow-rose-600/30"
+        (confirm)="confirmResetApp()"
+        (cancel)="showResetModal.set(false)">
+      </app-confirm-modal>
     }
   `
 })
@@ -118,6 +143,7 @@ export class App {
   isDark = signal(false);
   onboardingCompleted = signal(true);
   userPoints = signal<number>(0);
+  showResetModal = signal(false);
 
   constructor() {
     const isOnboarded = localStorage.getItem('onboarding_completed') === 'true';
@@ -149,6 +175,23 @@ export class App {
   toggleTheme() {
     this.isDark.update(v => !v);
     this.updateThemeClass(this.isDark());
+  }
+
+  private router = inject(Router);
+
+  resetApp() {
+    this.showResetModal.set(true);
+  }
+
+  confirmResetApp() {
+    localStorage.removeItem('onboarding_completed');
+    localStorage.removeItem('onboarding_answers');
+    localStorage.removeItem('user_points');
+    this.userPoints.set(0);
+    this.onboardingCompleted.set(false);
+    this.showResetModal.set(false);
+    this.closeSidebar();
+    this.router.navigate(['/']);
   }
 
   private updateThemeClass(dark: boolean) {
