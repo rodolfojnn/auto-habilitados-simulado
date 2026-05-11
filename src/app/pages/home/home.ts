@@ -105,6 +105,17 @@ const TIPS = [
           </div>
         </a>
 
+        <!-- Duelo -->
+        <a routerLink="/duelo" class="bg-white dark:bg-slate-800/40 hover:dark:bg-slate-800 p-5 rounded-3xl flex items-center gap-4 cursor-pointer border border-gray-100 dark:border-white/5 transition-all shadow-sm">
+          <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+             <mat-icon class="material-icons !text-2xl !leading-none !w-6 !h-6">sports_esports</mat-icon>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900 dark:text-white">Duelo Multiplayer</h3>
+            <p class="text-xs text-gray-500 dark:text-slate-400">Desafie outro jogador online</p>
+          </div>
+        </a>
+
       </section>
 
       <!-- Quick Tips Card -->
