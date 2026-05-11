@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal, effect } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { OnboardingComponent } from './pages/onboarding/onboarding';
@@ -24,15 +24,16 @@ import { OnboardingComponent } from './pages/onboarding/onboarding';
             <span class="font-bold text-lg text-brand-600 dark:text-white">Simula Detran</span>
           </div>
 
-          <button (click)="toggleTheme()" class="p-2 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
-            <mat-icon class="material-icons !leading-none">{{ isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
-          </button>
+          <a routerLink="/ranking" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-sm border border-amber-200 dark:border-amber-500/30 transition-all hover:bg-amber-100 dark:hover:bg-amber-500/30">
+            <mat-icon class="material-icons !text-lg !leading-none !w-5 !h-5">stars</mat-icon>
+            <span>{{ userPoints() }} pts</span>
+          </a>
         </div>
       </header>
 
       <!-- Sidebar Overlay -->
       @if (sidebarOpen()) {
-        <div class="fixed inset-0 bg-gray-900/50 dark:bg-slate-950/80 z-40 lg:hidden backdrop-blur-sm transition-opacity" (click)="closeSidebar()"></div>
+        <div class="fixed inset-0 bg-gray-900/50 dark:bg-slate-950/80 z-40 lg:hidden backdrop-blur-sm transition-opacity" (click)="closeSidebar()" (keydown.enter)="closeSidebar()" tabindex="0"></div>
       }
 
       <!-- Sidebar -->
@@ -74,22 +75,30 @@ import { OnboardingComponent } from './pages/onboarding/onboarding';
             <span>Ranking Semanal</span>
           </a>
 
+          <p class="px-2 text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider mb-2 mt-4">Configurações</p>
+
+          <button (click)="toggleTheme()" class="flex items-center w-full gap-3 px-4 py-3 rounded-2xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800/50 transition-colors group font-medium text-left">
+            <mat-icon class="material-icons group-hover:text-brand-500 dark:group-hover:text-emerald-400 transition-colors">{{ isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+            <span>Tema {{ isDark() ? 'Claro' : 'Escuro' }}</span>
+          </button>
+
         </nav>
 
         <!-- Sidebar Footer -->
         <div class="px-6 py-6 border-t border-gray-100 dark:border-white/5 shrink-0">
           <div class="flex items-center justify-between lg:justify-start lg:gap-4 mb-4 lg:mb-0">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-brand-100 dark:bg-emerald-500 flex items-center justify-center text-brand-600 dark:text-slate-900 font-bold">RO</div>
+              <div class="w-10 h-10 rounded-full bg-brand-100 dark:bg-emerald-500 flex items-center justify-center text-brand-600 dark:text-slate-900 font-bold">AL</div>
               <div class="hidden lg:block">
-                <p class="text-sm font-semibold text-gray-900 dark:text-white leading-none mb-1">Rodolfo</p>
-                <p class="text-xs text-gray-500 dark:text-slate-400 leading-none">Aluno Aprendiz</p>
+                <p class="text-sm font-semibold text-gray-900 dark:text-white leading-none mb-1">Aluno</p>
+                <p class="text-xs text-gray-500 dark:text-slate-400 leading-none">Simulador</p>
               </div>
             </div>
-            <!-- Theme Toggle for Desktop -->
-            <button (click)="toggleTheme()" class="hidden lg:flex p-2 rounded-xl text-gray-500 hover:text-gray-800 dark:text-slate-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors ml-auto">
-              <mat-icon class="material-icons !leading-none">{{ isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
-            </button>
+
+            <a routerLink="/ranking" class="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-sm border border-amber-200 dark:border-amber-500/30 transition-all hover:bg-amber-100 dark:hover:bg-amber-500/30 ml-auto cursor-pointer">
+              <mat-icon class="material-icons !text-lg !leading-none !w-5 !h-5">stars</mat-icon>
+              <span>{{ userPoints() }} pts</span>
+            </a>
           </div>
         </div>
 
@@ -108,11 +117,19 @@ export class App {
   sidebarOpen = signal(false);
   isDark = signal(false);
   onboardingCompleted = signal(true);
+  userPoints = signal<number>(0);
 
   constructor() {
     const isOnboarded = localStorage.getItem('onboarding_completed') === 'true';
     this.onboardingCompleted.set(isOnboarded);
     this.updateThemeClass(this.isDark());
+
+    const pointsStr = localStorage.getItem('user_points');
+    if (pointsStr) {
+      this.userPoints.set(parseInt(pointsStr, 10));
+    } else {
+      localStorage.setItem('user_points', '0');
+    }
   }
 
   finishOnboarding(answers: Record<string, string>) {

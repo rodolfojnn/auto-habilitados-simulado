@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, output, computed } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 interface Option {
@@ -149,11 +149,11 @@ export class OnboardingComponent {
   currentStep = signal<number>(0);
   answers = signal<Record<string, string>>({});
 
-  progress = () => ((this.currentStep() + 1) / this.questions.length) * 100;
+  progress = computed(() => ((this.currentStep() + 1) / this.questions.length) * 100);
 
-  currentQuestion = () => this.questions[this.currentStep()];
+  currentQuestion = computed(() => this.questions[this.currentStep()]);
 
-  isLastStep = () => this.currentStep() === this.questions.length - 1;
+  isLastStep = computed(() => this.currentStep() === this.questions.length - 1);
 
   hasAnswerForCurrent(): boolean {
     const q = this.currentQuestion();

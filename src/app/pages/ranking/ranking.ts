@@ -213,11 +213,13 @@ export class RankingComponent implements OnInit {
     const data = localStorage.getItem('onboarding_answers');
     if (data) {
       try {
-        const answers = JSON.parse(data);
+        const answers = JSON.parse(data) as Record<string, unknown>;
         if (answers && answers['lead_captured'] === true) {
           this.leadCaptured.set(true);
         }
-      } catch(e) {}
+      } catch {
+        // ignore parse error
+      }
     }
   }
 
@@ -243,11 +245,13 @@ export class RankingComponent implements OnInit {
   submitLead() {
     if (this.leadForm.valid) {
       const data = localStorage.getItem('onboarding_answers');
-      let answers: any = {};
+      let answers: Record<string, unknown> = {};
       if (data) {
         try {
-          answers = JSON.parse(data);
-        } catch(e) {}
+          answers = JSON.parse(data) as Record<string, unknown>;
+        } catch {
+          // ignore parse error
+        }
       }
 
       answers['lead_data'] = this.leadForm.value;

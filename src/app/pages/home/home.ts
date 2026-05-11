@@ -119,7 +119,7 @@ const TIPS = [
             <mat-icon class="material-icons !text-lg !leading-none !w-5 !h-5">lightbulb</mat-icon>
             <span class="text-[10px] font-bold uppercase tracking-widest text-brand-800/60 dark:text-slate-400">Dica do Dia</span>
           </div>
-          <p class="text-sm text-brand-900/90 dark:text-gray-300 leading-relaxed font-medium">
+          <p class="text-sm text-brand-700 dark:text-gray-300 leading-relaxed font-medium">
             {{ currentTip() }}
           </p>
         </div>
