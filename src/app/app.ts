@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, signal, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, inject, OnInit } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { DOCUMENT } from '@angular/common';
 import { OnboardingComponent } from './pages/onboarding/onboarding';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal';
 
@@ -44,7 +45,7 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
       >
         <!-- Sidebar Header -->
         <div class="h-16 flex items-center px-6 border-b border-gray-100 dark:border-white/5 shrink-0 lg:h-20 lg:border-none">
-          <mat-icon class="material-icons text-brand-500 mr-4">directions_car</mat-icon>
+          <mat-icon class="material-icons text-brand-500 mr-4">traffic</mat-icon>
           <span class="font-bold text-xl text-gray-900 dark:text-white">Simula Detran</span>
           <button (click)="closeSidebar()" class="lg:hidden ml-auto p-2 text-gray-500 hover:text-gray-800 dark:hover:text-white">
             <mat-icon class="material-icons !leading-none">close</mat-icon>
@@ -138,12 +139,15 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
     }
   `
 })
-export class App {
+export class App implements OnInit {
   sidebarOpen = signal(false);
   isDark = signal(false);
   onboardingCompleted = signal(true);
   userPoints = signal<number>(0);
   showResetModal = signal(false);
+
+  private document = inject(DOCUMENT);
+  private router = inject(Router);
 
   constructor() {
     const isOnboarded = localStorage.getItem('onboarding_completed') === 'true';
@@ -156,6 +160,41 @@ export class App {
     } else {
       localStorage.setItem('user_points', '0');
     }
+  }
+
+  ngOnInit() {
+    this.initGlobalRipple();
+  }
+
+  private initGlobalRipple() {
+    this.document.addEventListener('click', (e) => {
+      const target = (e.target as HTMLElement).closest('button, a, .cursor-pointer') as HTMLElement;
+      if (!target || target.hasAttribute('disabled')) return;
+
+      const computedStyle = window.getComputedStyle(target);
+      if (computedStyle.position === 'static') {
+        target.style.position = 'relative';
+      }
+      target.style.overflow = 'hidden';
+
+      const rect = target.getBoundingClientRect();
+      const ripple = this.document.createElement('span');
+
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+      ripple.classList.add('ripple-effect');
+
+      target.appendChild(ripple);
+
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+    });
   }
 
   finishOnboarding(answers: Record<string, string>) {
@@ -176,8 +215,6 @@ export class App {
     this.isDark.update(v => !v);
     this.updateThemeClass(this.isDark());
   }
-
-  private router = inject(Router);
 
   resetApp() {
     this.showResetModal.set(true);
