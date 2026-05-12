@@ -122,7 +122,7 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
       </main>
 
       </div>
-
+      
       <app-confirm-modal
         [isOpen]="showResetModal()"
         title="Refazer Questionário"
@@ -133,8 +133,8 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
         iconBgClass="bg-rose-100 dark:bg-rose-500/20"
         iconTextClass="text-rose-600 dark:text-rose-400"
         confirmButtonClasses="bg-rose-600 hover:bg-rose-700 shadow-rose-600/30"
-        (confirm)="confirmResetApp()"
-        (cancel)="showResetModal.set(false)">
+        (confirmed)="confirmResetApp()"
+        (cancelled)="showResetModal.set(false)">
       </app-confirm-modal>
     }
   `
@@ -164,6 +164,13 @@ export class App implements OnInit {
 
   ngOnInit() {
     this.initGlobalRipple();
+    this.initPointsSync();
+  }
+
+  private initPointsSync() {
+    this.document.defaultView?.addEventListener('pointsUpdated', (e: any) => {
+      this.userPoints.set(e.detail);
+    });
   }
 
   private initGlobalRipple() {
@@ -179,7 +186,7 @@ export class App implements OnInit {
 
       const rect = target.getBoundingClientRect();
       const ripple = this.document.createElement('span');
-
+      
       const size = Math.max(rect.width, rect.height);
       const x = e.clientX - rect.left - size / 2;
       const y = e.clientY - rect.top - size / 2;
@@ -188,9 +195,9 @@ export class App implements OnInit {
       ripple.style.left = `${x}px`;
       ripple.style.top = `${y}px`;
       ripple.classList.add('ripple-effect');
-
+      
       target.appendChild(ripple);
-
+      
       setTimeout(() => {
         ripple.remove();
       }, 600);

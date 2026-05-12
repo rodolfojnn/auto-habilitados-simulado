@@ -15,14 +15,14 @@ import { MatIconModule } from '@angular/material/icon';
         <!-- Modal -->
         <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden relative z-10 animate-scale-in">
           <div class="p-6 sm:p-8 flex flex-col gap-4">
-
+            
             <div class="flex items-start gap-4">
               @if (icon) {
                 <div [class]="'w-12 h-12 rounded-full flex items-center justify-center shrink-0 ' + iconBgClass + ' ' + iconTextClass">
                   <mat-icon class="material-icons !text-2xl !w-6 !h-6 !leading-6">{{ icon }}</mat-icon>
                 </div>
               }
-
+              
               <div class="flex flex-col gap-2 pt-1">
                 <h3 class="text-xl font-bold text-slate-900 dark:text-white">{{ title }}</h3>
                 <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
@@ -33,14 +33,14 @@ import { MatIconModule } from '@angular/material/icon';
 
             <div class="flex sm:flex-row flex-col items-center gap-3 w-full mt-4">
               @if (showCancelButton) {
-                <button
+                <button 
                   (click)="onCancel()"
                   class="w-full sm:w-auto flex-1 px-4 py-3 rounded-2xl font-bold text-slate-700 dark:text-slate-300 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 transition-colors">
                   {{ cancelText }}
                 </button>
               }
-
-              <button
+              
+              <button 
                 (click)="onConfirm()"
                 [class]="'w-full sm:w-auto flex-1 px-4 py-3 rounded-2xl font-bold text-white transition-colors shadow-lg ' + confirmButtonClasses">
                 {{ confirmText }}
@@ -80,14 +80,14 @@ export class ConfirmModalComponent {
   @Input() iconTextClass = 'text-rose-600 dark:text-rose-400';
   @Input() confirmButtonClasses = 'bg-rose-600 hover:bg-rose-700 shadow-rose-600/20';
 
-  @Output() confirm = new EventEmitter<void>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() confirmed = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
 
   onConfirm() {
-    this.confirm.emit();
+    this.confirmed.emit();
   }
 
   onCancel() {
-    this.cancel.emit();
+    this.cancelled.emit();
   }
 }
