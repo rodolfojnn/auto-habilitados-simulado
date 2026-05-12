@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, computed, ElementRef, viewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { interval, Subscription } from 'rxjs';
-import confetti from 'canvas-confetti';
 import questionsData from '../../../assets/questions.json';
 
 interface Answer {
@@ -125,7 +124,8 @@ interface FloatingPoint {
       </div>
     } @else if (isStarted() && !isFinished()) {
       <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto min-h-[calc(100dvh-80px)] flex flex-col font-sans relative overflow-hidden transition-colors"
-        [class.animate-flash-error]="isAnswered() && !isCorrect()">
+        [class.animate-flash-error]="isAnswered() && !isCorrect()"
+        [class.animate-flash-success]="isAnswered() && isCorrect()">
         
         <!-- Success Pop Overlay -->
         @if (isCorrectAnim()) {
@@ -355,6 +355,7 @@ interface FloatingPoint {
     .animate-shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
     .animate-pulse-success { animation: pulseSuccess 0.5s ease-out; }
     .animate-flash-error { animation: flashError 0.5s ease-out; }
+    .animate-flash-success { animation: flashSuccess 0.5s ease-out; }
     .animate-error-pop { animation: errorPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     .animate-success-pop { animation: successPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
@@ -379,6 +380,11 @@ interface FloatingPoint {
     @keyframes flashError {
       0% { background-color: transparent; }
       20% { background-color: rgba(244, 63, 94, 0.3); }
+      100% { background-color: transparent; }
+    }
+    @keyframes flashSuccess {
+      0% { background-color: transparent; }
+      20% { background-color: rgba(16, 185, 129, 0.3); }
       100% { background-color: transparent; }
     }
     @keyframes errorPop {
@@ -523,33 +529,6 @@ export class SimulationComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  private triggerConfetti() {
-    const duration = 1.5 * 1000;
-    const end = Date.now() + duration;
-
-    const frame = () => {
-      confetti({
-        particleCount: 2,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: ['#10b981', '#34d399', '#6ee7b7']
-      });
-      confetti({
-        particleCount: 2,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: ['#10b981', '#34d399', '#6ee7b7']
-      });
-
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
-    };
-    frame();
-  }
-
   private triggerVibration() {
     if ('vibrate' in navigator) {
       navigator.vibrate(200);
@@ -574,9 +553,6 @@ export class SimulationComponent implements OnInit, OnDestroy {
     // Final bonus animation
     setTimeout(() => {
       this.showPointsAnim('+5', 'positive', window.innerWidth / 2, window.innerHeight / 2);
-      if (this.score() >= 21) {
-        this.triggerConfetti();
-      }
     }, 500);
   }
 
