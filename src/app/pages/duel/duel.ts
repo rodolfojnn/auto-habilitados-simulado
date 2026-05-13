@@ -201,32 +201,6 @@ interface GameFloatingPoint {
             </div>
           }
 
-          <!-- Game Point Anim Overlay Fixed -->
-          @for (fp of myFloatingPoints(); track fp.id) {
-            <div
-              class="fixed pointer-events-none z-[5000] font-black text-4xl animate-float-up-game drop-shadow-md"
-              [class.text-emerald-500]="fp.type === 'positive'"
-              [class.text-rose-500]="fp.type === 'negative'"
-              style="-webkit-text-stroke: 1px white;"
-              [style.left.px]="fp.startX"
-              [style.top.px]="fp.startY"
-            >
-              {{ fp.value }}
-            </div>
-          }
-          @for (fp of rivalFloatingPoints(); track fp.id) {
-            <div
-              class="fixed pointer-events-none z-[5000] font-black text-4xl animate-float-up-game drop-shadow-md"
-              [class.text-emerald-500]="fp.type === 'positive'"
-              [class.text-rose-500]="fp.type === 'negative'"
-              style="-webkit-text-stroke: 1px white;"
-              [style.left.px]="fp.startX"
-              [style.top.px]="fp.startY"
-            >
-              {{ fp.value }}
-            </div>
-          }
-
           <!-- Removed old Game Point Anim Overlay -->
 
           <!-- Header (Compact with Timer) -->
@@ -371,7 +345,7 @@ interface GameFloatingPoint {
 
                 <!-- You -->
                 <div class="flex-1 text-center">
-                   <div class="w-12 h-12 mx-auto rounded-full border-2 flex items-center justify-center mb-2 relative shadow-[0_0_15px_rgba(59,130,246,0.2)]"
+                   <div #myAvatarModal class="w-12 h-12 mx-auto rounded-full border-2 flex items-center justify-center mb-2 relative shadow-[0_0_15px_rgba(59,130,246,0.2)]"
                         [class]="myPoints() >= rivalPoints() ? 'border-emerald-500/50 bg-emerald-500/20' : 'border-blue-500/50 bg-blue-500/20'">
                      <span class="text-sm font-black" [class]="myPoints() >= rivalPoints() ? 'text-emerald-400' : 'text-blue-400'">VU</span>
                    </div>
@@ -389,7 +363,7 @@ interface GameFloatingPoint {
 
                 <!-- Rival -->
                 <div class="flex-1 text-center">
-                   <div class="w-12 h-12 mx-auto rounded-full border-2 flex items-center justify-center mb-2 relative shadow-[0_0_15px_rgba(168,85,247,0.2)]"
+                   <div #rivalAvatarModal class="w-12 h-12 mx-auto rounded-full border-2 flex items-center justify-center mb-2 relative shadow-[0_0_15px_rgba(168,85,247,0.2)]"
                         [class]="rivalPoints() > myPoints() ? 'border-emerald-500/50 bg-emerald-500/20' : 'border-purple-500/50 bg-purple-500/20'">
                      <span class="text-sm font-black" [class]="rivalPoints() > myPoints() ? 'text-emerald-400' : 'text-purple-400'">{{ rivalInitials() }}</span>
                    </div>
@@ -439,6 +413,32 @@ interface GameFloatingPoint {
               {{ isFinished() ? 'Novo Duelo' : 'Continuar Duelo' }}
             </button>
           </div>
+        </div>
+      }
+
+      <!-- Top Level Game Point Anim Overlay Fixed -->
+      @for (fp of myFloatingPoints(); track fp.id) {
+        <div
+          class="fixed pointer-events-none z-[9999] font-black text-4xl animate-float-up-game drop-shadow-md"
+          [class.text-emerald-500]="fp.type === 'positive'"
+          [class.text-rose-500]="fp.type === 'negative'"
+          style="-webkit-text-stroke: 1px white;"
+          [style.left.px]="fp.startX"
+          [style.top.px]="fp.startY"
+        >
+          {{ fp.value }}
+        </div>
+      }
+      @for (fp of rivalFloatingPoints(); track fp.id) {
+        <div
+          class="fixed pointer-events-none z-[9999] font-black text-4xl animate-float-up-game drop-shadow-md"
+          [class.text-emerald-500]="fp.type === 'positive'"
+          [class.text-rose-500]="fp.type === 'negative'"
+          style="-webkit-text-stroke: 1px white;"
+          [style.left.px]="fp.startX"
+          [style.top.px]="fp.startY"
+        >
+          {{ fp.value }}
         </div>
       }
     </div>
@@ -555,6 +555,8 @@ interface GameFloatingPoint {
 export class DuelComponent implements OnInit, OnDestroy {
   @ViewChild('myAvatar') myAvatarRef?: ElementRef<HTMLElement>;
   @ViewChild('rivalAvatar') rivalAvatarRef?: ElementRef<HTMLElement>;
+  @ViewChild('myAvatarModal') myAvatarModalRef?: ElementRef<HTMLElement>;
+  @ViewChild('rivalAvatarModal') rivalAvatarModalRef?: ElementRef<HTMLElement>;
 
   isStarted = signal<boolean>(false);
   isSearching = signal<boolean>(false);
@@ -695,7 +697,17 @@ export class DuelComponent implements OnInit, OnDestroy {
     let startX = window.innerWidth / 2;
     let startY = window.innerHeight / 2;
 
-    const el = target === 'me' ? this.myAvatarRef?.nativeElement : this.rivalAvatarRef?.nativeElement;
+    const useModal = this.showStats();
+    let el: HTMLElement | undefined;
+
+    if (useModal) {
+      el = target === 'me' ? this.myAvatarModalRef?.nativeElement : this.rivalAvatarModalRef?.nativeElement;
+    }
+
+    if (!el) {
+      el = target === 'me' ? this.myAvatarRef?.nativeElement : this.rivalAvatarRef?.nativeElement;
+    }
+
     if (el) {
       const rect = el.getBoundingClientRect();
       startX = rect.left + rect.width / 2;

@@ -49,7 +49,7 @@ interface FloatingPoint {
           <!-- Decoration -->
           <div class="absolute -right-6 -top-6 w-32 h-32 bg-white flex rounded-full opacity-10"></div>
           <div class="absolute right-12 -bottom-10 w-24 h-24 bg-white flex rounded-full opacity-10"></div>
-          
+
           <div class="flex items-center gap-5 relative z-10">
             <div class="bg-white/20 p-4 rounded-2xl backdrop-blur-sm">
               <mat-icon class="material-icons text-white w-8 h-8 text-[32px] leading-[32px]">assignment</mat-icon>
@@ -64,7 +64,7 @@ interface FloatingPoint {
         <!-- Instructions -->
         <div class="flex-grow">
           <h3 class="text-xl font-black text-brand-900 dark:text-white mb-6 px-1">Instruções</h3>
-          
+
           <ul class="space-y-4">
             <li class="flex items-start gap-4">
               <div class="bg-blue-100 dark:bg-blue-900/30 p-2.5 rounded-xl text-blue-600 dark:text-blue-400 mt-0.5 shrink-0">
@@ -74,7 +74,7 @@ interface FloatingPoint {
                 O simulado contém <strong class="text-brand-900 dark:text-white">30 questões aleatórias</strong>.
               </p>
             </li>
-            
+
             <li class="flex items-start gap-4">
               <div class="bg-orange-100 dark:bg-orange-900/30 p-2.5 rounded-xl text-orange-600 dark:text-orange-400 mt-0.5 shrink-0">
                 <mat-icon class="material-icons text-xl w-5 h-5 leading-[20px]">timer</mat-icon>
@@ -83,7 +83,7 @@ interface FloatingPoint {
                 A prova teórica tem duração de <strong class="text-brand-900 dark:text-white">40 minutos</strong>.
               </p>
             </li>
-            
+
             <li class="flex items-start gap-4">
               <div class="bg-emerald-100 dark:bg-emerald-900/30 p-2.5 rounded-xl text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0">
                 <mat-icon class="material-icons text-xl w-5 h-5 leading-[20px]">menu_book</mat-icon>
@@ -92,7 +92,7 @@ interface FloatingPoint {
                 As questões são baseadas no conteúdo oficial do Detran.
               </p>
             </li>
-            
+
             <li class="flex items-start gap-4">
               <div class="bg-purple-100 dark:bg-purple-900/30 p-2.5 rounded-xl text-purple-600 dark:text-purple-400 mt-0.5 shrink-0">
                 <mat-icon class="material-icons text-xl w-5 h-5 leading-[20px]">check_circle</mat-icon>
@@ -113,7 +113,7 @@ interface FloatingPoint {
 
         <!-- Action Button -->
         <div class="mt-auto pt-6 pb-2">
-          <button 
+          <button
             (click)="startSimulation()"
             class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-lg py-4 px-6 rounded-2xl shadow-xl shadow-brand-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
           >
@@ -126,7 +126,7 @@ interface FloatingPoint {
       <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto min-h-[calc(100dvh-80px)] flex flex-col font-sans relative overflow-hidden transition-colors"
         [class.animate-flash-error]="isAnswered() && !isCorrect()"
         [class.animate-flash-success]="isAnswered() && isCorrect()">
-        
+
         <!-- Success Pop Overlay -->
         @if (isCorrectAnim()) {
           <div class="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none animate-success-pop">
@@ -145,18 +145,7 @@ interface FloatingPoint {
           </div>
         }
 
-        <!-- Game Point Anim Overlay -->
-        @for (fp of floatingPoints(); track fp.id) {
-          <div 
-            class="absolute pointer-events-none z-50 font-black text-2xl animate-float-up"
-            [class.text-emerald-500]="fp.type === 'positive'"
-            [class.text-rose-500]="fp.type === 'negative'"
-            [style.left.px]="fp.x"
-            [style.top.px]="fp.y"
-          >
-            {{ fp.value }}
-          </div>
-        }
+        <!-- Game Point Anim Overlay Removed from here -->
 
         <!-- Progress & Timer Header -->
         <div class="flex items-center justify-between mb-6">
@@ -196,7 +185,7 @@ interface FloatingPoint {
         <!-- Answers List -->
         <div class="space-y-3 flex-grow">
           @for (answer of currentQuestion().answers; track $index) {
-              <button 
+              <button
                 (click)="selectAnswer(answer, $event)"
                 [disabled]="isAnswered()"
               class="w-full p-5 rounded-3xl border-2 text-left transition-all flex items-start gap-4 group relative overflow-hidden"
@@ -209,7 +198,7 @@ interface FloatingPoint {
               <span class="text-base font-semibold leading-snug pt-0.5 flex-1" [class]="getTextClasses(answer)">
                 {{ answer.text }}
               </span>
-              
+
               <!-- Correct/Wrong Icon -->
               @if (isAnswered()) {
                 @if (answer.is_correct) {
@@ -245,24 +234,24 @@ interface FloatingPoint {
                   {{ currentQuestion().explanation || 'A opção marcada em verde é a alternativa correta de acordo com as normas de trânsito.' }}
                 </p>
               </div>
-            }
 
-            <button 
-              (click)="nextQuestion()"
-              class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-lg py-4 px-6 rounded-2xl shadow-xl shadow-brand-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-2"
-            >
-              <span>{{ isLastQuestion() ? 'Ver Resultado' : 'Próxima Questão' }}</span>
-              <mat-icon class="material-icons">arrow_forward</mat-icon>
-            </button>
+              <button
+                (click)="nextQuestion()"
+                class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-lg py-4 px-6 rounded-2xl shadow-xl shadow-brand-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-2"
+              >
+                <span>{{ isLastQuestion() ? 'Ver Resultado' : 'Próxima Questão' }}</span>
+                <mat-icon class="material-icons">arrow_forward</mat-icon>
+              </button>
+            }
           </div>
         }
       </div>
     } @else if (isFinished()) {
       <div class="px-6 pt-10 pb-24 max-w-2xl mx-auto min-h-[calc(100dvh-80px)] flex flex-col animate-fade-in font-sans relative overflow-hidden">
-        
+
         <!-- Floating Finish Bonus Anim -->
         @for (fp of floatingPoints(); track fp.id) {
-          <div 
+          <div
             class="absolute pointer-events-none z-50 font-black text-3xl animate-float-up"
             [class.text-emerald-500]="fp.type === 'positive'"
             [style.left.px]="fp.x"
@@ -282,7 +271,7 @@ interface FloatingPoint {
             <div [class]="(score() >= 21) ? 'w-24 h-24 bg-emerald-500 text-white mx-auto rounded-[2rem] flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/30' : 'w-24 h-24 bg-rose-500 text-white mx-auto rounded-[2rem] flex items-center justify-center mb-6 shadow-lg shadow-rose-500/30'">
               <mat-icon class="material-icons !text-5xl !w-12 !h-12 !leading-none">{{ (score() >= 21) ? 'emoji_events' : 'sentiment_very_dissatisfied' }}</mat-icon>
             </div>
-            
+
             <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-2">
               {{ (score() >= 21) ? 'Parabéns, Motorista!' : 'Quase lá, continue!' }}
             </h2>
@@ -330,14 +319,14 @@ interface FloatingPoint {
 
         <!-- Buttons -->
         <div class="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <button 
+          <button
             (click)="resetSimulation()"
             class="bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-brand-600/30 transition-all flex items-center justify-center gap-2"
           >
             <mat-icon class="material-icons">refresh</mat-icon>
             <span>Tentar Novamente</span>
           </button>
-          <button 
+          <button
             (click)="goToHome()"
             class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-2"
           >
@@ -345,6 +334,20 @@ interface FloatingPoint {
             <span>Menu Inicial</span>
           </button>
         </div>
+      </div>
+    }
+
+    <!-- Game Point Anim Overlay Fixed Global -->
+    @for (fp of floatingPoints(); track fp.id) {
+      <div
+        class="fixed pointer-events-none z-[9999] font-black text-2xl animate-float-up"
+        [class.text-emerald-500]="fp.type === 'positive'"
+        [class.text-rose-500]="fp.type === 'negative'"
+        style="-webkit-text-stroke: 1px white;"
+        [style.left.px]="fp.x"
+        [style.top.px]="fp.y"
+      >
+        {{ fp.value }}
       </div>
     }
   `,
@@ -409,21 +412,21 @@ export class SimulationComponent implements OnInit, OnDestroy {
 
   isStarted = signal<boolean>(false);
   isFinished = signal<boolean>(false);
-  
+
   questions = signal<Question[]>([]);
   currentIndex = signal<number>(0);
   score = signal<number>(0);
   simulationPoints = signal<number>(0);
-  
+
   selectedAnswer = signal<Answer | null>(null);
   isAnswered = signal<boolean>(false);
   isCorrect = signal<boolean>(false);
   isCorrectAnim = signal<boolean>(false);
   isWrongAnim = signal<boolean>(false);
-  
+
   floatingPoints = signal<FloatingPoint[]>([]);
   private nextFpId = 0;
-  
+
   timeLeft = signal<number>(2400); // 40 minutes
   private timerSubscription?: Subscription;
 
@@ -454,7 +457,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
   prepareQuestions() {
     const allQuestions: Question[] = [];
     const data = questionsData as { modules: Record<string, { questions: Question[] }> };
-    
+
     if (data && data.modules) {
       Object.values(data.modules).forEach(module => {
         if (module && module.questions) {
@@ -489,18 +492,21 @@ export class SimulationComponent implements OnInit, OnDestroy {
 
   selectAnswer(answer: Answer, event: MouseEvent) {
     if (this.isAnswered()) return;
-    
+
     this.selectedAnswer.set(answer);
     this.isAnswered.set(true);
-    
+
     const currentPoints = parseInt(localStorage.getItem('user_points') || '0', 10);
-    
+
     if (answer.is_correct) {
       this.score.update(s => s + 1);
       this.isCorrect.set(true);
       this.isCorrectAnim.set(true);
-      setTimeout(() => this.isCorrectAnim.set(false), 800);
-      
+      setTimeout(() => {
+        this.isCorrectAnim.set(false);
+        this.nextQuestion();
+      }, 1500);
+
       const newPoints = currentPoints + 1;
       localStorage.setItem('user_points', newPoints.toString());
       this.simulationPoints.set(newPoints);
@@ -509,7 +515,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
       this.isCorrect.set(false);
       this.isWrongAnim.set(true);
       setTimeout(() => this.isWrongAnim.set(false), 800);
-      
+
       const newPoints = Math.max(0, currentPoints - 3);
       localStorage.setItem('user_points', newPoints.toString());
       this.simulationPoints.set(newPoints);
@@ -524,9 +530,9 @@ export class SimulationComponent implements OnInit, OnDestroy {
   private showPointsAnim(value: string, type: 'positive' | 'negative', x: number, y: number) {
     const id = this.nextFpId++;
     const newFp: FloatingPoint = { id, value, type, x, y };
-    
+
     this.floatingPoints.update(list => [...list, newFp]);
-    
+
     setTimeout(() => {
       this.floatingPoints.update(list => list.filter(f => f.id !== id));
     }, 1000);
@@ -552,7 +558,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
     this.timerSubscription?.unsubscribe();
     this.isFinished.set(true);
     this.saveSimulationResult();
-    
+
     // Final bonus animation
     setTimeout(() => {
       this.showPointsAnim('+5', 'positive', window.innerWidth / 2, window.innerHeight / 2);
@@ -570,13 +576,13 @@ export class SimulationComponent implements OnInit, OnDestroy {
         approved: this.score() >= 21
       });
       answers.simulations = simulations;
-      
+
       // Completion bonus: +5 points
       const currentPoints = parseInt(localStorage.getItem('user_points') || '0', 10);
       const newPoints = currentPoints + 5;
       localStorage.setItem('user_points', newPoints.toString());
       this.simulationPoints.set(newPoints);
-      
+
       localStorage.setItem('onboarding_answers', JSON.stringify(answers));
       window.dispatchEvent(new CustomEvent('pointsUpdated', { detail: newPoints }));
     } catch (e) {
@@ -593,7 +599,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
     this.isAnswered.set(false);
     this.selectedAnswer.set(null);
     this.prepareQuestions();
-    
+
     const currentGlobalPoints = parseInt(localStorage.getItem('user_points') || '0', 10);
     this.simulationPoints.set(currentGlobalPoints);
   }
@@ -614,15 +620,15 @@ export class SimulationComponent implements OnInit, OnDestroy {
     if (!this.isAnswered()) {
       return 'border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 hover:border-brand-400 hover:bg-brand-50/30 dark:hover:bg-brand-500/10 text-slate-700 dark:text-slate-300';
     }
-    
+
     if (answer.is_correct) {
       return 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400';
     }
-    
+
     if (this.selectedAnswer() === answer && !answer.is_correct) {
       return 'border-rose-500 bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400';
     }
-    
+
     return 'border-slate-100 dark:border-white/5 opacity-50 bg-white dark:bg-slate-800 text-slate-400';
   }
 
@@ -630,15 +636,15 @@ export class SimulationComponent implements OnInit, OnDestroy {
     if (!this.isAnswered()) {
       return 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 group-hover:bg-brand-500 group-hover:text-white';
     }
-    
+
     if (answer.is_correct) {
       return 'bg-emerald-500 text-white';
     }
-    
+
     if (this.selectedAnswer() === answer && !answer.is_correct) {
       return 'bg-rose-500 text-white';
     }
-    
+
     return 'bg-slate-50 dark:bg-slate-800 text-slate-300 dark:text-slate-600';
   }
 
