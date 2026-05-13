@@ -99,27 +99,89 @@ interface FloatingPoint {
       } @else if (isSearching()) {
         <!-- Searching State -->
         <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto h-full flex flex-col justify-center items-center text-center pt-32">
-          <div class="w-24 h-24 rounded-full bg-indigo-500/10 flex items-center justify-center mb-8 relative">
-            <div class="absolute inset-0 rounded-full border-4 border-indigo-500/30 animate-radar-ping"></div>
-            <div class="absolute inset-0 rounded-full border-2 border-indigo-400/50 animate-radar-ping-slow"></div>
-            <mat-icon class="material-icons text-indigo-500 dark:text-indigo-400" style="font-size: 48px; width: 48px; height: 48px;">radar</mat-icon>
-          </div>
-          <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-4">Buscando oponente...</h2>
-          <p class="text-slate-500 dark:text-slate-400 mb-12 max-w-md font-medium leading-relaxed">Prepare-se para o duelo! Você será conectado em breve com um motorista do mesmo nível.</p>
+          @if (!isFound()) {
+            <div class="w-24 h-24 rounded-full bg-indigo-500/10 flex items-center justify-center mb-8 relative">
+              <div class="absolute inset-0 rounded-full border-4 border-indigo-500/30 animate-radar-ping"></div>
+              <div class="absolute inset-0 rounded-full border-2 border-indigo-400/50 animate-radar-ping-slow"></div>
+              <mat-icon class="material-icons text-indigo-500 dark:text-indigo-400" style="font-size: 48px; width: 48px; height: 48px;">radar</mat-icon>
+            </div>
+            <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-4">Buscando oponente...</h2>
+            <p class="text-slate-500 dark:text-slate-400 mb-12 max-w-md font-medium leading-relaxed">Prepare-se para o duelo! Você será conectado em breve com um motorista do mesmo nível.</p>
 
-          <div class="flex gap-3 mb-10">
-            <div class="w-3 h-3 rounded-full bg-indigo-500 animate-bounce"></div>
-            <div class="w-3 h-3 rounded-full bg-indigo-500 animate-bounce [animation-delay:200ms]"></div>
-            <div class="w-3 h-3 rounded-full bg-indigo-500 animate-bounce [animation-delay:400ms]"></div>
-          </div>
-          
-          <button (click)="cancelSearch()" class="text-slate-500 font-bold hover:text-slate-900 dark:hover:text-white transition-colors">Cancelar Busca</button>
+            <div class="flex gap-3 mb-10">
+              <div class="w-3 h-3 rounded-full bg-indigo-500 animate-bounce"></div>
+              <div class="w-3 h-3 rounded-full bg-indigo-500 animate-bounce [animation-delay:200ms]"></div>
+              <div class="w-3 h-3 rounded-full bg-indigo-500 animate-bounce [animation-delay:400ms]"></div>
+            </div>
+            
+            <button (click)="cancelSearch()" class="text-slate-500 font-bold hover:text-slate-900 dark:hover:text-white transition-colors">Cancelar Busca</button>
+          } @else {
+            <div class="w-24 h-24 rounded-full bg-emerald-500/10 flex items-center justify-center mb-6 relative">
+              <div class="absolute inset-0 rounded-full border-4 border-emerald-500/30 animate-pulse-success"></div>
+              <mat-icon class="material-icons text-emerald-500" style="font-size: 48px; width: 48px; height: 48px;">person_add</mat-icon>
+            </div>
+            <h2 class="text-3xl font-black text-emerald-500 mb-4 tracking-tight animate-fade-in-up">Oponente Encontrado!</h2>
+            
+            <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 shadow-lg shadow-emerald-500/5 border border-slate-100 dark:border-slate-700/50 mb-8 w-full max-w-xs animate-fade-in-up [animation-delay:200ms]">
+               <div class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">Seu Adversário</div>
+               <div class="flex items-center justify-center gap-4">
+                 <div class="w-14 h-14 rounded-full border-2 border-purple-500/30 bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center shrink-0">
+                   <span class="text-inherit font-black text-purple-600 dark:text-purple-400">{{ rivalInitials() }}</span>
+                 </div>
+                 <div class="flex flex-col text-left">
+                   <span class="font-black text-slate-900 dark:text-white text-lg leading-tight">{{ rivalName() }}</span>
+                   <span class="text-[10px] font-black opacity-60 uppercase tracking-widest text-slate-500 mt-0.5">{{ rivalCityUf() }}</span>
+                 </div>
+               </div>
+            </div>
+
+            <!-- Countdown -->
+            <div class="flex flex-col items-center justify-center mt-2 animate-fade-in-up [animation-delay:400ms]">
+              <div class="relative w-24 h-24 flex items-center justify-center">
+                @for (c of [searchCountdown()]; track c) {
+                  <div class="absolute text-[80px] font-black text-indigo-600 dark:text-indigo-400 tabular-nums drop-shadow-lg animate-countdown-pop leading-none">
+                    {{ c }}
+                  </div>
+                }
+              </div>
+              <p class="text-slate-400 font-bold uppercase tracking-[0.2em] mt-2 text-[10px]">Preparando a partida</p>
+            </div>
+          }
         </div>
       } @else {
         <!-- Live Duel Game State -->
         <div class="flex flex-col h-[calc(100dvh-80px)] md:h-screen max-w-2xl mx-auto overflow-hidden transition-colors"
           [class.animate-flash-error]="hasAnswered() && !isLastAnswerCorrect()"
           [class.animate-flash-success]="hasAnswered() && isLastAnswerCorrect()">
+
+          <!-- Win Celebration Overlay -->
+          @if (showWinCelebration()) {
+            <div class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-950/90 backdrop-blur-sm animate-fade-in overflow-hidden">
+               <!-- Rays -->
+               <div class="absolute w-[200vw] h-[200vw] animate-spin-slow opacity-20" style="background: repeating-conic-gradient(from 0deg, transparent 0deg 15deg, #10b981 15deg 30deg);"></div>
+
+               <!-- Particles -->
+               @for (p of winParticles; track p.id) {
+                 <div class="absolute w-3 h-3 rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)] opacity-0"
+                      [class]="p.colorClass"
+                      [style.left.%]="p.x"
+                      [style.animation]="p.animation">
+                 </div>
+               }
+
+               <!-- Trophy & Text -->
+               <div class="relative z-10 flex flex-col items-center animate-win-pop">
+                 <div class="relative">
+                   <div class="absolute inset-0 bg-yellow-400 blur-[50px] opacity-60 rounded-full animate-pulse"></div>
+                   <mat-icon class="text-yellow-400 !w-40 !h-40 !text-[160px] drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">emoji_events</mat-icon>
+                 </div>
+                 <h1 class="text-6xl font-black text-white uppercase tracking-tighter mt-8 drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]" style="-webkit-text-stroke: 2px #10b981;">VITÓRIA!</h1>
+                 <div class="mt-4 px-6 py-2 bg-emerald-500/20 border-2 border-emerald-500 rounded-full backdrop-blur-md">
+                   <p class="text-emerald-300 font-black text-xl tracking-widest">+ {{ myPoints() }} PONTOS</p>
+                 </div>
+               </div>
+            </div>
+          }
 
           <!-- Success Pop Overlay -->
           @if (isCorrectAnim()) {
@@ -395,6 +457,7 @@ interface FloatingPoint {
     .animate-flash-success { animation: flashSuccess 0.5s ease-out; }
     .animate-error-pop { animation: errorPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     .animate-success-pop { animation: successPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    .animate-fade-in-up { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; transform: translateY(10px); }
 
     @keyframes floatUp {
       0% { opacity: 0; transform: translateY(0); }
@@ -434,19 +497,66 @@ interface FloatingPoint {
       70% { transform: scale(1) rotate(0deg); opacity: 1; }
       100% { transform: scale(2); opacity: 0; }
     }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes countdownPop {
+      0% { transform: scale(0.3); opacity: 0; }
+      20% { transform: scale(1.2); opacity: 1; }
+      40% { transform: scale(1); opacity: 1; }
+      80% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(0.8); opacity: 0; }
+    }
+    .animate-countdown-pop { animation: countdownPop 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    
+    @keyframes spin-slow {
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin-slow { animation: spin-slow 20s linear infinite; }
+    
+    @keyframes winPop {
+      0% { transform: scale(0.5); opacity: 0; }
+      40% { transform: scale(1.1); opacity: 1; }
+      60% { transform: scale(0.95); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-win-pop { animation: winPop 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    
+    @keyframes floatUpWin {
+      0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; }
+      10% { opacity: 1; transform: translateY(80vh) rotate(45deg) scale(1); }
+      90% { opacity: 1; transform: translateY(-80vh) rotate(315deg) scale(1); }
+      100% { transform: translateY(-100vh) rotate(360deg) scale(0.5); opacity: 0; }
+    }
+    
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; opacity: 0; }
   `]
 })
 export class DuelComponent implements OnInit, OnDestroy {
   isStarted = signal<boolean>(false);
   isSearching = signal<boolean>(false);
+  isFound = signal<boolean>(false);
+  searchCountdown = signal<number>(5);
   leadCaptured = signal<boolean>(false);
   showStats = signal<boolean>(false);
   isFinished = signal<boolean>(false);
+
+  showWinCelebration = signal<boolean>(false);
 
   isCorrectAnim = signal<boolean>(false);
   isWrongAnim = signal<boolean>(false);
   floatingPoints = signal<FloatingPoint[]>([]);
   private nextFpId = 0;
+
+  winParticles = Array.from({ length: 40 }).map((_, i) => ({
+    id: i,
+    x: Math.floor(Math.random() * 100),
+    colorClass: ['bg-yellow-400', 'bg-emerald-400', 'bg-blue-400', 'bg-purple-400', 'bg-white'][i % 5],
+    animation: `floatUpWin ${1.5 + Math.random() * 2}s linear forwards ${Math.random() * 0.5}s`
+  }));
 
   questions = signal<Question[]>([]);
   currentIndex = signal<number>(0);
@@ -468,6 +578,8 @@ export class DuelComponent implements OnInit, OnDestroy {
   timeLeft = signal<number>(180); // 3 minutes
   private timerSubscription?: Subscription;
   private rivalSubscription?: Subscription;
+  private findTimeoutRef?: any;
+  private countdownIntervalRef?: any;
 
   readonly totalQuestions = 10;
 
@@ -632,6 +744,17 @@ export class DuelComponent implements OnInit, OnDestroy {
       }
     }
     
+    // Set a random user city if none isn't needed here anymore since we do it in startDuel,
+    // but we can initialize it if it's default
+  }
+
+  startDuel() {
+    this.isStarted.set(true);
+    this.isSearching.set(true);
+    this.isFound.set(false);
+    this.searchCountdown.set(5);
+    this.prepareQuestions();
+    
     // Set a random user city if none
     const cities = [
       'São Paulo - SP', 'Rio de Janeiro - RJ', 'Belo Horizonte - MG', 'Salvador - BA', 'Fortaleza - CE',
@@ -645,13 +768,7 @@ export class DuelComponent implements OnInit, OnDestroy {
       'Macapá - AP', 'Mauá - SP', 'São João de Meriti - RJ', 'Santos - SP'
     ];
     this.myCityUf.set(cities[Math.floor(Math.random() * cities.length)]);
-  }
 
-  startDuel() {
-    this.isStarted.set(true);
-    this.isSearching.set(true);
-    this.prepareQuestions();
-    
     const fakeNames = [
       'Ana', 'Beatriz', 'Bruna', 'Camila', 'Carolina', 'Catarina', 'Cecília', 'Clara', 'Danielle', 'Eduarda',
       'Elisa', 'Emanuelly', 'Esther', 'Evelyn', 'Fernanda', 'Gabriela', 'Giovanna', 'Helena', 'Heloísa', 'Isabel',
@@ -665,24 +782,6 @@ export class DuelComponent implements OnInit, OnDestroy {
       'Miguel', 'Murilo', 'Nicolas', 'Noah', 'Otávio', 'Pedro', 'Rafael', 'Renato', 'Rodrigo', 'Samuel',
       'Thiago', 'Tomás', 'Victor', 'Vinícius', 'Vitor', 'Yuri'
     ];
-    
-    const cities = [
-      'São Paulo - SP', 'Rio de Janeiro - RJ', 'Belo Horizonte - MG', 'Salvador - BA', 'Fortaleza - CE',
-      'Brasília - DF', 'Curitiba - PR', 'Manaus - AM', 'Recife - PE', 'Goiania - GO', 'Porto Alegre - RS',
-      'Campinas - SP', 'São Luís - MA', 'São Gonçalo - RJ', 'Maceió - AL', 'Duque de Caxias - RJ',
-      'Natal - RN', 'Campo Grande - MS', 'Teresina - PI', 'Nova Iguaçu - RJ', 'João Pessoa - PB',
-      'Santo André - SP', 'Ribeirão Preto - SP', 'Osasco - SP', 'Uberlândia - MG', 'Sorocaba - SP',
-      'Contagem - MG', 'Aracaju - SE', 'Feira de Santana - BA', 'Cuiabá - MT', 'Joinville - SC',
-      'Juiz de Fora - MG', 'Londrina - PR', 'Ananindeua - PA', 'Niterói - RJ', 'Porto Velho - RO',
-      'Belford Roxo - RJ', 'Serra - ES', 'Caxias do Sul - RS', 'Vila Velha - ES', 'Florianópolis - SC',
-      'Macapá - AP', 'Mauá - SP', 'São João de Meriti - RJ', 'Santos - SP',
-      'São José dos Campos - SP', 'Moji das Cruzes - SP', 'Betim - MG', 'Olinda - PE', 'Jaboatão dos Guararapes - PE',
-      'Piracicaba - SP', 'Canoas - RS', 'Bauru - SP', 'Vitória - ES', 'Itaquaquecetuba - SP',
-      'Blumenau - SC', 'Ponta Grossa - PR', 'Caruaru - PE', 'Santarém - PA', 'Caucaia - CE',
-      'Vitória da Conquista - BA', 'Campina Grande - PB', 'Petrolina - PE', 'Boa Vista - RR', 'Rio Branco - AC',
-      'Palmas - TO', 'Montes Claros - MG', 'Cascavel - PR', 'São José do Rio Preto - SP', 'Franca - SP',
-      'Praia Grande - SP', 'Diadema - SP', 'Taboão da Serra - SP', 'Maringá - PR', 'Pelotas - RS'
-    ];
 
     const randomName = fakeNames[Math.floor(Math.random() * fakeNames.length)];
     const initials = randomName.substring(0, 1).toUpperCase();
@@ -690,11 +789,25 @@ export class DuelComponent implements OnInit, OnDestroy {
     this.rivalInitials.set(initials);
     this.rivalCityUf.set(cities[Math.floor(Math.random() * cities.length)]);
 
-    setTimeout(() => {
-      this.isSearching.set(false);
-      this.startTimer();
-      this.simulateRival();
-    }, 3000);
+    const searchDelay = Math.floor(Math.random() * 2000) + 2000; // 2 to 4 seconds
+
+    clearTimeout(this.findTimeoutRef);
+    clearInterval(this.countdownIntervalRef);
+
+    this.findTimeoutRef = setTimeout(() => {
+      this.isFound.set(true);
+      
+      this.countdownIntervalRef = setInterval(() => {
+        if (this.searchCountdown() > 1) {
+          this.searchCountdown.update(c => c - 1);
+        } else {
+          clearInterval(this.countdownIntervalRef);
+          this.isSearching.set(false);
+          this.startTimer();
+          this.simulateRival();
+        }
+      }, 1000);
+    }, searchDelay);
   }
 
   prepareQuestions() {
@@ -745,9 +858,12 @@ export class DuelComponent implements OnInit, OnDestroy {
     this.rivalSubscription?.unsubscribe();
     const scheduleNextRivalAnswer = () => {
        if (this.isFinished() || !this.isStarted()) return;
-       if (this.rivalCorrect() + this.rivalErrors() >= this.totalQuestions) return;
+       if (this.rivalCorrect() + this.rivalErrors() >= this.totalQuestions) {
+           this.finishDuel();
+           return;
+       }
 
-       const delay = Math.floor(Math.random() * 8000) + 3000;
+       const delay = Math.floor(Math.random() * 10000) + 10000; // 10 to 20 seconds
        const sub = interval(delay).subscribe(() => {
            sub.unsubscribe();
            if (this.isFinished()) return;
@@ -761,7 +877,11 @@ export class DuelComponent implements OnInit, OnDestroy {
                this.rivalErrors.update(e => e + 1);
            }
            
-           scheduleNextRivalAnswer();
+           if (this.rivalCorrect() + this.rivalErrors() >= this.totalQuestions) {
+               this.finishDuel();
+           } else {
+               scheduleNextRivalAnswer();
+           }
        });
        this.rivalSubscription = sub;
     };
@@ -770,17 +890,24 @@ export class DuelComponent implements OnInit, OnDestroy {
   }
 
   finishDuel() {
+      if (this.isFinished()) return;
       this.isFinished.set(true);
       this.timerSubscription?.unsubscribe();
       this.rivalSubscription?.unsubscribe();
-      this.showStats.set(true);
       
       if (this.myPoints() > this.rivalPoints()) {
+         this.showWinCelebration.set(true);
+         setTimeout(() => {
+           this.showWinCelebration.set(false);
+           this.showStats.set(true);
+         }, 5000);
+
          const currentPoints = parseInt(localStorage.getItem('user_points') || '0', 10);
          const newPoints = Math.max(0, currentPoints + this.myPoints()); 
          localStorage.setItem('user_points', newPoints.toString());
          window.dispatchEvent(new CustomEvent('pointsUpdated', { detail: newPoints }));
       } else {
+         this.showStats.set(true);
          const currentPoints = parseInt(localStorage.getItem('user_points') || '0', 10);
          const newPoints = Math.max(0, currentPoints + this.myPoints()); // They keep their score (even if negative it reduces their total)
          localStorage.setItem('user_points', newPoints.toString());
@@ -791,11 +918,15 @@ export class DuelComponent implements OnInit, OnDestroy {
   cancelSearch() {
     this.isStarted.set(false);
     this.isSearching.set(false);
+    this.isFound.set(false);
+    this.showWinCelebration.set(false);
     this.showStats.set(false);
     this.isFinished.set(false);
     this.timerSubscription?.unsubscribe();
     this.rivalSubscription?.unsubscribe();
-    
+    clearTimeout(this.findTimeoutRef);
+    clearInterval(this.countdownIntervalRef);
+
     this.myPoints.set(0);
     this.myCorrect.set(0);
     this.myErrors.set(0);
