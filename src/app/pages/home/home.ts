@@ -67,11 +67,11 @@ const TIPS = [
     <div class="px-6 py-6 max-w-lg mx-auto w-full flex flex-col gap-6 font-sans">
 
       <!-- User Greeting / Hero -->
-      <header class="flex flex-col gap-1">
+      <!-- <header class="flex flex-col gap-1">
         <p class="text-[10px] uppercase tracking-widest text-brand-600 dark:text-slate-400 font-bold">Bem-vindo(a) de volta!</p>
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Pronto para a sua CNH?</h1>
         <p class="text-gray-600 dark:text-slate-400 text-sm">Pratique e melhore suas chances na prova prática.</p>
-      </header>
+      </header> -->
 
       <!-- Main Action: Iniciar Simulado -->
       <section class="mt-2">
@@ -79,7 +79,7 @@ const TIPS = [
            <div class="absolute -right-6 -top-6 w-32 h-32 bg-white/20 rounded-full blur-2xl group-hover:scale-110 transition-transform"></div>
           <mat-icon class="material-icons !text-4xl !leading-none !w-10 !h-10 mb-2 relative z-10 text-slate-900">directions_car</mat-icon>
           <span class="text-xl relative z-10">Iniciar Simulado</span>
-          <span class="text-[11px] opacity-70 font-medium uppercase mt-1 relative z-10">Faça um teste completo do circuito</span>
+          <span class="text-[11px] opacity-70 font-medium uppercase mt-1 relative z-10">Questões oficiais da base de prova</span>
         </a>
       </section>
 

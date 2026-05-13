@@ -76,20 +76,11 @@ interface FloatingPoint {
             </li>
 
             <li class="flex items-start gap-4">
-              <div class="bg-orange-100 dark:bg-orange-900/30 p-2.5 rounded-xl text-orange-600 dark:text-orange-400 mt-0.5 shrink-0">
-                <mat-icon class="material-icons text-xl w-5 h-5 leading-[20px]">timer</mat-icon>
-              </div>
-              <p class="text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed pt-0.5">
-                A prova teórica tem duração de <strong class="text-brand-900 dark:text-white">40 minutos</strong>.
-              </p>
-            </li>
-
-            <li class="flex items-start gap-4">
               <div class="bg-emerald-100 dark:bg-emerald-900/30 p-2.5 rounded-xl text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0">
                 <mat-icon class="material-icons text-xl w-5 h-5 leading-[20px]">menu_book</mat-icon>
               </div>
               <p class="text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed pt-0.5">
-                As questões são baseadas no conteúdo oficial do Detran.
+                As questões são baseadas no conteúdo oficial do Senatran.
               </p>
             </li>
 
@@ -162,7 +153,7 @@ interface FloatingPoint {
           <div class="flex items-center gap-4">
             <div class="flex flex-col items-end shrink-0">
               <span class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Tempo</span>
-              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-xl" [class.text-rose-500]="timeLeft() < 300">
+              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-xl">
                 <mat-icon class="material-icons !text-lg !w-[18px] !h-[18px] !leading-none">timer</mat-icon>
                 <span class="font-mono font-bold text-sm">{{ formattedTime() }}</span>
               </div>
@@ -427,7 +418,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
   floatingPoints = signal<FloatingPoint[]>([]);
   private nextFpId = 0;
 
-  timeLeft = signal<number>(2400); // 40 minutes
+  timeElapsed = signal<number>(0);
   private timerSubscription?: Subscription;
 
   progress = computed(() => {
@@ -440,8 +431,8 @@ export class SimulationComponent implements OnInit, OnDestroy {
   });
 
   formattedTime = computed(() => {
-    const mins = Math.floor(this.timeLeft() / 60);
-    const secs = this.timeLeft() % 60;
+    const mins = Math.floor(this.timeElapsed() / 60);
+    const secs = this.timeElapsed() % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   });
 
@@ -483,11 +474,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
   startTimer() {
     this.timerSubscription?.unsubscribe();
     this.timerSubscription = interval(1000).subscribe(() => {
-      if (this.timeLeft() > 0) {
-        this.timeLeft.update(t => t - 1);
-      } else {
-        this.finishSimulation();
-      }
+      this.timeElapsed.update(t => t + 1);
     });
   }
 
@@ -597,7 +584,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
     this.isFinished.set(false);
     this.currentIndex.set(0);
     this.score.set(0);
-    this.timeLeft.set(2400);
+    this.timeElapsed.set(0);
     this.isAnswered.set(false);
     this.selectedAnswer.set(null);
     this.prepareQuestions();
