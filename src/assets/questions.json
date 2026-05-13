@@ -1099,31 +1099,6 @@
           "explanation": "A-2a é usada para curvas suaves e a A-1a, para curvas acentuadas."
         },
         {
-          "title": "Qual é a diferença entre a placa “Trânsito de pedestres” e a placa “Passagem sinalizada de pedestres”?",
-          "difficulty": "Difícil",
-          "number": 46,
-          "answers": [
-            {
-              "text": "A primeira indica o trânsito frequente de pedestres, enquanto a segunda indica a presença de faixa de pedestres sinalizada.",
-              "is_correct": true
-            },
-            {
-              "text": "Ambas têm o mesmo significado.",
-              "is_correct": false
-            },
-            {
-              "text": "A primeira é obrigatória e a segunda é proibitiva.",
-              "is_correct": false
-            },
-            {
-              "text": "A placa indica travessia de ciclistas.",
-              "is_correct": false
-            }
-          ],
-          "sign_code_ref": "A-32a e A-32b",
-          "explanation": "A diferença está na representação da faixa no pictograma faixa sinalizada, enquanto a A-32a indica apenas a presença de pedestres circulando com frequência."
-        },
-        {
           "title": "Qual é o principal motivo de sinistros em locais com junções sucessivas contrárias, conforme sinalizado acima?",
           "difficulty": "Difícil",
           "number": 47,
