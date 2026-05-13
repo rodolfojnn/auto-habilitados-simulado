@@ -463,8 +463,11 @@ export class SimulationComponent implements OnInit, OnDestroy {
       });
     }
 
-    // Shuffle and pick 30
-    const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+    // Shuffle answers for each question so it's not predictable, then pick totalQuestions
+    const shuffled = [...allQuestions].map(q => ({
+      ...q,
+      answers: [...q.answers].sort(() => 0.5 - Math.random())
+    })).sort(() => 0.5 - Math.random());
     this.questions.set(shuffled.slice(0, this.totalQuestions));
   }
 
