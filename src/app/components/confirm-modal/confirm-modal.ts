@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
     @if (isOpen) {
       <div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 animate-fade-in">
         <!-- Backdrop -->
-        <div class="absolute inset-0 bg-slate-900/40 dark:bg-slate-900/60 backdrop-blur-sm transition-opacity" (click)="onCancel()"></div>
+        <div class="absolute inset-0 bg-slate-900/40 dark:bg-slate-900/60 backdrop-blur-sm transition-opacity" (click)="onCancel()" (keydown.enter)="onCancel()" tabindex="0"></div>
 
         <!-- Modal -->
         <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden relative z-10 animate-scale-in">

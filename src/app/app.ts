@@ -168,8 +168,9 @@ export class App implements OnInit {
   }
 
   private initPointsSync() {
-    this.document.defaultView?.addEventListener('pointsUpdated', (e: any) => {
-      this.userPoints.set(e.detail);
+    this.document.defaultView?.addEventListener('pointsUpdated', (e: Event) => {
+      const customEvent = e as CustomEvent<number>;
+      this.userPoints.set(customEvent.detail);
     });
   }
 
