@@ -12,7 +12,7 @@ import { LeadCaptureComponent } from '../../components/lead-capture/lead-capture
       
       @if (!leadCaptured()) {
         <app-lead-capture
-          title="Prêmios do Ranking Semanal"
+          title="Prêmios do Ranking"
           description="Os melhores do simulado e duelo multiplayer podem ganhar prêmios! Para participar, precisamos de algumas informações para entrar em contato com os vencedores e montar a classificação de acordo com a sua região."
           icon="redeem"
           iconBgClass="bg-amber-50 dark:bg-amber-500/20"
