@@ -26,10 +26,10 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
             <span class="font-bold text-lg text-brand-600 dark:text-white">Simula Detran</span>
           </div>
 
-          <a routerLink="/ranking" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-sm border border-amber-200 dark:border-amber-500/30 transition-all hover:bg-amber-100 dark:hover:bg-amber-500/30">
+          <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-sm border border-amber-200 dark:border-amber-500/30 transition-all">
             <mat-icon class="material-icons !text-lg !leading-none !w-5 !h-5">stars</mat-icon>
             <span>{{ userPoints() }} pts</span>
-          </a>
+          </div>
         </div>
       </header>
 
@@ -107,10 +107,10 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
               </div>
             </div>
 
-            <a routerLink="/ranking" class="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-sm border border-amber-200 dark:border-amber-500/30 transition-all hover:bg-amber-100 dark:hover:bg-amber-500/30 ml-auto cursor-pointer">
+            <div class="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-sm border border-amber-200 dark:border-amber-500/30 transition-all ml-auto">
               <mat-icon class="material-icons !text-lg !leading-none !w-5 !h-5">stars</mat-icon>
               <span>{{ userPoints() }} pts</span>
-            </a>
+            </div>
           </div>
         </div>
 

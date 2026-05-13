@@ -184,7 +184,7 @@ interface FloatingPoint {
 
         <!-- Answers List -->
         <div class="space-y-3 flex-grow">
-          @for (answer of currentQuestion().answers; track $index) {
+          @for (answer of currentQuestion().answers; track currentIndex() + '-' + $index) {
               <button
                 (click)="selectAnswer(answer, $event)"
                 [disabled]="isAnswered()"
@@ -431,7 +431,8 @@ export class SimulationComponent implements OnInit, OnDestroy {
   private timerSubscription?: Subscription;
 
   progress = computed(() => {
-    return Math.round(((this.currentIndex()) / this.totalQuestions) * 100);
+    const answeredOffset = this.isAnswered() ? 1 : 0;
+    return Math.round(((this.currentIndex() + answeredOffset) / this.totalQuestions) * 100);
   });
 
   currentQuestion = computed(() => {
@@ -548,6 +549,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
     if (this.currentIndex() < this.totalQuestions - 1) {
       this.currentIndex.update(i => i + 1);
       this.isAnswered.set(false);
+      this.isCorrect.set(false);
       this.selectedAnswer.set(null);
     } else {
       this.finishSimulation();
