@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "dev": "ng serve",
+    "dev": "nvm use 22.12 && npx ng serve --port 4256 --open",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

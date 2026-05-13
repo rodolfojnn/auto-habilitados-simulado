@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, computed, ViewChild, ElementRef } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { DecimalPipe } from '@angular/common';
 import { LeadCaptureComponent } from '../../components/lead-capture/lead-capture';
@@ -26,12 +26,12 @@ interface DuelAnswer {
   isSelected?: boolean;
 }
 
-interface FloatingPoint {
+interface GameFloatingPoint {
   id: number;
   value: string;
   type: 'positive' | 'negative';
-  x: number;
-  y: number;
+  startX: number;
+  startY: number;
 }
 
 @Component({
@@ -113,7 +113,7 @@ interface FloatingPoint {
               <div class="w-3 h-3 rounded-full bg-indigo-500 animate-bounce [animation-delay:200ms]"></div>
               <div class="w-3 h-3 rounded-full bg-indigo-500 animate-bounce [animation-delay:400ms]"></div>
             </div>
-            
+
             <button (click)="cancelSearch()" class="text-slate-500 font-bold hover:text-slate-900 dark:hover:text-white transition-colors">Cancelar Busca</button>
           } @else {
             <div class="w-24 h-24 rounded-full bg-emerald-500/10 flex items-center justify-center mb-6 relative">
@@ -121,7 +121,7 @@ interface FloatingPoint {
               <mat-icon class="material-icons text-emerald-500" style="font-size: 48px; width: 48px; height: 48px;">person_add</mat-icon>
             </div>
             <h2 class="text-3xl font-black text-emerald-500 mb-4 tracking-tight animate-fade-in-up">Oponente Encontrado!</h2>
-            
+
             <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 shadow-lg shadow-emerald-500/5 border border-slate-100 dark:border-slate-700/50 mb-8 w-full max-w-xs animate-fade-in-up [animation-delay:200ms]">
                <div class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">Seu Adversário</div>
                <div class="flex items-center justify-center gap-4">
@@ -175,7 +175,7 @@ interface FloatingPoint {
                    <div class="absolute inset-0 bg-yellow-400 blur-[50px] opacity-60 rounded-full animate-pulse"></div>
                    <mat-icon class="text-yellow-400 !w-40 !h-40 !text-[160px] drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">emoji_events</mat-icon>
                  </div>
-                 <h1 class="text-6xl font-black text-white uppercase tracking-tighter mt-8 drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]" style="-webkit-text-stroke: 2px #10b981;">VITÓRIA!</h1>
+                 <h1 class="text-6xl font-black text-white uppercase tracking-tighter mt-8 drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]" style="text-shadow: -2px -2px 0 #10b981, 2px -2px 0 #10b981, -2px 2px 0 #10b981, 2px 2px 0 #10b981, 0px -2px 0 #10b981, 0px 2px 0 #10b981, -2px 0px 0 #10b981, 2px 0px 0 #10b981;">VITÓRIA!</h1>
                  <div class="mt-4 px-6 py-2 bg-emerald-500/20 border-2 border-emerald-500 rounded-full backdrop-blur-md">
                    <p class="text-emerald-300 font-black text-xl tracking-widest">+ {{ myPoints() }} PONTOS</p>
                  </div>
@@ -201,18 +201,33 @@ interface FloatingPoint {
             </div>
           }
 
-          <!-- Game Point Anim Overlay -->
-          @for (fp of floatingPoints(); track fp.id) {
-            <div 
-              class="absolute pointer-events-none z-50 font-black text-2xl animate-float-up"
+          <!-- Game Point Anim Overlay Fixed -->
+          @for (fp of myFloatingPoints(); track fp.id) {
+            <div
+              class="fixed pointer-events-none z-[5000] font-black text-4xl animate-float-up-game drop-shadow-md"
               [class.text-emerald-500]="fp.type === 'positive'"
               [class.text-rose-500]="fp.type === 'negative'"
-              [style.left.px]="fp.x"
-              [style.top.px]="fp.y"
+              style="-webkit-text-stroke: 1px white;"
+              [style.left.px]="fp.startX"
+              [style.top.px]="fp.startY"
             >
               {{ fp.value }}
             </div>
           }
+          @for (fp of rivalFloatingPoints(); track fp.id) {
+            <div
+              class="fixed pointer-events-none z-[5000] font-black text-4xl animate-float-up-game drop-shadow-md"
+              [class.text-emerald-500]="fp.type === 'positive'"
+              [class.text-rose-500]="fp.type === 'negative'"
+              style="-webkit-text-stroke: 1px white;"
+              [style.left.px]="fp.startX"
+              [style.top.px]="fp.startY"
+            >
+              {{ fp.value }}
+            </div>
+          }
+
+          <!-- Removed old Game Point Anim Overlay -->
 
           <!-- Header (Compact with Timer) -->
           <header class="flex items-center justify-between px-6 py-2.5 shrink-0 border-b border-slate-200 dark:border-white/5 bg-white dark:bg-[#020617]">
@@ -220,9 +235,9 @@ interface FloatingPoint {
               <mat-icon class="text-slate-600 dark:text-white !text-lg">chevron_left</mat-icon>
             </button>
             <div class="flex flex-col items-center">
-              <div class="flex items-center gap-1.5 mb-0.5" [class.text-rose-500]="timeLeft() < 30">
-                <mat-icon class="text-indigo-600 dark:text-indigo-400 !text-sm !w-4 !h-4" [class.!text-rose-500]="timeLeft() < 30">schedule</mat-icon>
-                <span class="text-base font-black tabular-nums tracking-tight text-slate-900 dark:text-white" [class.!text-rose-500]="timeLeft() < 30">{{ formattedTime() }}</span>
+              <div class="flex items-center gap-1.5 mb-0.5">
+                <mat-icon class="text-indigo-600 dark:text-indigo-400 !text-sm !w-4 !h-4">schedule</mat-icon>
+                <span class="text-base font-black tabular-nums tracking-tight text-slate-900 dark:text-white">{{ formattedTime() }}</span>
               </div>
               <div class="flex items-center gap-1">
                 <span class="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -280,16 +295,16 @@ interface FloatingPoint {
             </div>
 
             <!-- Interactive Summary Trigger -->
-            <div 
+            <div
               (click)="toggleStats()"
               (keydown.enter)="toggleStats()"
               tabindex="0"
-              class="w-full mt-auto mb-2 p-4 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:border-indigo-300 dark:hover:border-indigo-500/50 active:scale-[0.98] transition-all cursor-pointer select-none group"
+              class="relative z-40 w-full mt-auto mb-2 p-4 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:border-indigo-300 dark:hover:border-indigo-500/50 active:scale-[0.98] transition-all cursor-pointer select-none group"
             >
               <div class="flex items-center justify-between">
                 <!-- Player You -->
                 <div class="flex items-center gap-3">
-                  <div class="w-12 h-12 rounded-full border-2 border-blue-500/30 dark:border-blue-500/50 bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center relative">
+                  <div #myAvatar class="w-12 h-12 rounded-full border-2 border-blue-500/30 dark:border-blue-500/50 bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center relative">
                     <span class="text-sm font-black text-blue-600 dark:text-blue-400">VU</span>
                   </div>
                   <div class="flex flex-col">
@@ -309,7 +324,7 @@ interface FloatingPoint {
                     <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1"><span class="font-bold opacity-60 text-[8px] mt-0.5"></span> {{ rivalName() }}</span>
                     <span class="text-sm font-black text-slate-900 dark:text-white">{{ rivalPointsFormatted() }} pts</span>
                   </div>
-                  <div class="w-12 h-12 rounded-full border-2 border-purple-500/30 dark:border-purple-500/50 bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center relative">
+                  <div #rivalAvatar class="w-12 h-12 rounded-full border-2 border-purple-500/30 dark:border-purple-500/50 bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center relative">
                     <span class="text-sm font-black text-purple-600 dark:text-purple-400">{{ rivalInitials() }}</span>
                   </div>
                 </div>
@@ -324,14 +339,14 @@ interface FloatingPoint {
         </div>
 
         <!-- Action Sheet Drawer (Stats) -->
-        <div 
-          class="fixed inset-0 z-50 transition-all duration-300 ease-out flex flex-col justify-end"
+        <div
+          class="fixed inset-0 z-[60] transition-all duration-300 ease-out flex flex-col justify-end"
           [class.pointer-events-none]="!showStats()"
           [class.bg-slate-950/60]="showStats()"
         >
           <div (click)="!isFinished() && toggleStats()" (keydown.enter)="!isFinished() && toggleStats()" tabindex="0" class="absolute inset-0"></div>
-          
-          <div 
+
+          <div
             class="w-full max-w-lg mx-auto bg-slate-900 border-t-2 border-slate-800 rounded-t-[2.5rem] p-6 pb-8 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] relative transition-transform duration-300 ease-out"
             [class.translate-y-full]="!showStats()"
             [class.translate-y-0]="showStats()"
@@ -348,15 +363,15 @@ interface FloatingPoint {
             </div>
 
             <!-- Stats Container -->
-            <div class="bg-slate-800/50 rounded-3xl border border-slate-700/50 mb-6 overflow-hidden shadow-inner">
-              
+            <div class="bg-slate-800/50 rounded-3xl border border-slate-700/50 mb-6 shadow-inner">
+
               <!-- Main Score (Points) -->
-              <div class="flex justify-between items-center p-5 border-b border-slate-700/50 relative bg-slate-800/30">
+              <div class="flex justify-between items-center p-5 border-b border-slate-700/50 relative bg-slate-800/30 rounded-t-[1.5rem]">
                 <div class="absolute top-0 bottom-0 left-1/2 w-px bg-slate-700/50 -translate-x-1/2"></div>
-                
+
                 <!-- You -->
                 <div class="flex-1 text-center">
-                   <div class="w-12 h-12 mx-auto rounded-full border-2 flex items-center justify-center mb-2 shadow-[0_0_15px_rgba(59,130,246,0.2)]"
+                   <div class="w-12 h-12 mx-auto rounded-full border-2 flex items-center justify-center mb-2 relative shadow-[0_0_15px_rgba(59,130,246,0.2)]"
                         [class]="myPoints() >= rivalPoints() ? 'border-emerald-500/50 bg-emerald-500/20' : 'border-blue-500/50 bg-blue-500/20'">
                      <span class="text-sm font-black" [class]="myPoints() >= rivalPoints() ? 'text-emerald-400' : 'text-blue-400'">VU</span>
                    </div>
@@ -374,7 +389,7 @@ interface FloatingPoint {
 
                 <!-- Rival -->
                 <div class="flex-1 text-center">
-                   <div class="w-12 h-12 mx-auto rounded-full border-2 flex items-center justify-center mb-2 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
+                   <div class="w-12 h-12 mx-auto rounded-full border-2 flex items-center justify-center mb-2 relative shadow-[0_0_15px_rgba(168,85,247,0.2)]"
                         [class]="rivalPoints() > myPoints() ? 'border-emerald-500/50 bg-emerald-500/20' : 'border-purple-500/50 bg-purple-500/20'">
                      <span class="text-sm font-black" [class]="rivalPoints() > myPoints() ? 'text-emerald-400' : 'text-purple-400'">{{ rivalInitials() }}</span>
                    </div>
@@ -396,7 +411,7 @@ interface FloatingPoint {
                   </div>
                   <div class="text-xl font-black text-purple-400 tabular-nums text-center w-1/3">{{ rivalCorrect() + rivalErrors() }}<span class="text-xs text-purple-400/50">/{{ totalQuestions }}</span></div>
                 </div>
-                
+
                 <!-- Acertos -->
                 <div class="flex items-center justify-between py-2 relative group hover:bg-slate-800/40 transition-colors">
                   <div class="text-xl font-black text-emerald-400 tabular-nums text-center w-1/3">{{ myCorrect() | number:'2.0' }}</div>
@@ -417,7 +432,7 @@ interface FloatingPoint {
               </div>
             </div>
 
-            <button 
+            <button
               (click)="isFinished() ? cancelSearch() : toggleStats()"
               class="w-full py-4 bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm uppercase tracking-widest rounded-xl transition-all active:scale-[0.98] border-b-4 border-indigo-700 active:border-b-0 active:translate-y-1 block"
             >
@@ -430,27 +445,27 @@ interface FloatingPoint {
   `,
   styles: [`
     :host { display: block; }
-    
+
     @keyframes radar-ping {
       0% { transform: scale(0.8); opacity: 0.8; }
       100% { transform: scale(2.5); opacity: 0; }
     }
-    
+
     @keyframes radar-ping-slow {
       0% { transform: scale(1); opacity: 0.5; }
       100% { transform: scale(2); opacity: 0; }
     }
-    
+
     @keyframes bounce-short {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-3px); }
     }
-    
+
     .animate-radar-ping { animation: radar-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite; }
     .animate-radar-ping-slow { animation: radar-ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite; }
     .animate-bounce-short { animation: bounce-short 0.5s ease-in-out infinite; }
 
-    .animate-float-up { animation: floatUp 1s ease-out forwards; }
+    .animate-float-up-game { animation: floatUpGame 1.5s ease-out forwards; }
     .animate-shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
     .animate-pulse-success { animation: pulseSuccess 0.5s ease-out; }
     .animate-flash-error { animation: flashError 0.5s ease-out; }
@@ -459,10 +474,12 @@ interface FloatingPoint {
     .animate-success-pop { animation: successPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     .animate-fade-in-up { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; transform: translateY(10px); }
 
-    @keyframes floatUp {
-      0% { opacity: 0; transform: translateY(0); }
-      20% { opacity: 1; transform: translateY(-10px); }
-      100% { opacity: 0; transform: translateY(-300px); }
+    @keyframes floatUpGame {
+      0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); }
+      15% { opacity: 1; transform: translate(-50%, -40px) scale(1.4); }
+      30% { opacity: 1; transform: translate(-50%, -35px) scale(1); }
+      80% { opacity: 1; transform: translate(-50%, -80px) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -120px) scale(0.9); }
     }
     @keyframes shake {
       10%, 90% { transform: translate3d(-4px, 0, 0); }
@@ -508,12 +525,12 @@ interface FloatingPoint {
       100% { transform: scale(0.8); opacity: 0; }
     }
     .animate-countdown-pop { animation: countdownPop 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-    
+
     @keyframes spin-slow {
       to { transform: rotate(360deg); }
     }
     .animate-spin-slow { animation: spin-slow 20s linear infinite; }
-    
+
     @keyframes winPop {
       0% { transform: scale(0.5); opacity: 0; }
       40% { transform: scale(1.1); opacity: 1; }
@@ -521,14 +538,14 @@ interface FloatingPoint {
       100% { transform: scale(1); opacity: 1; }
     }
     .animate-win-pop { animation: winPop 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-    
+
     @keyframes floatUpWin {
       0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; }
       10% { opacity: 1; transform: translateY(80vh) rotate(45deg) scale(1); }
       90% { opacity: 1; transform: translateY(-80vh) rotate(315deg) scale(1); }
       100% { transform: translateY(-100vh) rotate(360deg) scale(0.5); opacity: 0; }
     }
-    
+
     @keyframes fadeIn {
       to { opacity: 1; }
     }
@@ -536,6 +553,9 @@ interface FloatingPoint {
   `]
 })
 export class DuelComponent implements OnInit, OnDestroy {
+  @ViewChild('myAvatar') myAvatarRef?: ElementRef<HTMLElement>;
+  @ViewChild('rivalAvatar') rivalAvatarRef?: ElementRef<HTMLElement>;
+
   isStarted = signal<boolean>(false);
   isSearching = signal<boolean>(false);
   isFound = signal<boolean>(false);
@@ -548,7 +568,8 @@ export class DuelComponent implements OnInit, OnDestroy {
 
   isCorrectAnim = signal<boolean>(false);
   isWrongAnim = signal<boolean>(false);
-  floatingPoints = signal<FloatingPoint[]>([]);
+  myFloatingPoints = signal<GameFloatingPoint[]>([]);
+  rivalFloatingPoints = signal<GameFloatingPoint[]>([]);
   private nextFpId = 0;
 
   winParticles = Array.from({ length: 40 }).map((_, i) => ({
@@ -575,7 +596,7 @@ export class DuelComponent implements OnInit, OnDestroy {
   rivalCityUf = signal<string>('São Paulo - SP');
   myCityUf = signal<string>('São Paulo - SP');
 
-  timeLeft = signal<number>(180); // 3 minutes
+  timeElapsed = signal<number>(0);
   private timerSubscription?: Subscription;
   private rivalSubscription?: Subscription;
   private findTimeoutRef?: any;
@@ -591,8 +612,8 @@ export class DuelComponent implements OnInit, OnDestroy {
   ];
 
   formattedTime = computed(() => {
-    const mins = Math.floor(this.timeLeft() / 60);
-    const secs = this.timeLeft() % 60;
+    const mins = Math.floor(this.timeElapsed() / 60);
+    const secs = this.timeElapsed() % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   });
 
@@ -633,15 +654,15 @@ export class DuelComponent implements OnInit, OnDestroy {
     if (!this.hasAnswered()) {
       return 'border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 hover:border-indigo-400 hover:bg-indigo-50/30 dark:hover:bg-indigo-500/10 text-slate-700 dark:text-slate-300';
     }
-    
+
     if (answer.isCorrect) {
       return 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400';
     }
-    
+
     if (answer.isSelected && !answer.isCorrect) {
       return 'border-rose-500 bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400';
     }
-    
+
     return 'border-slate-100 dark:border-white/5 opacity-50 bg-white dark:bg-slate-800 text-slate-400';
   }
 
@@ -649,15 +670,15 @@ export class DuelComponent implements OnInit, OnDestroy {
     if (!this.hasAnswered()) {
       return 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 group-hover:bg-indigo-500 group-hover:text-white';
     }
-    
+
     if (answer.isCorrect) {
       return 'bg-emerald-500 text-white';
     }
-    
+
     if (answer.isSelected && !answer.isCorrect) {
       return 'bg-rose-500 text-white';
     }
-    
+
     return 'bg-slate-50 dark:bg-slate-800 text-slate-300 dark:text-slate-600';
   }
 
@@ -668,15 +689,32 @@ export class DuelComponent implements OnInit, OnDestroy {
     return 'text-slate-400 dark:text-slate-600';
   }
 
-  private showPointsAnim(value: string, type: 'positive' | 'negative', x: number, y: number) {
+  private showPointsAnim(target: 'me' | 'rival', value: string, type: 'positive' | 'negative') {
     const id = this.nextFpId++;
-    const newFp: FloatingPoint = { id, value, type, x, y };
-    
-    this.floatingPoints.update(list => [...list, newFp]);
-    
-    setTimeout(() => {
-      this.floatingPoints.update(list => list.filter(f => f.id !== id));
-    }, 1000);
+
+    let startX = window.innerWidth / 2;
+    let startY = window.innerHeight / 2;
+
+    const el = target === 'me' ? this.myAvatarRef?.nativeElement : this.rivalAvatarRef?.nativeElement;
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      startX = rect.left + rect.width / 2;
+      startY = rect.top + rect.height / 2;
+    }
+
+    const newFp: GameFloatingPoint = { id, value, type, startX, startY };
+
+    if (target === 'me') {
+      this.myFloatingPoints.update(list => [...list, newFp]);
+      setTimeout(() => {
+        this.myFloatingPoints.update(list => list.filter(f => f.id !== id));
+      }, 1500);
+    } else {
+      this.rivalFloatingPoints.update(list => [...list, newFp]);
+      setTimeout(() => {
+        this.rivalFloatingPoints.update(list => list.filter(f => f.id !== id));
+      }, 1500);
+    }
   }
 
   private triggerVibration() {
@@ -687,7 +725,7 @@ export class DuelComponent implements OnInit, OnDestroy {
 
   selectAnswer(answer: DuelAnswer, event: MouseEvent) {
     if (this.hasAnswered() || this.isFinished()) return;
-    
+
     const mapped = this.answers().map(a => {
       if (a.label === answer.label) {
         return { ...a, isSelected: true };
@@ -695,22 +733,22 @@ export class DuelComponent implements OnInit, OnDestroy {
       return a;
     });
     this.answers.set(mapped);
-    
+
     if (answer.isCorrect) {
        this.isCorrectAnim.set(true);
        setTimeout(() => this.isCorrectAnim.set(false), 800);
-       this.showPointsAnim('+1', 'positive', event.clientX, event.clientY);
+       this.showPointsAnim('me', '+1', 'positive');
        this.myPoints.update(p => p + 1);
        this.myCorrect.update(c => c + 1);
     } else {
        this.isWrongAnim.set(true);
        setTimeout(() => this.isWrongAnim.set(false), 800);
-       this.showPointsAnim('-3', 'negative', event.clientX, event.clientY);
+       this.showPointsAnim('me', '-3', 'negative');
        this.triggerVibration();
        this.myPoints.update(p => p - 3);
        this.myErrors.update(e => e + 1);
     }
-    
+
     setTimeout(() => {
        if (this.currentIndex() < this.totalQuestions - 1) {
            this.currentIndex.update(i => i + 1);
@@ -736,14 +774,14 @@ export class DuelComponent implements OnInit, OnDestroy {
         if (answers && answers['lead_captured'] === true) {
           this.leadCaptured.set(true);
         }
-        
+
         // Mock a city for the user based on CEP if we had an API, or just default it
         // For now, let's just pick one randomly for the user too or default
       } catch {
         // ignore parse error
       }
     }
-    
+
     // Set a random user city if none isn't needed here anymore since we do it in startDuel,
     // but we can initialize it if it's default
   }
@@ -754,7 +792,7 @@ export class DuelComponent implements OnInit, OnDestroy {
     this.isFound.set(false);
     this.searchCountdown.set(5);
     this.prepareQuestions();
-    
+
     // Set a random user city if none
     const cities = [
       'São Paulo - SP', 'Rio de Janeiro - RJ', 'Belo Horizonte - MG', 'Salvador - BA', 'Fortaleza - CE',
@@ -765,7 +803,12 @@ export class DuelComponent implements OnInit, OnDestroy {
       'Contagem - MG', 'Aracaju - SE', 'Feira de Santana - BA', 'Cuiabá - MT', 'Joinville - SC',
       'Juiz de Fora - MG', 'Londrina - PR', 'Ananindeua - PA', 'Niterói - RJ', 'Porto Velho - RO',
       'Belford Roxo - RJ', 'Serra - ES', 'Caxias do Sul - RS', 'Vila Velha - ES', 'Florianópolis - SC',
-      'Macapá - AP', 'Mauá - SP', 'São João de Meriti - RJ', 'Santos - SP'
+      'Macapá - AP', 'Mauá - SP', 'São João de Meriti - RJ', 'Santos - SP', 'Guarulhos - SP', 'Betim - MG',
+      'Caruaru - PE', 'Pelotas - RS', 'Blumenau - SC', 'Piracicaba - SP', 'Bauru - SP', 'Franca - SP',
+      'Maringá - PR', 'Foz do Iguaçu - PR', 'Cascavel - PR', 'Chapecó - SC', 'Vitória - ES', 'Linhares - ES',
+      'Petrolina - PE', 'Juazeiro do Norte - CE', 'Parnamirim - RN', 'Palmas - TO', 'Imperatriz - MA', 'Marabá - PA',
+      'Santarém - PA', 'Rio Branco - AC', 'Boa Vista - RR', 'Aparecida de Goiânia - GO', 'Dourados - MS',
+      'Uberaba - MG', 'Governador Valadares - MG', 'Itabuna - BA', 'Ilhéus - BA', 'Barueri - SP'
     ];
     this.myCityUf.set(cities[Math.floor(Math.random() * cities.length)]);
 
@@ -780,7 +823,12 @@ export class DuelComponent implements OnInit, OnDestroy {
       'Felipe', 'Fernando', 'Francisco', 'Gabriel', 'Gael', 'Guilherme', 'Gustavo', 'Heitor', 'Henrique', 'Igor',
       'Isaac', 'Joaquim', 'João', 'Leonardo', 'Levi', 'Lucas', 'Lucca', 'Marcelo', 'Marcos', 'Matheus',
       'Miguel', 'Murilo', 'Nicolas', 'Noah', 'Otávio', 'Pedro', 'Rafael', 'Renato', 'Rodrigo', 'Samuel',
-      'Thiago', 'Tomás', 'Victor', 'Vinícius', 'Vitor', 'Yuri'
+      'Thiago', 'Tomás', 'Victor', 'Vinícius', 'Vitor', 'Yuri', 'Aline', 'Amanda', 'Bárbara', 'Bianca', 'Débora',
+      'Flávia', 'Geovana', 'Ingrid', 'Jaqueline', 'Karen',
+      'Maitê', 'Patrícia', 'Priscila', 'Raissa', 'Tatiane',
+      'Adriano', 'Alan', 'Álvaro', 'César', 'Cristiano',
+      'Douglas', 'Fábio', 'Jonathan', 'Kelvin', 'Márcio',
+      'Paulo', 'Ricardo', 'Sandro', 'Wesley', 'William'
     ];
 
     const randomName = fakeNames[Math.floor(Math.random() * fakeNames.length)];
@@ -789,14 +837,14 @@ export class DuelComponent implements OnInit, OnDestroy {
     this.rivalInitials.set(initials);
     this.rivalCityUf.set(cities[Math.floor(Math.random() * cities.length)]);
 
-    const searchDelay = Math.floor(Math.random() * 2000) + 2000; // 2 to 4 seconds
+    const searchDelay = Math.floor(Math.random() * 11000) + 5000; // 5 to 15 seconds
 
     clearTimeout(this.findTimeoutRef);
     clearInterval(this.countdownIntervalRef);
 
     this.findTimeoutRef = setTimeout(() => {
       this.isFound.set(true);
-      
+
       this.countdownIntervalRef = setInterval(() => {
         if (this.searchCountdown() > 1) {
           this.searchCountdown.update(c => c - 1);
@@ -813,7 +861,7 @@ export class DuelComponent implements OnInit, OnDestroy {
   prepareQuestions() {
     const allQuestions: Question[] = [];
     const data = questionsData as { modules: Record<string, { questions: Question[] }> };
-    
+
     if (data && data.modules) {
       Object.values(data.modules).forEach(module => {
         if (module && module.questions) {
@@ -831,7 +879,7 @@ export class DuelComponent implements OnInit, OnDestroy {
   loadQuestionAnswers() {
     const q = this.currentQuestion();
     if (!q) return;
-    
+
     // Shuffle answers and pick first 4
     const qAnswers = [...q.answers].sort(() => 0.5 - Math.random());
     const mapped: DuelAnswer[] = qAnswers.map((a, i) => ({
@@ -846,11 +894,7 @@ export class DuelComponent implements OnInit, OnDestroy {
   startTimer() {
     this.timerSubscription?.unsubscribe();
     this.timerSubscription = interval(1000).subscribe(() => {
-      if (this.timeLeft() > 0) {
-        this.timeLeft.update(t => t - 1);
-      } else {
-        this.finishDuel();
-      }
+      this.timeElapsed.update(t => t + 1);
     });
   }
 
@@ -867,16 +911,18 @@ export class DuelComponent implements OnInit, OnDestroy {
        const sub = interval(delay).subscribe(() => {
            sub.unsubscribe();
            if (this.isFinished()) return;
-           
-           const isRivalCorrect = Math.random() > 0.3; // 70% accuracy
+
+           const isRivalCorrect = Math.random() > 0.15; // 85% accuracy
            if (isRivalCorrect) {
+               this.showPointsAnim('rival', '+1', 'positive');
                this.rivalPoints.update(p => p + 1);
                this.rivalCorrect.update(c => c + 1);
            } else {
+               this.showPointsAnim('rival', '-3', 'negative');
                this.rivalPoints.update(p => p - 3);
                this.rivalErrors.update(e => e + 1);
            }
-           
+
            if (this.rivalCorrect() + this.rivalErrors() >= this.totalQuestions) {
                this.finishDuel();
            } else {
@@ -894,7 +940,7 @@ export class DuelComponent implements OnInit, OnDestroy {
       this.isFinished.set(true);
       this.timerSubscription?.unsubscribe();
       this.rivalSubscription?.unsubscribe();
-      
+
       if (this.myPoints() > this.rivalPoints()) {
          this.showWinCelebration.set(true);
          setTimeout(() => {
@@ -903,7 +949,7 @@ export class DuelComponent implements OnInit, OnDestroy {
          }, 5000);
 
          const currentPoints = parseInt(localStorage.getItem('user_points') || '0', 10);
-         const newPoints = Math.max(0, currentPoints + this.myPoints()); 
+         const newPoints = Math.max(0, currentPoints + this.myPoints());
          localStorage.setItem('user_points', newPoints.toString());
          window.dispatchEvent(new CustomEvent('pointsUpdated', { detail: newPoints }));
       } else {
@@ -934,6 +980,6 @@ export class DuelComponent implements OnInit, OnDestroy {
     this.rivalCorrect.set(0);
     this.rivalErrors.set(0);
     this.currentIndex.set(0);
-    this.timeLeft.set(180);
+    this.timeElapsed.set(0);
   }
 }
