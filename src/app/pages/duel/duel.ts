@@ -44,11 +44,50 @@ interface GameFloatingPoint {
       @if (!leadCaptured()) {
         <app-lead-capture
           title="Duelo Multiplayer"
-          description="Para entrar na arena de duelos e competir contra outros alunos na sua região, precisamos de algumas informações rápidas."
+          description="Os melhores podem ganhar prêmios! Para entrar na arena de duelos e competir contra outros alunos na sua região, precisamos de algumas informações rápidas para entrar em contato com os vencedores e montar a classificação de acordo com a sua região."
           icon="sports_esports"
           iconBgClass="bg-indigo-50 dark:bg-indigo-500/20"
           iconTextClass="text-indigo-600 dark:text-indigo-400"
           (captured)="onLeadCaptured()">
+          <div class="flex flex-col gap-3 mt-2 mb-4 w-full">
+            <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest text-center mb-1">Prêmios Nacionais</h3>
+            
+            <!-- 1st Place -->
+            <div class="flex items-center gap-4 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 p-4 rounded-2xl relative overflow-hidden">
+              <div class="absolute -right-2 -bottom-2 text-amber-200 dark:text-amber-500/10">
+                <mat-icon class="!text-6xl !w-16 !h-16">emoji_events</mat-icon>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-amber-400 text-amber-950 flex flex-col items-center justify-center shrink-0 shadow-lg shadow-amber-400/40 relative z-10">
+                <span class="text-base font-black leading-none">1º</span>
+              </div>
+              <div class="flex flex-col relative z-10">
+                <span class="text-amber-700 dark:text-amber-400 font-bold text-sm">Aulas Práticas Grátis</span>
+                <span class="text-xs text-amber-600/80 dark:text-amber-400/70 font-medium">Pacote extra com instrutor</span>
+              </div>
+            </div>
+
+            <!-- 2nd Place -->
+            <div class="flex items-center gap-4 bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl relative overflow-hidden">
+              <div class="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-600 text-slate-700 dark:text-white flex flex-col items-center justify-center shrink-0 shadow-lg shadow-slate-400/20 relative z-10">
+                <span class="text-base font-black leading-none">2º</span>
+              </div>
+              <div class="flex flex-col relative z-10">
+                <span class="text-slate-700 dark:text-slate-300 font-bold text-sm">Curso Ao Vivo</span>
+                <span class="text-xs text-slate-500 font-medium">Revisão com instrutor expert</span>
+              </div>
+            </div>
+
+            <!-- 3rd Place -->
+            <div class="flex items-center gap-4 bg-orange-50 dark:bg-orange-900/10 border border-orange-200 dark:border-orange-500/20 p-4 rounded-2xl relative overflow-hidden">
+              <div class="w-10 h-10 rounded-full bg-orange-400 text-orange-950 flex flex-col items-center justify-center shrink-0 shadow-lg shadow-orange-400/20 relative z-10">
+                <span class="text-base font-black leading-none">3º</span>
+              </div>
+              <div class="flex flex-col relative z-10">
+                <span class="text-orange-700 dark:text-orange-400 font-bold text-sm">Acesso VIP</span>
+                <span class="text-xs text-orange-600/80 dark:text-orange-400/70 font-medium">Material de estudo exclusivo</span>
+              </div>
+            </div>
+          </div>
         </app-lead-capture>
       } @else if (!isStarted()) {
         <!-- Home State within Duel -->

@@ -11,14 +11,18 @@ import { NgxMaskDirective } from 'ngx-mask';
   template: `
     <div class="px-6 py-6 max-w-lg mx-auto w-full flex flex-col font-sans">
       @if (step() === 0) {
-        <div class="animate-fade-in-up flex flex-col items-center justify-center text-center py-8">
+        <div class="animate-fade-in-up flex flex-col items-center justify-center text-center pb-8">
           <div [class]="'w-20 h-20 rounded-full flex items-center justify-center mb-6 ' + iconBgClass + ' ' + iconTextClass">
             <mat-icon class="material-icons !text-4xl !w-10 !h-10 !leading-none">{{ icon }}</mat-icon>
           </div>
           <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">{{ title }}</h1>
-          <p class="text-gray-600 dark:text-slate-400 text-sm leading-relaxed mb-8">
+          <p class="text-gray-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
             {{ description }}
           </p>
+          
+          <div class="mb-8 w-full text-left">
+             <ng-content></ng-content>
+          </div>
           
           <button (click)="nextStep()" class="w-full bg-brand-500 hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider">
             Quero participar
