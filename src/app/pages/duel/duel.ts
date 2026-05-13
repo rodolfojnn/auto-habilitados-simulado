@@ -273,16 +273,16 @@ interface GameFloatingPoint {
               (click)="toggleStats()"
               (keydown.enter)="toggleStats()"
               tabindex="0"
-              class="relative z-40 w-full mt-auto mb-2 p-4 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:border-indigo-300 dark:hover:border-indigo-500/50 active:scale-[0.98] transition-all cursor-pointer select-none group"
+              class="relative z-30 w-full mt-auto mb-2 p-4 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:border-indigo-300 dark:hover:border-indigo-500/50 active:scale-[0.98] transition-all cursor-pointer select-none group"
             >
               <div class="flex items-center justify-between">
                 <!-- Player You -->
                 <div class="flex items-center gap-3">
                   <div #myAvatar class="w-12 h-12 rounded-full border-2 border-blue-500/30 dark:border-blue-500/50 bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center relative">
-                    <span class="text-sm font-black text-blue-600 dark:text-blue-400">VU</span>
+                    <span class="text-sm font-black text-blue-600 dark:text-blue-400">{{ myInitials() }}</span>
                   </div>
                   <div class="flex flex-col">
-                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">Você <span class="font-bold opacity-60 text-[8px] mt-0.5"></span></span>
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">{{ myName() }} <span class="font-bold opacity-60 text-[8px] mt-0.5"></span></span>
                     <span class="text-sm font-black text-slate-900 dark:text-white">{{ myPointsFormatted() }} pts</span>
                   </div>
                 </div>
@@ -347,11 +347,11 @@ interface GameFloatingPoint {
                 <div class="flex-1 text-center">
                    <div #myAvatarModal class="w-12 h-12 mx-auto rounded-full border-2 flex items-center justify-center mb-2 relative shadow-[0_0_15px_rgba(59,130,246,0.2)]"
                         [class]="myPoints() >= rivalPoints() ? 'border-emerald-500/50 bg-emerald-500/20' : 'border-blue-500/50 bg-blue-500/20'">
-                     <span class="text-sm font-black" [class]="myPoints() >= rivalPoints() ? 'text-emerald-400' : 'text-blue-400'">VU</span>
+                     <span class="text-sm font-black" [class]="myPoints() >= rivalPoints() ? 'text-emerald-400' : 'text-blue-400'">{{ myInitials() }}</span>
                    </div>
                    <div class="text-3xl font-black text-white tabular-nums" [class.text-emerald-400]="isFinished() && myPoints() >= rivalPoints()">{{ myPointsFormatted() }}</div>
                    <div class="flex flex-col mt-1">
-                     <span class="text-[10px] font-black uppercase tracking-widest leading-none" [class]="myPoints() >= rivalPoints() ? 'text-emerald-400' : 'text-blue-400'">Você</span>
+                     <span class="text-[10px] font-black uppercase tracking-widest leading-none" [class]="myPoints() >= rivalPoints() ? 'text-emerald-400' : 'text-blue-400'">{{ myName() }}</span>
                      <span class="text-[8px] font-black opacity-50 uppercase tracking-widest text-slate-400 mt-0.5">{{ myCityUf() }}</span>
                    </div>
                 </div>
@@ -415,7 +415,7 @@ interface GameFloatingPoint {
           </div>
         </div>
       }
-
+      
       <!-- Top Level Game Point Anim Overlay Fixed -->
       @for (fp of myFloatingPoints(); track fp.id) {
         <div
@@ -573,6 +573,9 @@ export class DuelComponent implements OnInit, OnDestroy {
   myFloatingPoints = signal<GameFloatingPoint[]>([]);
   rivalFloatingPoints = signal<GameFloatingPoint[]>([]);
   private nextFpId = 0;
+  
+  myName = signal<string>('Você');
+  myInitials = signal<string>('VU');
 
   winParticles = Array.from({ length: 40 }).map((_, i) => ({
     id: i,
@@ -699,11 +702,11 @@ export class DuelComponent implements OnInit, OnDestroy {
 
     const useModal = this.showStats();
     let el: HTMLElement | undefined;
-
+    
     if (useModal) {
       el = target === 'me' ? this.myAvatarModalRef?.nativeElement : this.rivalAvatarModalRef?.nativeElement;
     }
-
+    
     if (!el) {
       el = target === 'me' ? this.myAvatarRef?.nativeElement : this.rivalAvatarRef?.nativeElement;
     }
@@ -776,6 +779,7 @@ export class DuelComponent implements OnInit, OnDestroy {
     const data = JSON.parse(localStorage.getItem('onboarding_answers') || '{}');
     data.lead_captured = true;
     localStorage.setItem('onboarding_answers', JSON.stringify(data));
+    this.updateUserDetails(data);
   }
 
   checkLeadStatus() {
@@ -786,16 +790,31 @@ export class DuelComponent implements OnInit, OnDestroy {
         if (answers && answers['lead_captured'] === true) {
           this.leadCaptured.set(true);
         }
-
-        // Mock a city for the user based on CEP if we had an API, or just default it
-        // For now, let's just pick one randomly for the user too or default
+        this.updateUserDetails(answers);
       } catch {
         // ignore parse error
       }
     }
+  }
 
-    // Set a random user city if none isn't needed here anymore since we do it in startDuel,
-    // but we can initialize it if it's default
+  updateUserDetails(answers: any) {
+    if (answers && answers['lead_data'] && answers['lead_data'].nome) {
+      const name = answers['lead_data'].nome.trim();
+      this.myName.set(name);
+      
+      const parts = name.split(' ').filter((p: string) => p.trim() !== '');
+      if (parts.length >= 2) {
+         this.myInitials.set(`${parts[0][0]}${parts[parts.length-1][0]}`.toUpperCase());
+      } else if (parts.length === 1 && parts[0].length >= 1) {
+         this.myInitials.set(parts[0].substring(0, 2).toUpperCase());
+      }
+      
+      const municipio = answers['lead_data'].municipio;
+      const uf = answers['lead_data'].uf;
+      if (municipio && uf) {
+         this.myCityUf.set(`${municipio} - ${uf}`);
+      }
+    }
   }
 
   startDuel() {
@@ -822,7 +841,6 @@ export class DuelComponent implements OnInit, OnDestroy {
       'Santarém - PA', 'Rio Branco - AC', 'Boa Vista - RR', 'Aparecida de Goiânia - GO', 'Dourados - MS',
       'Uberaba - MG', 'Governador Valadares - MG', 'Itabuna - BA', 'Ilhéus - BA', 'Barueri - SP'
     ];
-    this.myCityUf.set(cities[Math.floor(Math.random() * cities.length)]);
 
     const fakeNames = [
       'Ana', 'Beatriz', 'Bruna', 'Camila', 'Carolina', 'Catarina', 'Cecília', 'Clara', 'Danielle', 'Eduarda',
@@ -843,8 +861,16 @@ export class DuelComponent implements OnInit, OnDestroy {
       'Paulo', 'Ricardo', 'Sandro', 'Wesley', 'William'
     ];
 
+    const fakeLastNames = [
+      'Silva', 'Santos', 'Oliveira', 'Souza', 'Rodrigues', 'Ferreira', 'Alves', 'Pereira', 'Lima', 'Gomes',
+      'Costa', 'Ribeiro', 'Martins', 'Carvalho', 'Almeida', 'Lopes', 'Soares', 'Fernandes', 'Vieira', 'Barbosa',
+      'Rocha', 'Dias', 'Nunes', 'Mendes', 'Cardoso'
+    ];
+
     const randomName = fakeNames[Math.floor(Math.random() * fakeNames.length)];
-    const initials = randomName.substring(0, 1).toUpperCase();
+    const randomLastName = fakeLastNames[Math.floor(Math.random() * fakeLastNames.length)];
+    const initials = `${randomName[0]}${randomLastName[0]}`.toUpperCase();
+    
     this.rivalName.set(randomName);
     this.rivalInitials.set(initials);
     this.rivalCityUf.set(cities[Math.floor(Math.random() * cities.length)]);
@@ -919,12 +945,13 @@ export class DuelComponent implements OnInit, OnDestroy {
            return;
        }
 
-       const delay = Math.floor(Math.random() * 10000) + 10000; // 10 to 20 seconds
+       const delay = Math.floor(Math.random() * 15000) + 15000; // 15 to 30 seconds
        const sub = interval(delay).subscribe(() => {
            sub.unsubscribe();
            if (this.isFinished()) return;
 
-           const isRivalCorrect = Math.random() > 0.15; // 85% accuracy
+           const accuracy = 0.75 + (Math.random() * 0.15); // Vary between 75% and 90%
+           const isRivalCorrect = Math.random() < accuracy;
            if (isRivalCorrect) {
                this.showPointsAnim('rival', '+1', 'positive');
                this.rivalPoints.update(p => p + 1);

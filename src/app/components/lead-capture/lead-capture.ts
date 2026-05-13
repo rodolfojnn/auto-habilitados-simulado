@@ -19,7 +19,7 @@ import { NgxMaskDirective } from 'ngx-mask';
           <p class="text-gray-600 dark:text-slate-400 text-sm leading-relaxed mb-8">
             {{ description }}
           </p>
-
+          
           <button (click)="nextStep()" class="w-full bg-brand-500 hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider">
             Quero participar
           </button>
@@ -37,7 +37,7 @@ import { NgxMaskDirective } from 'ngx-mask';
           </div>
 
           <form [formGroup]="leadForm" (ngSubmit)="submitLead()" class="flex flex-col gap-6">
-
+            
             @if (step() === 1) {
               <div class="animate-fade-in-up flex flex-col gap-2">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white">Como podemos te chamar?</h2>
@@ -66,7 +66,13 @@ import { NgxMaskDirective } from 'ngx-mask';
               <div class="animate-fade-in-up flex flex-col gap-2">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white">Seu CEP</h2>
                 <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Para montarmos as ligas de ranking por região.</p>
-                <input type="text" formControlName="cep" mask="00000-000" placeholder="00000-000" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg">
+                <input type="text" formControlName="cep" (input)="cepError.set(null)" mask="00000-000" placeholder="00000-000" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg" [class.border-rose-500]="!!cepError()" [class.border-gray-200]="!cepError()" [class.dark:border-slate-700]="!cepError()">
+                @if (cepError()) {
+                  <p class="text-sm font-medium text-rose-500 mt-1 flex items-center gap-1">
+                    <mat-icon class="material-icons !text-sm !w-4 !h-4 !leading-none">error</mat-icon>
+                    {{ cepError() }}
+                  </p>
+                }
               </div>
             }
 
@@ -107,11 +113,16 @@ import { NgxMaskDirective } from 'ngx-mask';
                 Acessar
               </button>
             } @else {
-              <button type="button" (click)="nextStep()" [disabled]="!isCurrentStepValid()" class="w-full bg-brand-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider mt-2">
-                Continuar
+              <button type="button" (click)="nextStep()" [disabled]="!isCurrentStepValid() || cepLoading()" class="w-full bg-brand-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider mt-2 flex items-center justify-center gap-2">
+                @if (cepLoading()) {
+                  <mat-icon class="material-icons animate-spin !text-xl !w-5 !h-5 !leading-none">refresh</mat-icon>
+                  <span>Validando...</span>
+                } @else {
+                  <span>Continuar</span>
+                }
               </button>
             }
-
+            
           </form>
         </div>
       }
@@ -133,20 +144,59 @@ export class LeadCaptureComponent {
   @Input() icon = 'person_add';
   @Input() iconBgClass = 'bg-amber-50 dark:bg-amber-500/20';
   @Input() iconTextClass = 'text-amber-500';
-
+  
   @Output() captured = new EventEmitter<void>();
 
   step = signal<number>(0);
+  cepLoading = signal<boolean>(false);
+  cepError = signal<string | null>(null);
 
   leadForm = new FormGroup({
     nome: new FormControl('', [Validators.required, Validators.minLength(3)]),
     whatsapp: new FormControl('', [Validators.required, Validators.minLength(10)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     cep: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    municipio: new FormControl(''),
+    uf: new FormControl(''),
     categoria: new FormControl('', [Validators.required])
   });
 
-  nextStep() {
+  async nextStep() {
+    if (this.step() === 4) {
+      const cepValueRaw = this.leadForm.get('cep')?.value || '';
+      const cepValue = cepValueRaw.replace(/\D/g, '');
+      
+      if (cepValue.length === 8) {
+        this.cepLoading.set(true);
+        this.cepError.set(null);
+        try {
+          const res = await fetch(`https://viacep.com.br/ws/${cepValue}/json/`);
+          if (!res.ok) throw new Error('Erro na requisição');
+          const data = await res.json();
+          
+          if (data.erro) {
+            this.cepError.set('CEP não encontrado.');
+            this.cepLoading.set(false);
+            return;
+          }
+          
+          this.leadForm.patchValue({
+            municipio: data.localidade,
+            uf: data.uf
+          });
+        } catch (e) {
+          this.cepError.set('Erro ao buscar o CEP. Tente novamente.');
+          this.cepLoading.set(false);
+          return;
+        } finally {
+          this.cepLoading.set(false);
+        }
+      } else {
+        this.cepError.set('CEP inválido.');
+        return;
+      }
+    }
+    
     this.step.update(v => v + 1);
   }
 
@@ -176,10 +226,10 @@ export class LeadCaptureComponent {
           // ignore parse error
         }
       }
-
+      
       answers['lead_data'] = this.leadForm.value;
       answers['lead_captured'] = true;
-
+      
       localStorage.setItem('onboarding_answers', JSON.stringify(answers));
       this.captured.emit();
     }
