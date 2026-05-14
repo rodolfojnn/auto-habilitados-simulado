@@ -97,7 +97,7 @@ export class OnboardingComponent {
     {
       id: 'processo_iniciado',
       title: 'Você já deu entrada no seu processo de CNH no Detran?',
-      subtitle: 'Precisamos saber para personalizar o simulado com dicas adequadas ao seu momento.',
+      subtitle: 'Isso nos ajuda a trazer dicas exclusivas para facilitar cada fase da sua jornada rumo à CNH.',
       options: [
         { value: 'sim', label: 'Sim', icon: 'check_circle', color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400' },
         { value: 'nao', label: 'Não', icon: 'schedule', color: 'bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400' },
@@ -105,7 +105,7 @@ export class OnboardingComponent {
     },
     {
       id: 'metodo_estudo',
-      title: 'Você está fazendo sozinho pelo aplicativo CNH ou já contratou uma autoescola?',
+      title: 'Você está fazendo sozinho ou já contratou uma autoescola?',
       subtitle: 'Isso nos ajuda a direcionar melhor o conteúdo.',
       options: [
         { value: 'sozinho', label: 'Sozinho', icon: 'smartphone', color: 'bg-purple-100 text-purple-600 dark:bg-purple-500/20 dark:text-purple-400' },
@@ -115,33 +115,11 @@ export class OnboardingComponent {
     {
       id: 'categoria',
       title: 'Qual a categoria da CNH que você está buscando aprovacão?',
-      subtitle: 'Os critérios mudam dependendo do veículo.',
+      subtitle: 'Primeira habilitação pode ser apenas para carro e/ou moto.',
       options: [
         { value: 'carro', label: 'Carro (Categoria B)', icon: 'directions_car', color: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400' },
         { value: 'moto', label: 'Moto (Categoria A)', icon: 'two_wheeler', color: 'bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400' },
         { value: 'ambos', label: 'Carro e Moto (A/B)', icon: 'commute', color: 'bg-teal-100 text-teal-600 dark:bg-teal-500/20 dark:text-teal-400' },
-      ]
-    },
-    {
-      id: 'desafio',
-      title: 'Qual a sua maior dificuldade ou medo no exame prático?',
-      subtitle: 'Vamos focar as dicas para te ajudar a superar isso.',
-      options: [
-        { value: 'baliza', label: 'Fazer a Baliza', icon: 'compare_arrows', color: 'bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400' },
-        { value: 'embreagem', label: 'Controle de Embreagem (Rampa)', icon: 'terrain', color: 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-white' },
-        { value: 'regras', label: 'Seta e Sinalização', icon: 'rule', color: 'bg-cyan-100 text-cyan-600 dark:bg-cyan-500/20 dark:text-cyan-400' },
-        { value: 'ansiedade', label: 'Nervosismo', icon: 'favorite_border', color: 'bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400' },
-        { value: 'nenhuma', label: 'Nenhuma / Ainda não sei', icon: 'help_outline', color: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400' },
-      ]
-    },
-    {
-      id: 'tempo_dedicacao',
-      title: 'Quantas horas por semana você pretende se dedicar aos simulados?',
-      subtitle: 'A constância é a chave para a aprovação.',
-      options: [
-        { value: 'pouco', label: 'Menos de 1 hora', icon: 'hourglass_empty', color: 'bg-brand-100 text-brand-600 dark:bg-emerald-500/20 dark:text-emerald-400' },
-        { value: 'medio', label: '1 a 3 horas', icon: 'hourglass_bottom', color: 'bg-brand-100 text-brand-600 dark:bg-emerald-500/20 dark:text-emerald-400' },
-        { value: 'muito', label: 'Mais de 3 horas', icon: 'hourglass_full', color: 'bg-brand-100 text-brand-600 dark:bg-emerald-500/20 dark:text-emerald-400' },
       ]
     }
   ];

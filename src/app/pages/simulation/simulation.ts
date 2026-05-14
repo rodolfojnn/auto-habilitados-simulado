@@ -494,7 +494,6 @@ export class SimulationComponent implements OnInit, OnDestroy {
     const hard = allQuestions.filter(q => difficultyScore(q.difficulty) === 3).sort(() => 0.5 - Math.random());
     const medium = allQuestions.filter(q => difficultyScore(q.difficulty) === 2).sort(() => 0.5 - Math.random());
     const easy = allQuestions.filter(q => difficultyScore(q.difficulty) === 1).sort(() => 0.5 - Math.random());
-
     // Ordered by difficulty priority
     const ordered = [...hard, ...medium, ...easy];
     let selected = ordered.slice(0, this.totalQuestions);
@@ -504,7 +503,6 @@ export class SimulationComponent implements OnInit, OnDestroy {
       ...q,
       answers: [...q.answers].sort(() => 0.5 - Math.random())
     })).sort(() => 0.5 - Math.random());
-
     this.questions.set(selected);
   }
 
