@@ -44,7 +44,7 @@ interface GameFloatingPoint {
       @if (!leadCaptured()) {
         <app-lead-capture
           title="Duelo Multiplayer"
-          description="Os melhores podem ganhar prêmios! Para entrar na arena de duelos e competir contra outros alunos na sua região, precisamos de algumas informações rápidas para entrar em contato com os vencedores e montar a classificação de acordo com a sua região."
+          description="Os melhores podem ganhar prêmios! Para entrar na arena de duelos e competir contra outros alunos, precisamos de algumas informações rápidas para entrar em contato com os vencedores e montar a classificação de acordo com a sua região."
           icon="sports_esports"
           iconBgClass="bg-indigo-50 dark:bg-indigo-500/20"
           iconTextClass="text-indigo-600 dark:text-indigo-400"

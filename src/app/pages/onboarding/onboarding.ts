@@ -114,7 +114,7 @@ export class OnboardingComponent {
     },
     {
       id: 'categoria',
-      title: 'Qual a categoria da CNH que você está buscando aprovacão?',
+      title: 'Qual a categoria da CNH que você está buscando aprovação?',
       subtitle: 'Primeira habilitação pode ser apenas para carro e/ou moto.',
       options: [
         { value: 'carro', label: 'Carro (Categoria B)', icon: 'directions_car', color: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400' },
