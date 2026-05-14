@@ -23,7 +23,9 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
             <button (click)="toggleSidebar()" class="p-2 -ml-2 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
               <mat-icon class="material-icons !leading-none">menu</mat-icon>
             </button>
-            <span class="font-bold text-lg text-brand-600 dark:text-white">Simulado CNH do Brasil</span>
+            <!-- <span class="font-bold text-lg text-brand-600 dark:text-white">
+              Simulado CNH do Brasil
+            </span> -->
           </div>
 
           <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-sm border border-amber-200 dark:border-amber-500/30 transition-all">
@@ -44,9 +46,15 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
         [class.-translate-x-full]="!sidebarOpen()"
       >
         <!-- Sidebar Header -->
-        <div class="h-16 flex items-center px-6 border-b border-gray-100 dark:border-white/5 shrink-0 lg:h-20 lg:border-none">
-          <mat-icon class="material-icons text-brand-500 mr-4">traffic</mat-icon>
-          <span class="font-bold text-xl text-gray-900 dark:text-white">Simulado CNH do Brasil</span>
+        <div class="h-32 flex items-center px-6 border-b border-gray-100 dark:border-white/5 shrink-0 lg:h-20 lg:border-none">
+          <!-- <mat-icon class="material-icons text-brand-500 mr-4">traffic</mat-icon> -->
+          <span class="font-bold text-xl text-gray-900 dark:text-white">
+            <img
+              src="assets/logo-simulado.png"
+              alt="Simulado CNH do Brasil"
+              class="w-full h-full object-contain drop-shadow-md"
+            />
+          </span>
           <button (click)="closeSidebar()" class="lg:hidden ml-auto p-2 text-gray-500 hover:text-gray-800 dark:hover:text-white">
             <mat-icon class="material-icons !leading-none">close</mat-icon>
           </button>
@@ -122,7 +130,7 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
       </main>
 
       </div>
-      
+
       <app-confirm-modal
         [isOpen]="showResetModal()"
         title="Refazer Questionário"
@@ -145,7 +153,7 @@ export class App implements OnInit {
   onboardingCompleted = signal(true);
   userPoints = signal<number>(0);
   showResetModal = signal(false);
-  
+
   userName = signal<string>('Aluno');
   userInitials = signal<string>('AL');
 
@@ -179,7 +187,7 @@ export class App implements OnInit {
         if (answers && answers['lead_data'] && answers['lead_data'].nome) {
           const name = answers['lead_data'].nome.trim();
           this.userName.set(name);
-          
+
           const parts = name.split(' ').filter((p: string) => p.trim() !== '');
           if (parts.length >= 2) {
              this.userInitials.set(`${parts[0][0]}${parts[parts.length-1][0]}`.toUpperCase());
@@ -216,7 +224,7 @@ export class App implements OnInit {
 
       const rect = target.getBoundingClientRect();
       const ripple = this.document.createElement('span');
-      
+
       const size = Math.max(rect.width, rect.height);
       const x = e.clientX - rect.left - size / 2;
       const y = e.clientY - rect.top - size / 2;
@@ -225,9 +233,9 @@ export class App implements OnInit {
       ripple.style.left = `${x}px`;
       ripple.style.top = `${y}px`;
       ripple.classList.add('ripple-effect');
-      
+
       target.appendChild(ripple);
-      
+
       setTimeout(() => {
         ripple.remove();
         target.style.position = originalPosition;

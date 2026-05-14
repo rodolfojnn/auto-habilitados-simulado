@@ -72,51 +72,75 @@ const TIPS = [
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Pronto para a sua CNH?</h1>
         <p class="text-gray-600 dark:text-slate-400 text-sm">Pratique e melhore suas chances na prova prática.</p>
       </header> -->
+      <header>
+        <img
+          style="max-height: 92px"
+          src="assets/logo-simulado.png"
+          alt="Simulado CNH do Brasil"
+          class="w-full h-full object-contain drop-shadow-md"
+        />
+      </header>
 
-      <!-- Main Action: Iniciar Simulado -->
-      <section class="mt-2">
-        <a routerLink="/simulado" 
-          class="w-full bg-[#03C95A] hover:bg-[#02b34f] text-slate-950 font-bold py-6 px-6 rounded-3xl flex flex-col items-center justify-center shadow-lg shadow-[#03C95A]/20 group transition-all duration-300 relative overflow-hidden">
-          <div class="absolute -right-6 -top-6 w-32 h-32 bg-white/20 rounded-full blur-2xl group-hover:scale-110 transition-transform"></div>
-          <mat-icon class="material-icons !text-4xl !leading-none !w-10 !h-10 mb-2 relative z-10 text-slate-900">directions_car</mat-icon>
-          <span class="text-xl relative z-10">Iniciar Simulado</span>
-          <span class="text-[11px] opacity-70 font-medium uppercase mt-1 relative z-10">Questões oficiais da base de prova</span>
+      <!-- Secondary Actions Grid -->
+      <section class="flex flex-col gap-4">
+
+        <!-- Main Action: Iniciar Simulado -->
+        <a routerLink="/simulado"
+          class="w-full bg-white dark:bg-slate-800 p-5 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
+          <div class="w-14 h-14 flex-shrink-0 bg-rose-50 dark:bg-rose-500/20 rounded-2xl flex items-center justify-center text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-500/30">
+             <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">play_circle</mat-icon>
+          </div>
+          <div class="flex flex-col flex-1">
+            <h3 class="font-bold text-gray-900 dark:text-white text-lg">Iniciar Simulado</h3>
+            <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">30 Questões Oficiais</p>
+          </div>
+          <div class="w-10 h-10 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-500">
+            <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
+          </div>
         </a>
-      </section>
-
-      <!-- Secondary Secondary Actions Grid -->
-      <section class="flex flex-col gap-4 mt-2">
 
         <!-- Historico -->
-        <a routerLink="/historico" class="bg-white dark:bg-slate-800/40 hover:dark:bg-slate-800 p-5 rounded-3xl flex items-center gap-4 cursor-pointer border border-gray-100 dark:border-white/5 transition-all shadow-sm">
-          <div class="w-12 h-12 bg-blue-50 dark:bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400">
-             <mat-icon class="material-icons !text-2xl !leading-none !w-6 !h-6">history</mat-icon>
+        <a routerLink="/historico"
+          class="w-full bg-white dark:bg-slate-800 p-5 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
+          <div class="w-14 h-14 flex-shrink-0 bg-blue-50 dark:bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-500/30">
+             <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">history</mat-icon>
           </div>
-          <div>
-            <h3 class="font-semibold text-gray-900 dark:text-white">Meu Histórico</h3>
-            <p class="text-xs text-gray-500 dark:text-slate-400">Evolução e resultados</p>
+          <div class="flex flex-col flex-1">
+            <h3 class="font-bold text-gray-900 dark:text-white text-lg">Meu Histórico</h3>
+            <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">Evolução e resultados</p>
+          </div>
+          <div class="w-10 h-10 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-500">
+            <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
           </div>
         </a>
 
         <!-- Ranking -->
-        <a routerLink="/ranking" class="bg-white dark:bg-slate-800/40 hover:dark:bg-slate-800 p-5 rounded-3xl flex items-center gap-4 cursor-pointer border border-gray-100 dark:border-white/5 transition-all shadow-sm">
-          <div class="w-12 h-12 bg-amber-50 dark:bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-600 dark:text-amber-400">
-             <mat-icon class="material-icons !text-2xl !leading-none !w-6 !h-6">emoji_events</mat-icon>
+        <a routerLink="/ranking"
+          class="w-full bg-white dark:bg-slate-800 p-5 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
+          <div class="w-14 h-14 flex-shrink-0 bg-amber-50 dark:bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-500/30">
+             <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">emoji_events</mat-icon>
           </div>
-          <div>
-            <h3 class="font-semibold text-gray-900 dark:text-white">Ranking Semanal</h3>
-            <p class="text-xs text-gray-500 dark:text-slate-400">Dispute o topo com outros alunos</p>
+          <div class="flex flex-col flex-1">
+            <h3 class="font-bold text-gray-900 dark:text-white text-lg">Ranking Semanal</h3>
+            <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">Dispute o topo online</p>
+          </div>
+          <div class="w-10 h-10 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-500">
+            <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
           </div>
         </a>
 
         <!-- Duelo -->
-        <a routerLink="/duelo" class="bg-white dark:bg-slate-800/40 hover:dark:bg-slate-800 p-5 rounded-3xl flex items-center gap-4 cursor-pointer border border-gray-100 dark:border-white/5 transition-all shadow-sm">
-          <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-             <mat-icon class="material-icons !text-2xl !leading-none !w-6 !h-6">sports_esports</mat-icon>
+        <a routerLink="/duelo"
+          class="w-full bg-white dark:bg-slate-800 p-5 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
+          <div class="w-14 h-14 flex-shrink-0 bg-indigo-50 dark:bg-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-500/30">
+             <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">sports_esports</mat-icon>
           </div>
-          <div>
-            <h3 class="font-semibold text-gray-900 dark:text-white">Duelo Multiplayer</h3>
-            <p class="text-xs text-gray-500 dark:text-slate-400">Desafie outro jogador online</p>
+          <div class="flex flex-col flex-1">
+            <h3 class="font-bold text-gray-900 dark:text-white text-lg">Duelo Multiplayer</h3>
+            <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">Desafie outro jogador</p>
+          </div>
+          <div class="w-10 h-10 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-500">
+            <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
           </div>
         </a>
 
