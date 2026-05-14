@@ -44,11 +44,50 @@ interface GameFloatingPoint {
       @if (!leadCaptured()) {
         <app-lead-capture
           title="Duelo Multiplayer"
-          description="Para entrar na arena de duelos e competir contra outros alunos na sua região, precisamos de algumas informações rápidas."
+          description="Os melhores podem ganhar prêmios! Para entrar na arena de duelos e competir contra outros alunos na sua região, precisamos de algumas informações rápidas para entrar em contato com os vencedores e montar a classificação de acordo com a sua região."
           icon="sports_esports"
           iconBgClass="bg-indigo-50 dark:bg-indigo-500/20"
           iconTextClass="text-indigo-600 dark:text-indigo-400"
           (captured)="onLeadCaptured()">
+          <div class="flex flex-col gap-3 mt-2 mb-4 w-full">
+            <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest text-center mb-1">Prêmios Nacionais</h3>
+
+            <!-- 1st Place -->
+            <div class="flex items-center gap-4 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 p-4 rounded-2xl relative overflow-hidden">
+              <div class="absolute -right-2 -bottom-2 text-amber-200 dark:text-amber-500/10">
+                <mat-icon class="!text-6xl !w-16 !h-16">emoji_events</mat-icon>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-amber-400 text-amber-950 flex flex-col items-center justify-center shrink-0 shadow-lg shadow-amber-400/40 relative z-10">
+                <span class="text-base font-black leading-none">1º</span>
+              </div>
+              <div class="flex flex-col relative z-10">
+                <span class="text-amber-700 dark:text-amber-400 font-bold text-sm">Aulas Práticas Grátis</span>
+                <span class="text-xs text-amber-600/80 dark:text-amber-400/70 font-medium">Pacote extra com instrutor</span>
+              </div>
+            </div>
+
+            <!-- 2nd Place -->
+            <div class="flex items-center gap-4 bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl relative overflow-hidden">
+              <div class="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-600 text-slate-700 dark:text-white flex flex-col items-center justify-center shrink-0 shadow-lg shadow-slate-400/20 relative z-10">
+                <span class="text-base font-black leading-none">2º</span>
+              </div>
+              <div class="flex flex-col relative z-10">
+                <span class="text-slate-700 dark:text-slate-300 font-bold text-sm">Curso Ao Vivo</span>
+                <span class="text-xs text-slate-500 font-medium">Revisão com instrutor expert</span>
+              </div>
+            </div>
+
+            <!-- 3rd Place -->
+            <div class="flex items-center gap-4 bg-orange-50 dark:bg-orange-900/10 border border-orange-200 dark:border-orange-500/20 p-4 rounded-2xl relative overflow-hidden">
+              <div class="w-10 h-10 rounded-full bg-orange-400 text-orange-950 flex flex-col items-center justify-center shrink-0 shadow-lg shadow-orange-400/20 relative z-10">
+                <span class="text-base font-black leading-none">3º</span>
+              </div>
+              <div class="flex flex-col relative z-10">
+                <span class="text-orange-700 dark:text-orange-400 font-bold text-sm">Acesso VIP</span>
+                <span class="text-xs text-orange-600/80 dark:text-orange-400/70 font-medium">Material de estudo exclusivo</span>
+              </div>
+            </div>
+          </div>
         </app-lead-capture>
       } @else if (!isStarted()) {
         <!-- Home State within Duel -->
@@ -64,7 +103,7 @@ interface GameFloatingPoint {
               </div>
               <div>
                 <h2 class="text-2xl font-black tracking-tight mb-1">Duelo Ao Vivo</h2>
-                <p class="text-white/90 text-sm font-medium">Batalha de conhecimento 1v1</p>
+                <p class="text-white/90 text-sm font-medium">Batalha de conhecimento</p>
               </div>
             </div>
           </div>
@@ -106,7 +145,7 @@ interface GameFloatingPoint {
               <mat-icon class="material-icons text-indigo-500 dark:text-indigo-400" style="font-size: 48px; width: 48px; height: 48px;">radar</mat-icon>
             </div>
             <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-4">Buscando oponente...</h2>
-            <p class="text-slate-500 dark:text-slate-400 mb-12 max-w-md font-medium leading-relaxed">Prepare-se para o duelo! Você será conectado em breve com um motorista do mesmo nível.</p>
+            <p class="text-slate-500 dark:text-slate-400 mb-12 max-w-md font-medium leading-relaxed">Prepare-se para o duelo! Você será conectado em breve com um aluno do mesmo nível.</p>
 
             <div class="flex gap-3 mb-10">
               <div class="w-3 h-3 rounded-full bg-indigo-500 animate-bounce"></div>
@@ -238,6 +277,19 @@ interface GameFloatingPoint {
             <div class="text-center mb-4 shrink-0 bg-white dark:bg-slate-800 rounded-[2rem] p-6 shadow-md border border-slate-100 dark:border-white/5 transition-all"
               [class.animate-shake]="hasAnswered() && !isLastAnswerCorrect()"
               [class.animate-pulse-success]="hasAnswered() && isLastAnswerCorrect()">
+              @if (currentQuestion()?.sign_code_ref) {
+                <div class="mb-4 flex justify-center">
+                  <div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-3xl border border-slate-100 dark:border-white/5 mx-auto w-24 h-24 md:w-32 md:h-32 shadow-inner relative overflow-hidden group flex items-center justify-center">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <img
+                      [src]="'assets/placas/' + currentQuestion()?.sign_code_ref + '.svg'"
+                      [alt]="'Placa ' + currentQuestion()?.sign_code_ref"
+                      class="w-full h-full object-contain drop-shadow-md"
+                      (error)="handleImageError($event)"
+                    />
+                  </div>
+                </div>
+              }
               <h2 class="text-lg font-black leading-tight text-slate-900 dark:text-white px-2">{{ currentQuestion()?.title }}</h2>
             </div>
 
@@ -273,16 +325,16 @@ interface GameFloatingPoint {
               (click)="toggleStats()"
               (keydown.enter)="toggleStats()"
               tabindex="0"
-              class="relative z-40 w-full mt-auto mb-2 p-4 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:border-indigo-300 dark:hover:border-indigo-500/50 active:scale-[0.98] transition-all cursor-pointer select-none group"
+              class="relative z-30 w-full mt-auto mb-2 p-4 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:border-indigo-300 dark:hover:border-indigo-500/50 active:scale-[0.98] transition-all cursor-pointer select-none group"
             >
               <div class="flex items-center justify-between">
                 <!-- Player You -->
                 <div class="flex items-center gap-3">
                   <div #myAvatar class="w-12 h-12 rounded-full border-2 border-blue-500/30 dark:border-blue-500/50 bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center relative">
-                    <span class="text-sm font-black text-blue-600 dark:text-blue-400">VU</span>
+                    <span class="text-sm font-black text-blue-600 dark:text-blue-400">{{ myInitials() }}</span>
                   </div>
                   <div class="flex flex-col">
-                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">Você <span class="font-bold opacity-60 text-[8px] mt-0.5"></span></span>
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">{{ myName() }} <span class="font-bold opacity-60 text-[8px] mt-0.5"></span></span>
                     <span class="text-sm font-black text-slate-900 dark:text-white">{{ myPointsFormatted() }} pts</span>
                   </div>
                 </div>
@@ -347,11 +399,11 @@ interface GameFloatingPoint {
                 <div class="flex-1 text-center">
                    <div #myAvatarModal class="w-12 h-12 mx-auto rounded-full border-2 flex items-center justify-center mb-2 relative shadow-[0_0_15px_rgba(59,130,246,0.2)]"
                         [class]="myPoints() >= rivalPoints() ? 'border-emerald-500/50 bg-emerald-500/20' : 'border-blue-500/50 bg-blue-500/20'">
-                     <span class="text-sm font-black" [class]="myPoints() >= rivalPoints() ? 'text-emerald-400' : 'text-blue-400'">VU</span>
+                     <span class="text-sm font-black" [class]="myPoints() >= rivalPoints() ? 'text-emerald-400' : 'text-blue-400'">{{ myInitials() }}</span>
                    </div>
                    <div class="text-3xl font-black text-white tabular-nums" [class.text-emerald-400]="isFinished() && myPoints() >= rivalPoints()">{{ myPointsFormatted() }}</div>
                    <div class="flex flex-col mt-1">
-                     <span class="text-[10px] font-black uppercase tracking-widest leading-none" [class]="myPoints() >= rivalPoints() ? 'text-emerald-400' : 'text-blue-400'">Você</span>
+                     <span class="text-[10px] font-black uppercase tracking-widest leading-none" [class]="myPoints() >= rivalPoints() ? 'text-emerald-400' : 'text-blue-400'">{{ myName() }}</span>
                      <span class="text-[8px] font-black opacity-50 uppercase tracking-widest text-slate-400 mt-0.5">{{ myCityUf() }}</span>
                    </div>
                 </div>
@@ -574,6 +626,9 @@ export class DuelComponent implements OnInit, OnDestroy {
   rivalFloatingPoints = signal<GameFloatingPoint[]>([]);
   private nextFpId = 0;
 
+  myName = signal<string>('Você');
+  myInitials = signal<string>('VU');
+
   winParticles = Array.from({ length: 40 }).map((_, i) => ({
     id: i,
     x: Math.floor(Math.random() * 100),
@@ -609,7 +664,6 @@ export class DuelComponent implements OnInit, OnDestroy {
   instructions = [
     { icon: 'shuffle', label: 'Você será conectado com um <strong class="text-brand-900 dark:text-white">jogador aleatório</strong>.', bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-600 dark:text-blue-400' },
     { icon: 'format_list_numbered', label: 'O duelo contém <strong class="text-brand-900 dark:text-white">10 questões</strong> de múltipla escolha.', bg: 'bg-indigo-100 dark:bg-indigo-900/30', text: 'text-indigo-600 dark:text-indigo-400' },
-    { icon: 'timer', label: 'Respostas <strong class="text-brand-900 dark:text-white">mais rápidas</strong> garantem mais pontos.', bg: 'bg-orange-100 dark:bg-orange-900/30', text: 'text-orange-600 dark:text-orange-400' },
     { icon: 'check_circle', label: 'Vence quem tiver o melhor <strong class="text-brand-900 dark:text-white">equilíbrio</strong> de acertos e tempo!', bg: 'bg-emerald-100 dark:bg-emerald-900/30', text: 'text-emerald-600 dark:text-emerald-400' }
   ];
 
@@ -776,6 +830,7 @@ export class DuelComponent implements OnInit, OnDestroy {
     const data = JSON.parse(localStorage.getItem('onboarding_answers') || '{}');
     data.lead_captured = true;
     localStorage.setItem('onboarding_answers', JSON.stringify(data));
+    this.updateUserDetails(data);
   }
 
   checkLeadStatus() {
@@ -786,16 +841,31 @@ export class DuelComponent implements OnInit, OnDestroy {
         if (answers && answers['lead_captured'] === true) {
           this.leadCaptured.set(true);
         }
-
-        // Mock a city for the user based on CEP if we had an API, or just default it
-        // For now, let's just pick one randomly for the user too or default
+        this.updateUserDetails(answers);
       } catch {
         // ignore parse error
       }
     }
+  }
 
-    // Set a random user city if none isn't needed here anymore since we do it in startDuel,
-    // but we can initialize it if it's default
+  updateUserDetails(answers: any) {
+    if (answers && answers['lead_data'] && answers['lead_data'].nome) {
+      const name = answers['lead_data'].nome.trim();
+      this.myName.set(name);
+
+      const parts = name.split(' ').filter((p: string) => p.trim() !== '');
+      if (parts.length >= 2) {
+         this.myInitials.set(`${parts[0][0]}${parts[parts.length-1][0]}`.toUpperCase());
+      } else if (parts.length === 1 && parts[0].length >= 1) {
+         this.myInitials.set(parts[0].substring(0, 2).toUpperCase());
+      }
+
+      const municipio = answers['lead_data'].municipio;
+      const uf = answers['lead_data'].uf;
+      if (municipio && uf) {
+         this.myCityUf.set(`${municipio} - ${uf}`);
+      }
+    }
   }
 
   startDuel() {
@@ -822,7 +892,6 @@ export class DuelComponent implements OnInit, OnDestroy {
       'Santarém - PA', 'Rio Branco - AC', 'Boa Vista - RR', 'Aparecida de Goiânia - GO', 'Dourados - MS',
       'Uberaba - MG', 'Governador Valadares - MG', 'Itabuna - BA', 'Ilhéus - BA', 'Barueri - SP'
     ];
-    this.myCityUf.set(cities[Math.floor(Math.random() * cities.length)]);
 
     const fakeNames = [
       'Ana', 'Beatriz', 'Bruna', 'Camila', 'Carolina', 'Catarina', 'Cecília', 'Clara', 'Danielle', 'Eduarda',
@@ -843,8 +912,16 @@ export class DuelComponent implements OnInit, OnDestroy {
       'Paulo', 'Ricardo', 'Sandro', 'Wesley', 'William'
     ];
 
+    const fakeLastNames = [
+      'Silva', 'Santos', 'Oliveira', 'Souza', 'Rodrigues', 'Ferreira', 'Alves', 'Pereira', 'Lima', 'Gomes',
+      'Costa', 'Ribeiro', 'Martins', 'Carvalho', 'Almeida', 'Lopes', 'Soares', 'Fernandes', 'Vieira', 'Barbosa',
+      'Rocha', 'Dias', 'Nunes', 'Mendes', 'Cardoso'
+    ];
+
     const randomName = fakeNames[Math.floor(Math.random() * fakeNames.length)];
-    const initials = randomName.substring(0, 1).toUpperCase();
+    const randomLastName = fakeLastNames[Math.floor(Math.random() * fakeLastNames.length)];
+    const initials = `${randomName[0]}${randomLastName[0]}`.toUpperCase();
+
     this.rivalName.set(randomName);
     this.rivalInitials.set(initials);
     this.rivalCityUf.set(cities[Math.floor(Math.random() * cities.length)]);
@@ -882,8 +959,22 @@ export class DuelComponent implements OnInit, OnDestroy {
       });
     }
 
-    const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-    this.questions.set(shuffled.slice(0, this.totalQuestions));
+    const difficultyScore = (d: string) => {
+      const lower = d?.toLowerCase() || '';
+      if (lower.includes('dif')) return 3;
+      if (lower.includes('interm') || lower.includes('médio')) return 2;
+      return 1;
+    };
+
+    const hard = allQuestions.filter(q => difficultyScore(q.difficulty) === 3).sort(() => 0.5 - Math.random());
+    const medium = allQuestions.filter(q => difficultyScore(q.difficulty) === 2).sort(() => 0.5 - Math.random());
+    const easy = allQuestions.filter(q => difficultyScore(q.difficulty) === 1).sort(() => 0.5 - Math.random());
+
+    const ordered = [...hard, ...medium, ...easy];
+    let selected = ordered.slice(0, this.totalQuestions);
+    selected = selected.sort(() => 0.5 - Math.random());
+
+    this.questions.set(selected);
     this.currentIndex.set(0);
     this.loadQuestionAnswers();
   }
@@ -919,12 +1010,13 @@ export class DuelComponent implements OnInit, OnDestroy {
            return;
        }
 
-       const delay = Math.floor(Math.random() * 10000) + 10000; // 10 to 20 seconds
+       const delay = Math.floor(Math.random() * 15000) + 15000; // 15 to 30 seconds
        const sub = interval(delay).subscribe(() => {
            sub.unsubscribe();
            if (this.isFinished()) return;
 
-           const isRivalCorrect = Math.random() > 0.15; // 85% accuracy
+           const accuracy = 0.75 + (Math.random() * 0.15); // Vary between 75% and 90%
+           const isRivalCorrect = Math.random() < accuracy;
            if (isRivalCorrect) {
                this.showPointsAnim('rival', '+1', 'positive');
                this.rivalPoints.update(p => p + 1);
@@ -993,5 +1085,12 @@ export class DuelComponent implements OnInit, OnDestroy {
     this.rivalErrors.set(0);
     this.currentIndex.set(0);
     this.timeElapsed.set(0);
+  }
+
+  handleImageError(event: Event) {
+    const target = event.target as HTMLElement;
+    if (target && target.parentElement) {
+      target.parentElement.style.display = 'none';
+    }
   }
 }

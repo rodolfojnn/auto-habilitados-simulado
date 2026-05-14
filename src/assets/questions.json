@@ -7755,7 +7755,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "TNA-05",
           "explanation": "Placas marrons têm função turística."
         },
         {
@@ -7832,31 +7831,6 @@
           "explanation": "Essa placa antecipa a aproximação de uma saída."
         },
         {
-          "title": "Uma placa azul com o símbolo de uma colher e garfo indica:",
-          "difficulty": "Fácil",
-          "number": 320,
-          "answers": [
-            {
-              "text": "Restaurante ou lanchonete próxima.",
-              "is_correct": true
-            },
-            {
-              "text": "Proibição de parar.",
-              "is_correct": false
-            },
-            {
-              "text": "Área de carga e descarga.",
-              "is_correct": false
-            },
-            {
-              "text": "Serviço mecânico.",
-              "is_correct": false
-            }
-          ],
-          "sign_code_ref": "SAU-12",
-          "explanation": "Símbolo de alimentação disponível."
-        },
-        {
           "title": "Qual é a principal diferença entre uma placa de regulamentação e uma de indicação?",
           "difficulty": "Fácil",
           "number": 321,
@@ -7902,7 +7876,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "SAU-13",
           "explanation": "Símbolo de hospedagem, útil em longas viagens."
         },
         {
@@ -8048,7 +8021,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "SAU-09",
           "explanation": "Informa posto de combustível próximo."
         },
         {
@@ -8125,31 +8097,6 @@
           "explanation": "Placas azuis informam serviços ao usuário."
         },
         {
-          "title": "Ao observar uma placa azul com colher e garfo, o que Maria deve entender?",
-          "difficulty": "Fácil",
-          "number": 332,
-          "answers": [
-            {
-              "text": "Há restaurante ou alimentação próxima",
-              "is_correct": true
-            },
-            {
-              "text": "É área de risco animal",
-              "is_correct": false
-            },
-            {
-              "text": "A via está escorregadia",
-              "is_correct": false
-            },
-            {
-              "text": "Há pedágio à frente",
-              "is_correct": false
-            }
-          ],
-          "sign_code_ref": "SAU-12",
-          "explanation": "Símbolo de alimentação é padrão nas placas azuis."
-        },
-        {
           "title": "Paulo observa uma placa verde com distâncias para duas cidades. O que ela indica?",
           "difficulty": "Fácil",
           "number": 333,
@@ -8174,7 +8121,7 @@
           "explanation": "Placas verdes orientam rotas e distâncias."
         },
         {
-          "title": "Laura vê uma placa azul com o símbolo de uma bomba de combuistível. Qual a mensagem?",
+          "title": "Laura vê uma placa azul com o símbolo de uma bomba de combustível. Qual a mensagem?",
           "difficulty": "Fácil",
           "number": 334,
           "answers": [
@@ -8195,7 +8142,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "SAU-09",
           "explanation": "Placas de serviços mostram abastecimento disponível."
         },
         {
@@ -8268,7 +8214,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "SAU-13",
           "explanation": "Placas azuis informam serviços auxiliares."
         },
         {
@@ -8293,7 +8238,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "SAU-26",
           "explanation": "Placa azul informa serviços públicos."
         },
         {
@@ -8318,7 +8262,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "SAU-08",
           "explanation": "Placa azul indica serviços ao motorista."
         },
         {
@@ -8343,7 +8286,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "THC-05",
           "explanation": "Placas marrons comunicam turismo."
         },
         {
@@ -8416,7 +8358,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "SAU-21",
           "explanation": "Placas verdes orientam destinos de grande importância."
         },
         {
@@ -8441,7 +8382,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "DEF-01",
           "explanation": "A placa indica acessibilidade."
         },
         {
@@ -8466,7 +8406,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "SAU-18",
           "explanation": "Serviços de fiscalização são indicados em azul."
         },
         {
@@ -8563,7 +8502,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "TNA-06",
           "explanation": "Placas turísticas divulgam lugares naturais."
         },
         {
@@ -8708,7 +8646,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "SAU-26",
           "explanation": "Azul também marca serviços ao usuário."
         },
         {
@@ -8733,7 +8670,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "SAU-08",
           "explanation": "Serviços ao motorista são mostrados em azul."
         },
         {
@@ -8758,7 +8694,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "TAR-03",
           "explanation": "Marrons indicam turismo e natureza."
         },
         {
@@ -8856,7 +8791,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "THC-11",
           "explanation": "Placas verdes podem orientar destinos de serviços."
         },
         {
@@ -8905,7 +8839,6 @@
               "is_correct": false
             }
           ],
-          "sign_code_ref": "DEF-01",
           "explanation": "Acessibilidade é indicada por símbolo universal."
         },
         {

@@ -15,6 +15,7 @@ interface Question {
   answers: Answer[];
   explanation?: string;
   sign_code_ref?: string;
+  moduleTitle?: string;
 }
 
 interface SimulationResult {
@@ -76,20 +77,11 @@ interface FloatingPoint {
             </li>
 
             <li class="flex items-start gap-4">
-              <div class="bg-orange-100 dark:bg-orange-900/30 p-2.5 rounded-xl text-orange-600 dark:text-orange-400 mt-0.5 shrink-0">
-                <mat-icon class="material-icons text-xl w-5 h-5 leading-[20px]">timer</mat-icon>
-              </div>
-              <p class="text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed pt-0.5">
-                A prova teórica tem duração de <strong class="text-brand-900 dark:text-white">40 minutos</strong>.
-              </p>
-            </li>
-
-            <li class="flex items-start gap-4">
               <div class="bg-emerald-100 dark:bg-emerald-900/30 p-2.5 rounded-xl text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0">
                 <mat-icon class="material-icons text-xl w-5 h-5 leading-[20px]">menu_book</mat-icon>
               </div>
               <p class="text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed pt-0.5">
-                As questões são baseadas no conteúdo oficial do Detran.
+                As questões são baseadas no conteúdo oficial do Senatran.
               </p>
             </li>
 
@@ -162,7 +154,7 @@ interface FloatingPoint {
           <div class="flex items-center gap-4">
             <div class="flex flex-col items-end shrink-0">
               <span class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Tempo</span>
-              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-xl" [class.text-rose-500]="timeLeft() < 300">
+              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-xl">
                 <mat-icon class="material-icons !text-lg !w-[18px] !h-[18px] !leading-none">timer</mat-icon>
                 <span class="font-mono font-bold text-sm">{{ formattedTime() }}</span>
               </div>
@@ -174,9 +166,31 @@ interface FloatingPoint {
         <div #questionCard class="bg-white dark:bg-slate-800 rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-white/5 mb-6 animate-fade-in"
           [class.animate-shake]="isAnswered() && !isCorrect()"
           [class.animate-pulse-success]="isAnswered() && isCorrect()">
-          <span class="inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700/50 text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-4">
-            {{ currentQuestion().difficulty }}
-          </span>
+          <div class="flex items-center justify-between mb-4">
+            <span class="inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700/50 text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">
+              {{ currentQuestion().difficulty }}
+            </span>
+            @if (currentQuestion().moduleTitle) {
+              <span class="inline-block px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-500/20 text-[10px] font-black uppercase tracking-widest text-brand-600 dark:text-brand-400">
+                {{ currentQuestion().moduleTitle }}
+              </span>
+            }
+          </div>
+
+          @if (currentQuestion().sign_code_ref) {
+            <div class="mb-6 flex justify-center">
+              <div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-3xl border border-slate-100 dark:border-white/5 mx-auto w-32 h-32 md:w-40 md:h-40 shadow-inner relative overflow-hidden group flex items-center justify-center">
+                <div class="absolute inset-0 bg-gradient-to-tr from-brand-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <img
+                  [src]="'assets/placas/' + currentQuestion().sign_code_ref + '.svg'"
+                  [alt]="'Placa ' + currentQuestion().sign_code_ref"
+                  class="w-full h-full object-contain drop-shadow-md"
+                  (error)="handleImageError($event)"
+                />
+              </div>
+            </div>
+          }
+
           <h2 class="text-xl font-bold text-slate-900 dark:text-white leading-tight">
             {{ currentQuestion().title }}
           </h2>
@@ -184,7 +198,7 @@ interface FloatingPoint {
 
         <!-- Answers List -->
         <div class="space-y-3 flex-grow">
-          @for (answer of currentQuestion().answers; track $index) {
+          @for (answer of currentQuestion().answers; track currentIndex() + '-' + $index) {
               <button
                 (click)="selectAnswer(answer, $event)"
                 [disabled]="isAnswered()"
@@ -427,11 +441,12 @@ export class SimulationComponent implements OnInit, OnDestroy {
   floatingPoints = signal<FloatingPoint[]>([]);
   private nextFpId = 0;
 
-  timeLeft = signal<number>(2400); // 40 minutes
+  timeElapsed = signal<number>(0);
   private timerSubscription?: Subscription;
 
   progress = computed(() => {
-    return Math.round(((this.currentIndex()) / this.totalQuestions) * 100);
+    const answeredOffset = this.isAnswered() ? 1 : 0;
+    return Math.round(((this.currentIndex() + answeredOffset) / this.totalQuestions) * 100);
   });
 
   currentQuestion = computed(() => {
@@ -439,8 +454,8 @@ export class SimulationComponent implements OnInit, OnDestroy {
   });
 
   formattedTime = computed(() => {
-    const mins = Math.floor(this.timeLeft() / 60);
-    const secs = this.timeLeft() % 60;
+    const mins = Math.floor(this.timeElapsed() / 60);
+    const secs = this.timeElapsed() % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   });
 
@@ -456,22 +471,41 @@ export class SimulationComponent implements OnInit, OnDestroy {
 
   prepareQuestions() {
     const allQuestions: Question[] = [];
-    const data = questionsData as { modules: Record<string, { questions: Question[] }> };
+    const data = questionsData as { modules: Record<string, { title: string, questions: Question[] }> };
 
     if (data && data.modules) {
       Object.values(data.modules).forEach(module => {
         if (module && module.questions) {
+          module.questions.forEach(q => {
+            q.moduleTitle = module.title;
+          });
           allQuestions.push(...module.questions);
         }
       });
     }
 
-    // Shuffle answers for each question so it's not predictable, then pick totalQuestions
-    const shuffled = [...allQuestions].map(q => ({
+    const difficultyScore = (d: string) => {
+      const lower = d?.toLowerCase() || '';
+      if (lower.includes('dif')) return 3;
+      if (lower.includes('interm') || lower.includes('médio')) return 2;
+      return 1;
+    };
+
+    const hard = allQuestions.filter(q => difficultyScore(q.difficulty) === 3).sort(() => 0.5 - Math.random());
+    const medium = allQuestions.filter(q => difficultyScore(q.difficulty) === 2).sort(() => 0.5 - Math.random());
+    const easy = allQuestions.filter(q => difficultyScore(q.difficulty) === 1).sort(() => 0.5 - Math.random());
+
+    // Ordered by difficulty priority
+    const ordered = [...hard, ...medium, ...easy];
+    let selected = ordered.slice(0, this.totalQuestions);
+
+    // Shuffle the selected questions and their answers so their order is random during the simulation
+    selected = selected.map(q => ({
       ...q,
       answers: [...q.answers].sort(() => 0.5 - Math.random())
     })).sort(() => 0.5 - Math.random());
-    this.questions.set(shuffled.slice(0, this.totalQuestions));
+
+    this.questions.set(selected);
   }
 
   startSimulation() {
@@ -479,14 +513,17 @@ export class SimulationComponent implements OnInit, OnDestroy {
     this.startTimer();
   }
 
+  handleImageError(event: Event) {
+    const target = event.target as HTMLElement;
+    if (target && target.parentElement) {
+      target.parentElement.style.display = 'none';
+    }
+  }
+
   startTimer() {
     this.timerSubscription?.unsubscribe();
     this.timerSubscription = interval(1000).subscribe(() => {
-      if (this.timeLeft() > 0) {
-        this.timeLeft.update(t => t - 1);
-      } else {
-        this.finishSimulation();
-      }
+      this.timeElapsed.update(t => t + 1);
     });
   }
 
@@ -548,6 +585,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
     if (this.currentIndex() < this.totalQuestions - 1) {
       this.currentIndex.update(i => i + 1);
       this.isAnswered.set(false);
+      this.isCorrect.set(false);
       this.selectedAnswer.set(null);
     } else {
       this.finishSimulation();
@@ -595,7 +633,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
     this.isFinished.set(false);
     this.currentIndex.set(0);
     this.score.set(0);
-    this.timeLeft.set(2400);
+    this.timeElapsed.set(0);
     this.isAnswered.set(false);
     this.selectedAnswer.set(null);
     this.prepareQuestions();

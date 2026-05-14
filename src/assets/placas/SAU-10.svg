@@ -1,0 +1,16 @@
+<svg width="200" height="350" viewBox="0 0 100 175" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fundo azul principal com cantos arredondados -->
+  <rect width="100" height="175" rx="10" ry="10" fill="#1493D9" />
+
+  <!-- Linha de borda interna branca -->
+  <rect x="4" y="4" width="92" height="167" rx="8" ry="8" fill="none" stroke="white" stroke-width="1.2" />
+
+  <!-- Bloco branco superior para o ícone -->
+  <rect x="10" y="10" width="80" height="80" rx="6" ry="6" fill="white" />
+
+  <!-- Cruz vermelha centralizada no bloco branco -->
+  <!-- Barra vertical -->
+  <rect x="41" y="25" width="18" height="50" fill="#E53935" />
+  <!-- Barra horizontal -->
+  <rect x="25" y="41" width="50" height="18" fill="#E53935" />
+</svg>
