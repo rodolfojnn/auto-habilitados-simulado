@@ -46,15 +46,14 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
         [class.-translate-x-full]="!sidebarOpen()"
       >
         <!-- Sidebar Header -->
-        <div class="h-32 flex items-center px-6 border-b border-gray-100 dark:border-white/5 shrink-0 lg:h-20 lg:border-none">
-          <!-- <mat-icon class="material-icons text-brand-500 mr-4">traffic</mat-icon> -->
-          <span class="font-bold text-xl text-gray-900 dark:text-white">
+        <div class="h-max min-h-[80px] lg:min-h-[100px] flex items-center px-6 border-b border-gray-100 dark:border-white/5 shrink-0 lg:border-none py-4">
+          <div class="flex-1 flex items-center h-16 lg:h-20">
             <img
               src="assets/logo-simulado.png"
               alt="Simulado CNH do Brasil"
-              class="w-full h-full object-contain drop-shadow-md"
+              class="max-h-full max-w-full object-contain drop-shadow-md object-left"
             />
-          </span>
+          </div>
           <button (click)="closeSidebar()" class="lg:hidden ml-auto p-2 text-gray-500 hover:text-gray-800 dark:hover:text-white">
             <mat-icon class="material-icons !leading-none">close</mat-icon>
           </button>

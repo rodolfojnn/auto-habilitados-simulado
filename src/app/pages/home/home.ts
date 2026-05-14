@@ -48,7 +48,6 @@ const TIPS = [
   "A marcha a ré deve ser utilizada apenas em manobras e deslocamentos curtos.",
   "Use calçados adequados e que fiquem firmes nos pés (sandálias abertas são proibidas).",
   "Não desengate o veículo em declives (não ande na 'banguela').",
-  "Ao terminar o exame, desligue o motor, deixe o carro engatado (1ª marcha) e puxe o freio de mão.",
   "Dirija com atenção, tranquilidade e controle do veículo durante todo o exame.",
   "Evite deixar o motor apagar durante as manobras e deslocamentos.",
   "Lembre-se: errar uma manobra não significa reprovação automática, se não for eliminatória. Continue concentrado!",
@@ -86,7 +85,7 @@ const TIPS = [
 
         <!-- Main Action: Iniciar Simulado -->
         <a routerLink="/simulado"
-          class="w-full bg-white dark:bg-slate-800 p-5 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
+          class="w-full bg-white dark:bg-slate-800 p-4 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
           <div class="w-14 h-14 flex-shrink-0 bg-rose-50 dark:bg-rose-500/20 rounded-2xl flex items-center justify-center text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-500/30">
              <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">play_circle</mat-icon>
           </div>
@@ -101,7 +100,7 @@ const TIPS = [
 
         <!-- Historico -->
         <a routerLink="/historico"
-          class="w-full bg-white dark:bg-slate-800 p-5 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
+          class="w-full bg-white dark:bg-slate-800 p-4 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
           <div class="w-14 h-14 flex-shrink-0 bg-blue-50 dark:bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-500/30">
              <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">history</mat-icon>
           </div>
@@ -116,7 +115,7 @@ const TIPS = [
 
         <!-- Ranking -->
         <a routerLink="/ranking"
-          class="w-full bg-white dark:bg-slate-800 p-5 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
+          class="w-full bg-white dark:bg-slate-800 p-4 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
           <div class="w-14 h-14 flex-shrink-0 bg-amber-50 dark:bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-500/30">
              <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">emoji_events</mat-icon>
           </div>
@@ -131,7 +130,7 @@ const TIPS = [
 
         <!-- Duelo -->
         <a routerLink="/duelo"
-          class="w-full bg-white dark:bg-slate-800 p-5 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
+          class="w-full bg-white dark:bg-slate-800 p-4 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
           <div class="w-14 h-14 flex-shrink-0 bg-indigo-50 dark:bg-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-500/30">
              <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">sports_esports</mat-icon>
           </div>
