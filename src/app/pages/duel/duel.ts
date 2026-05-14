@@ -51,6 +51,7 @@ interface GameFloatingPoint {
           (captured)="onLeadCaptured()">
           <div class="flex flex-col gap-3 mt-2 mb-4 w-full">
             <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest text-center mb-1">Prêmios Nacionais</h3>
+
             <!-- 1st Place -->
             <div class="flex items-center gap-4 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 p-4 rounded-2xl relative overflow-hidden">
               <div class="absolute -right-2 -bottom-2 text-amber-200 dark:text-amber-500/10">
@@ -626,7 +627,7 @@ export class DuelComponent implements OnInit, OnDestroy {
   private nextFpId = 0;
 
   myName = signal<string>('Você');
-  myInitials = signal<string>('VC');
+  myInitials = signal<string>('VU');
 
   winParticles = Array.from({ length: 40 }).map((_, i) => ({
     id: i,
@@ -851,12 +852,14 @@ export class DuelComponent implements OnInit, OnDestroy {
     if (answers && answers['lead_data'] && answers['lead_data'].nome) {
       const name = answers['lead_data'].nome.trim();
       this.myName.set(name);
+
       const parts = name.split(' ').filter((p: string) => p.trim() !== '');
       if (parts.length >= 2) {
          this.myInitials.set(`${parts[0][0]}${parts[parts.length-1][0]}`.toUpperCase());
       } else if (parts.length === 1 && parts[0].length >= 1) {
          this.myInitials.set(parts[0].substring(0, 2).toUpperCase());
       }
+
       const municipio = answers['lead_data'].municipio;
       const uf = answers['lead_data'].uf;
       if (municipio && uf) {
@@ -918,6 +921,7 @@ export class DuelComponent implements OnInit, OnDestroy {
     const randomName = fakeNames[Math.floor(Math.random() * fakeNames.length)];
     const randomLastName = fakeLastNames[Math.floor(Math.random() * fakeLastNames.length)];
     const initials = `${randomName[0]}${randomLastName[0]}`.toUpperCase();
+
     this.rivalName.set(randomName);
     this.rivalInitials.set(initials);
     this.rivalCityUf.set(cities[Math.floor(Math.random() * cities.length)]);
@@ -965,6 +969,7 @@ export class DuelComponent implements OnInit, OnDestroy {
     const hard = allQuestions.filter(q => difficultyScore(q.difficulty) === 3).sort(() => 0.5 - Math.random());
     const medium = allQuestions.filter(q => difficultyScore(q.difficulty) === 2).sort(() => 0.5 - Math.random());
     const easy = allQuestions.filter(q => difficultyScore(q.difficulty) === 1).sort(() => 0.5 - Math.random());
+
     const ordered = [...hard, ...medium, ...easy];
     let selected = ordered.slice(0, this.totalQuestions);
     selected = selected.sort(() => 0.5 - Math.random());
