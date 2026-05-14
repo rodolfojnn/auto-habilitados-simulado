@@ -166,7 +166,7 @@ interface FloatingPoint {
         <div #questionCard class="bg-white dark:bg-slate-800 rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-white/5 mb-6 animate-fade-in"
           [class.animate-shake]="isAnswered() && !isCorrect()"
           [class.animate-pulse-success]="isAnswered() && isCorrect()">
-          <div class="flex items-center gap-2 mb-4 flex-wrap flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2">
+          <div class="flex items-center justify-between w-full mb-4">
             @if (currentQuestion().moduleTitle) {
               <span class="inline-block px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-500/20 text-[10px] font-black uppercase tracking-widest text-brand-600 dark:text-brand-400">
                 {{ currentQuestion().moduleTitle }}
