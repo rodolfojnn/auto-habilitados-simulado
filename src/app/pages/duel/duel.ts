@@ -103,7 +103,7 @@ interface GameFloatingPoint {
               </div>
               <div>
                 <h2 class="text-2xl font-black tracking-tight mb-1">Duelo Ao Vivo</h2>
-                <p class="text-white/90 text-sm font-medium">Batalha de conhecimento 1v1</p>
+                <p class="text-white/90 text-sm font-medium">Batalha de conhecimento</p>
               </div>
             </div>
           </div>
@@ -145,7 +145,7 @@ interface GameFloatingPoint {
               <mat-icon class="material-icons text-indigo-500 dark:text-indigo-400" style="font-size: 48px; width: 48px; height: 48px;">radar</mat-icon>
             </div>
             <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-4">Buscando oponente...</h2>
-            <p class="text-slate-500 dark:text-slate-400 mb-12 max-w-md font-medium leading-relaxed">Prepare-se para o duelo! Você será conectado em breve com um motorista do mesmo nível.</p>
+            <p class="text-slate-500 dark:text-slate-400 mb-12 max-w-md font-medium leading-relaxed">Prepare-se para o duelo! Você será conectado em breve com um aluno do mesmo nível.</p>
 
             <div class="flex gap-3 mb-10">
               <div class="w-3 h-3 rounded-full bg-indigo-500 animate-bounce"></div>
@@ -651,7 +651,6 @@ export class DuelComponent implements OnInit, OnDestroy {
   instructions = [
     { icon: 'shuffle', label: 'Você será conectado com um <strong class="text-brand-900 dark:text-white">jogador aleatório</strong>.', bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-600 dark:text-blue-400' },
     { icon: 'format_list_numbered', label: 'O duelo contém <strong class="text-brand-900 dark:text-white">10 questões</strong> de múltipla escolha.', bg: 'bg-indigo-100 dark:bg-indigo-900/30', text: 'text-indigo-600 dark:text-indigo-400' },
-    { icon: 'timer', label: 'Respostas <strong class="text-brand-900 dark:text-white">mais rápidas</strong> garantem mais pontos.', bg: 'bg-orange-100 dark:bg-orange-900/30', text: 'text-orange-600 dark:text-orange-400' },
     { icon: 'check_circle', label: 'Vence quem tiver o melhor <strong class="text-brand-900 dark:text-white">equilíbrio</strong> de acertos e tempo!', bg: 'bg-emerald-100 dark:bg-emerald-900/30', text: 'text-emerald-600 dark:text-emerald-400' }
   ];
 
@@ -947,8 +946,22 @@ export class DuelComponent implements OnInit, OnDestroy {
       });
     }
 
-    const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-    this.questions.set(shuffled.slice(0, this.totalQuestions));
+    const difficultyScore = (d: string) => {
+      const lower = d?.toLowerCase() || '';
+      if (lower.includes('dif')) return 3;
+      if (lower.includes('interm') || lower.includes('médio')) return 2;
+      return 1;
+    };
+
+    const hard = allQuestions.filter(q => difficultyScore(q.difficulty) === 3).sort(() => 0.5 - Math.random());
+    const medium = allQuestions.filter(q => difficultyScore(q.difficulty) === 2).sort(() => 0.5 - Math.random());
+    const easy = allQuestions.filter(q => difficultyScore(q.difficulty) === 1).sort(() => 0.5 - Math.random());
+    
+    const ordered = [...hard, ...medium, ...easy];
+    let selected = ordered.slice(0, this.totalQuestions);
+    selected = selected.sort(() => 0.5 - Math.random());
+
+    this.questions.set(selected);
     this.currentIndex.set(0);
     this.loadQuestionAnswers();
   }

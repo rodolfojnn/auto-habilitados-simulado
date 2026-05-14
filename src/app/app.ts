@@ -23,7 +23,7 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
             <button (click)="toggleSidebar()" class="p-2 -ml-2 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
               <mat-icon class="material-icons !leading-none">menu</mat-icon>
             </button>
-            <span class="font-bold text-lg text-brand-600 dark:text-white">Simula Detran</span>
+            <span class="font-bold text-lg text-brand-600 dark:text-white">Simulado CNH do Brasil</span>
           </div>
 
           <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-sm border border-amber-200 dark:border-amber-500/30 transition-all">
@@ -46,7 +46,7 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
         <!-- Sidebar Header -->
         <div class="h-16 flex items-center px-6 border-b border-gray-100 dark:border-white/5 shrink-0 lg:h-20 lg:border-none">
           <mat-icon class="material-icons text-brand-500 mr-4">traffic</mat-icon>
-          <span class="font-bold text-xl text-gray-900 dark:text-white">Simula Detran</span>
+          <span class="font-bold text-xl text-gray-900 dark:text-white">Simulado CNH do Brasil</span>
           <button (click)="closeSidebar()" class="lg:hidden ml-auto p-2 text-gray-500 hover:text-gray-800 dark:hover:text-white">
             <mat-icon class="material-icons !leading-none">close</mat-icon>
           </button>

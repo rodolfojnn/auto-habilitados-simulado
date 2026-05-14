@@ -15,6 +15,7 @@ interface Question {
   answers: Answer[];
   explanation?: string;
   sign_code_ref?: string;
+  moduleTitle?: string;
 }
 
 interface SimulationResult {
@@ -165,9 +166,16 @@ interface FloatingPoint {
         <div #questionCard class="bg-white dark:bg-slate-800 rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-white/5 mb-6 animate-fade-in"
           [class.animate-shake]="isAnswered() && !isCorrect()"
           [class.animate-pulse-success]="isAnswered() && isCorrect()">
-          <span class="inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700/50 text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-4">
-            {{ currentQuestion().difficulty }}
-          </span>
+          <div class="flex items-center gap-2 mb-4 flex-wrap flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2">
+            @if (currentQuestion().moduleTitle) {
+              <span class="inline-block px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-500/20 text-[10px] font-black uppercase tracking-widest text-brand-600 dark:text-brand-400">
+                {{ currentQuestion().moduleTitle }}
+              </span>
+            }
+            <span class="inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700/50 text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">
+              {{ currentQuestion().difficulty }}
+            </span>
+          </div>
           <h2 class="text-xl font-bold text-slate-900 dark:text-white leading-tight">
             {{ currentQuestion().title }}
           </h2>
@@ -448,22 +456,41 @@ export class SimulationComponent implements OnInit, OnDestroy {
 
   prepareQuestions() {
     const allQuestions: Question[] = [];
-    const data = questionsData as { modules: Record<string, { questions: Question[] }> };
+    const data = questionsData as { modules: Record<string, { title: string, questions: Question[] }> };
 
     if (data && data.modules) {
       Object.values(data.modules).forEach(module => {
         if (module && module.questions) {
+          module.questions.forEach(q => {
+            q.moduleTitle = module.title;
+          });
           allQuestions.push(...module.questions);
         }
       });
     }
 
-    // Shuffle answers for each question so it's not predictable, then pick totalQuestions
-    const shuffled = [...allQuestions].map(q => ({
+    const difficultyScore = (d: string) => {
+      const lower = d?.toLowerCase() || '';
+      if (lower.includes('dif')) return 3;
+      if (lower.includes('interm') || lower.includes('médio')) return 2;
+      return 1;
+    };
+
+    const hard = allQuestions.filter(q => difficultyScore(q.difficulty) === 3).sort(() => 0.5 - Math.random());
+    const medium = allQuestions.filter(q => difficultyScore(q.difficulty) === 2).sort(() => 0.5 - Math.random());
+    const easy = allQuestions.filter(q => difficultyScore(q.difficulty) === 1).sort(() => 0.5 - Math.random());
+    
+    // Ordered by difficulty priority
+    const ordered = [...hard, ...medium, ...easy];
+    let selected = ordered.slice(0, this.totalQuestions);
+
+    // Shuffle the selected questions and their answers so their order is random during the simulation
+    selected = selected.map(q => ({
       ...q,
       answers: [...q.answers].sort(() => 0.5 - Math.random())
     })).sort(() => 0.5 - Math.random());
-    this.questions.set(shuffled.slice(0, this.totalQuestions));
+    
+    this.questions.set(selected);
   }
 
   startSimulation() {
