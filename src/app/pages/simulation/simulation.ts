@@ -22,6 +22,7 @@ interface SimulationResult {
   date: string;
   score: number;
   approved: boolean;
+  points_earned?: number;
 }
 
 interface OnboardingAnswers {
@@ -200,7 +201,7 @@ interface FloatingPoint {
         <div class="space-y-3 flex-grow">
           @for (answer of currentQuestion().answers; track currentIndex() + '-' + $index) {
               <button
-                (click)="selectAnswer(answer, $event)"
+                (click)="selectAnswer(answer)"
                 [disabled]="isAnswered()"
               class="w-full p-5 rounded-3xl border-2 text-left transition-all flex items-start gap-4 group relative overflow-hidden"
               [class]="getAnswerClasses(answer)"
@@ -527,13 +528,11 @@ export class SimulationComponent implements OnInit, OnDestroy {
     });
   }
 
-  selectAnswer(answer: Answer, event: MouseEvent) {
+  selectAnswer(answer: Answer) {
     if (this.isAnswered()) return;
 
     this.selectedAnswer.set(answer);
     this.isAnswered.set(true);
-
-    const currentPoints = parseInt(localStorage.getItem('user_points') || '0', 10);
 
     if (answer.is_correct) {
       this.score.update(s => s + 1);
@@ -543,25 +542,12 @@ export class SimulationComponent implements OnInit, OnDestroy {
         this.isCorrectAnim.set(false);
         this.nextQuestion();
       }, 1500);
-
-      const newPoints = currentPoints + 1;
-      localStorage.setItem('user_points', newPoints.toString());
-      this.simulationPoints.set(newPoints);
-      this.showPointsAnim('+1', 'positive', event.clientX, event.clientY);
     } else {
       this.isCorrect.set(false);
       this.isWrongAnim.set(true);
       setTimeout(() => this.isWrongAnim.set(false), 800);
-
-      const newPoints = Math.max(0, currentPoints - 3);
-      localStorage.setItem('user_points', newPoints.toString());
-      this.simulationPoints.set(newPoints);
-      this.showPointsAnim('-3', 'negative', event.clientX, event.clientY);
       this.triggerVibration();
     }
-
-    // Dispatch global event for App component to sync
-    window.dispatchEvent(new CustomEvent('pointsUpdated', { detail: this.simulationPoints() }));
   }
 
   private showPointsAnim(value: string, type: 'positive' | 'negative', x: number, y: number) {
@@ -597,27 +583,31 @@ export class SimulationComponent implements OnInit, OnDestroy {
     this.isFinished.set(true);
     this.saveSimulationResult();
 
-    // Final bonus animation
+    // Final points animation
+    const pointsEarned = this.score();
     setTimeout(() => {
-      this.showPointsAnim('+5', 'positive', window.innerWidth / 2, window.innerHeight / 2);
+      this.showPointsAnim(`+${pointsEarned}`, 'positive', window.innerWidth / 2, window.innerHeight / 2);
     }, 500);
   }
 
   saveSimulationResult() {
     const data = localStorage.getItem('onboarding_answers') || '{}';
+    const pointsEarned = this.score();
+
     try {
       const answers = JSON.parse(data) as OnboardingAnswers;
       const simulations = answers.simulations || [];
       simulations.push({
         date: new Date().toISOString(),
         score: this.score(),
-        approved: this.score() >= 21
+        approved: this.score() >= 21,
+        points_earned: pointsEarned
       });
       answers.simulations = simulations;
 
-      // Completion bonus: +5 points
+      // Completion bonus: add the points earned in the simulation
       const currentPoints = parseInt(localStorage.getItem('user_points') || '0', 10);
-      const newPoints = currentPoints + 5;
+      const newPoints = currentPoints + pointsEarned;
       localStorage.setItem('user_points', newPoints.toString());
       this.simulationPoints.set(newPoints);
 

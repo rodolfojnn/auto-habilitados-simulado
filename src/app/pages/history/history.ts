@@ -6,6 +6,7 @@ interface SimulationResult {
   date: string;
   score: number;
   approved: boolean;
+  points_earned?: number;
 }
 
 interface OnboardingAnswers {
@@ -20,7 +21,7 @@ interface OnboardingAnswers {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="px-6 py-6 max-w-lg mx-auto w-full flex flex-col gap-6 font-sans">
-      
+
       <header class="mb-4">
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Histórico</h1>
         <p class="text-gray-600 dark:text-slate-400 text-sm mt-1">Veja seus resultados anteriores</p>
@@ -53,12 +54,17 @@ interface OnboardingAnswers {
                   <p class="text-xs text-gray-500 dark:text-slate-400">{{ sim.date | date:'dd/MM/yyyy HH:mm' }} • {{ 30 - sim.score }} erros</p>
                 </div>
               </div>
-              <span class="font-bold text-gray-400 dark:text-slate-500">{{ Math.round((sim.score / 30) * 100) }}%</span>
+              <div class="flex flex-col items-end">
+                <span class="font-bold text-gray-400 dark:text-slate-500">{{ Math.round((sim.score / 30) * 100) }}%</span>
+                @if (sim.points_earned !== undefined) {
+                  <span class="text-[10px] font-bold text-brand-500 bg-brand-50 dark:bg-brand-500/20 px-2 py-0.5 rounded-full mt-1">+{{ sim.points_earned }} pts</span>
+                }
+              </div>
             </div>
           }
         }
       </div>
-      
+
     </div>
   `
 })
