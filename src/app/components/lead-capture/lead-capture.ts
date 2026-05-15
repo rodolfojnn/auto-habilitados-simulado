@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, signal, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, Input, Output, EventEmitter, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgxMaskDirective } from 'ngx-mask';
+import { Simulado } from '../../simulado';
 
 @Component({
   selector: 'app-lead-capture',
@@ -19,11 +20,11 @@ import { NgxMaskDirective } from 'ngx-mask';
           <p class="text-gray-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
             {{ description }}
           </p>
-          
+
           <div class="mb-8 w-full text-left">
              <ng-content></ng-content>
           </div>
-          
+
           <button (click)="nextStep()" class="w-full bg-brand-500 hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider">
             Quero participar
           </button>
@@ -41,7 +42,7 @@ import { NgxMaskDirective } from 'ngx-mask';
           </div>
 
           <form [formGroup]="leadForm" (ngSubmit)="submitLead()" class="flex flex-col gap-6">
-            
+
             @if (step() === 1) {
               <div class="animate-fade-in-up flex flex-col gap-2">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white">Como podemos te chamar?</h2>
@@ -82,7 +83,7 @@ import { NgxMaskDirective } from 'ngx-mask';
 
             @if (step() === 5) {
               <div class="animate-fade-in-up flex flex-col gap-2">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Qual a sua solicitação?</h2>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Qual categoria você tem interesse?</h2>
                 <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Para disputar com quem está na mesma situação.</p>
                 <div class="flex flex-col gap-3">
                   <label class="flex items-center gap-4 p-4 border rounded-2xl cursor-pointer transition-all" [class.border-emerald-500]="leadForm.get('solicitacao')?.value === 'Aulas de Carro'" [class.bg-emerald-50]="leadForm.get('solicitacao')?.value === 'Aulas de Carro'" [class.dark:bg-emerald-500/10]="leadForm.get('solicitacao')?.value === 'Aulas de Carro'" [class.border-gray-200]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro'" [class.dark:border-slate-700]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro'" [class.dark:bg-slate-800]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro'">
@@ -126,7 +127,7 @@ import { NgxMaskDirective } from 'ngx-mask';
                 }
               </button>
             }
-            
+
           </form>
         </div>
       }
@@ -148,8 +149,10 @@ export class LeadCaptureComponent {
   @Input() icon = 'person_add';
   @Input() iconBgClass = 'bg-amber-50 dark:bg-amber-500/20';
   @Input() iconTextClass = 'text-amber-500';
-  
+
   @Output() captured = new EventEmitter<void>();
+
+  private simulado = inject(Simulado);
 
   step = signal<number>(0);
   cepLoading = signal<boolean>(false);
@@ -169,7 +172,7 @@ export class LeadCaptureComponent {
     if (this.step() === 4) {
       const cepValueRaw = this.leadForm.get('cep')?.value || '';
       const cepValue = cepValueRaw.replace(/\D/g, '');
-      
+
       if (cepValue.length === 8) {
         this.cepLoading.set(true);
         this.cepError.set(null);
@@ -177,18 +180,18 @@ export class LeadCaptureComponent {
           const res = await fetch(`https://viacep.com.br/ws/${cepValue}/json/`);
           if (!res.ok) throw new Error('Erro na requisição');
           const data = await res.json();
-          
+
           if (data.erro) {
             this.cepError.set('CEP não encontrado.');
             this.cepLoading.set(false);
             return;
           }
-          
+
           this.leadForm.patchValue({
             municipio: data.localidade,
             uf: data.uf
           });
-        } catch (e) {
+        } catch {
           this.cepError.set('Erro ao buscar o CEP. Tente novamente.');
           this.cepLoading.set(false);
           return;
@@ -200,7 +203,7 @@ export class LeadCaptureComponent {
         return;
       }
     }
-    
+
     this.step.update(v => v + 1);
   }
 
@@ -230,11 +233,14 @@ export class LeadCaptureComponent {
           // ignore parse error
         }
       }
-      
+
       answers['lead_data'] = this.leadForm.value;
       answers['lead_captured'] = true;
-      
+
       localStorage.setItem('onboarding_answers', JSON.stringify(answers));
+
+      this.simulado.postLead(answers);
+
       this.captured.emit();
     }
   }
