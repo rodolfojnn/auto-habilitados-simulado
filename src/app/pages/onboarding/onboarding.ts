@@ -111,16 +111,6 @@ export class OnboardingComponent {
         { value: 'sozinho', label: 'Sozinho', icon: 'smartphone', color: 'bg-purple-100 text-purple-600 dark:bg-purple-500/20 dark:text-purple-400' },
         { value: 'autoescola', label: 'Autoescola', icon: 'school', color: 'bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400' },
       ]
-    },
-    {
-      id: 'categoria',
-      title: 'Qual a categoria da CNH que você está buscando aprovação?',
-      subtitle: 'Primeira habilitação pode ser apenas para carro e/ou moto.',
-      options: [
-        { value: 'carro', label: 'Carro (Categoria B)', icon: 'directions_car', color: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400' },
-        { value: 'moto', label: 'Moto (Categoria A)', icon: 'two_wheeler', color: 'bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400' },
-        { value: 'ambos', label: 'Carro e Moto (A/B)', icon: 'commute', color: 'bg-teal-100 text-teal-600 dark:bg-teal-500/20 dark:text-teal-400' },
-      ]
     }
   ];
 

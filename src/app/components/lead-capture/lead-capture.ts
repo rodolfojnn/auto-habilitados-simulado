@@ -54,7 +54,7 @@ import { NgxMaskDirective } from 'ngx-mask';
               <div class="animate-fade-in-up flex flex-col gap-2">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white">Qual seu WhatsApp?</h2>
                 <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Caso você ganhe ou para suporte, vamos avisar por lá.</p>
-                <input type="tel" formControlName="whatsapp" mask="(00) 00000-0000" placeholder="(11) 99999-9999" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg">
+                <input type="tel" formControlName="fone1" mask="(00) 00000-0000" placeholder="(11) 99999-9999" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg">
               </div>
             }
 
@@ -82,27 +82,27 @@ import { NgxMaskDirective } from 'ngx-mask';
 
             @if (step() === 5) {
               <div class="animate-fade-in-up flex flex-col gap-2">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Qual a sua categoria?</h2>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Qual a sua solicitação?</h2>
                 <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Para disputar com quem está na mesma situação.</p>
                 <div class="flex flex-col gap-3">
-                  <label class="flex items-center gap-4 p-4 border rounded-2xl cursor-pointer transition-all" [class.border-emerald-500]="leadForm.get('categoria')?.value === 'carro'" [class.bg-emerald-50]="leadForm.get('categoria')?.value === 'carro'" [class.dark:bg-emerald-500/10]="leadForm.get('categoria')?.value === 'carro'" [class.border-gray-200]="leadForm.get('categoria')?.value !== 'carro'" [class.dark:border-slate-700]="leadForm.get('categoria')?.value !== 'carro'" [class.dark:bg-slate-800]="leadForm.get('categoria')?.value !== 'carro'">
-                    <input type="radio" formControlName="categoria" value="carro" class="hidden">
+                  <label class="flex items-center gap-4 p-4 border rounded-2xl cursor-pointer transition-all" [class.border-emerald-500]="leadForm.get('solicitacao')?.value === 'Aulas de Carro'" [class.bg-emerald-50]="leadForm.get('solicitacao')?.value === 'Aulas de Carro'" [class.dark:bg-emerald-500/10]="leadForm.get('solicitacao')?.value === 'Aulas de Carro'" [class.border-gray-200]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro'" [class.dark:border-slate-700]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro'" [class.dark:bg-slate-800]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro'">
+                    <input type="radio" formControlName="solicitacao" value="Aulas de Carro" class="hidden">
                     <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center shrink-0">
                        <mat-icon class="material-icons">directions_car</mat-icon>
                     </div>
-                    <span class="font-semibold text-lg text-gray-900 dark:text-white">Aulas de Carro (B)</span>
+                    <span class="font-semibold text-lg text-gray-900 dark:text-white">Aulas de Carro</span>
                   </label>
 
-                  <label class="flex items-center gap-4 p-4 border rounded-2xl cursor-pointer transition-all" [class.border-emerald-500]="leadForm.get('categoria')?.value === 'moto'" [class.bg-emerald-50]="leadForm.get('categoria')?.value === 'moto'" [class.dark:bg-emerald-500/10]="leadForm.get('categoria')?.value === 'moto'" [class.border-gray-200]="leadForm.get('categoria')?.value !== 'moto'" [class.dark:border-slate-700]="leadForm.get('categoria')?.value !== 'moto'" [class.dark:bg-slate-800]="leadForm.get('categoria')?.value !== 'moto'">
-                    <input type="radio" formControlName="categoria" value="moto" class="hidden">
+                  <label class="flex items-center gap-4 p-4 border rounded-2xl cursor-pointer transition-all" [class.border-emerald-500]="leadForm.get('solicitacao')?.value === 'Aulas de Moto'" [class.bg-emerald-50]="leadForm.get('solicitacao')?.value === 'Aulas de Moto'" [class.dark:bg-emerald-500/10]="leadForm.get('solicitacao')?.value === 'Aulas de Moto'" [class.border-gray-200]="leadForm.get('solicitacao')?.value !== 'Aulas de Moto'" [class.dark:border-slate-700]="leadForm.get('solicitacao')?.value !== 'Aulas de Moto'" [class.dark:bg-slate-800]="leadForm.get('solicitacao')?.value !== 'Aulas de Moto'">
+                    <input type="radio" formControlName="solicitacao" value="Aulas de Moto" class="hidden">
                     <div class="w-12 h-12 bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 rounded-xl flex items-center justify-center shrink-0">
                        <mat-icon class="material-icons">two_wheeler</mat-icon>
                     </div>
-                    <span class="font-semibold text-lg text-gray-900 dark:text-white">Aulas de Moto (A)</span>
+                    <span class="font-semibold text-lg text-gray-900 dark:text-white">Aulas de Moto</span>
                   </label>
 
-                  <label class="flex items-center gap-4 p-4 border rounded-2xl cursor-pointer transition-all" [class.border-emerald-500]="leadForm.get('categoria')?.value === 'carro_moto'" [class.bg-emerald-50]="leadForm.get('categoria')?.value === 'carro_moto'" [class.dark:bg-emerald-500/10]="leadForm.get('categoria')?.value === 'carro_moto'" [class.border-gray-200]="leadForm.get('categoria')?.value !== 'carro_moto'" [class.dark:border-slate-700]="leadForm.get('categoria')?.value !== 'carro_moto'" [class.dark:bg-slate-800]="leadForm.get('categoria')?.value !== 'carro_moto'">
-                    <input type="radio" formControlName="categoria" value="carro_moto" class="hidden">
+                  <label class="flex items-center gap-4 p-4 border rounded-2xl cursor-pointer transition-all" [class.border-emerald-500]="leadForm.get('solicitacao')?.value === 'Aulas de Carro e Moto'" [class.bg-emerald-50]="leadForm.get('solicitacao')?.value === 'Aulas de Carro e Moto'" [class.dark:bg-emerald-500/10]="leadForm.get('solicitacao')?.value === 'Aulas de Carro e Moto'" [class.border-gray-200]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro e Moto'" [class.dark:border-slate-700]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro e Moto'" [class.dark:bg-slate-800]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro e Moto'">
+                    <input type="radio" formControlName="solicitacao" value="Aulas de Carro e Moto" class="hidden">
                     <div class="w-12 h-12 bg-teal-100 dark:bg-teal-500/20 text-teal-600 dark:text-teal-400 rounded-xl flex items-center justify-center shrink-0">
                        <mat-icon class="material-icons">commute</mat-icon>
                     </div>
@@ -157,12 +157,12 @@ export class LeadCaptureComponent {
 
   leadForm = new FormGroup({
     nome: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    whatsapp: new FormControl('', [Validators.required, Validators.minLength(10)]),
+    fone1: new FormControl('', [Validators.required, Validators.minLength(10)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     cep: new FormControl('', [Validators.required, Validators.minLength(8)]),
     municipio: new FormControl(''),
     uf: new FormControl(''),
-    categoria: new FormControl('', [Validators.required])
+    solicitacao: new FormControl('', [Validators.required])
   });
 
   async nextStep() {
@@ -213,7 +213,7 @@ export class LeadCaptureComponent {
   isCurrentStepValid(): boolean {
     const currentStep = this.step();
     if (currentStep === 1) return this.leadForm.get('nome')?.valid ?? false;
-    if (currentStep === 2) return this.leadForm.get('whatsapp')?.valid ?? false;
+    if (currentStep === 2) return this.leadForm.get('fone1')?.valid ?? false;
     if (currentStep === 3) return this.leadForm.get('email')?.valid ?? false;
     if (currentStep === 4) return this.leadForm.get('cep')?.valid ?? false;
     return true; // For step 0
