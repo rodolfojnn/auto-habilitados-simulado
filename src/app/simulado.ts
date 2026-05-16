@@ -7,10 +7,15 @@ import { HttpClient } from '@angular/common/http';
 export class Simulado {
   private http = inject(HttpClient);
 
-  postLead(data: Record<string, unknown>) {
-    this.http.post('https://api.dirigiragora.com.br/v1/simulado/newLead', data).subscribe({
-      next: () => { /* silently success */ },
-      error: (err) => console.error('Erro silencioso ao enviar lead:', err)
+  postLead(data: Record<string, unknown>): Promise<void> {
+    return new Promise((resolve) => {
+      this.http.post('https://api.dirigiragora.com.br/v1/simulado/newLead', data).subscribe({
+        next: () => resolve(),
+        error: (err) => {
+          console.error('Erro silencioso ao enviar lead:', err);
+          resolve();
+        }
+      });
     });
   }
 }

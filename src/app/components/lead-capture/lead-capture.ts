@@ -3,6 +3,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgxMaskDirective } from 'ngx-mask';
 import { Simulado } from '../../simulado';
+import { AppStoreService } from '../../app-store.service';
+import { PushService } from '../../push.service';
 
 @Component({
   selector: 'app-lead-capture',
@@ -153,6 +155,8 @@ export class LeadCaptureComponent {
   @Output() captured = new EventEmitter<void>();
 
   private simulado = inject(Simulado);
+  private store = inject(AppStoreService);
+  private pushService = inject(PushService);
 
   step = signal<number>(0);
   cepLoading = signal<boolean>(false);
@@ -222,7 +226,7 @@ export class LeadCaptureComponent {
     return true; // For step 0
   }
 
-  submitLead() {
+  async submitLead() {
     if (this.leadForm.valid) {
       const data = localStorage.getItem('onboarding_answers');
       let answers: Record<string, unknown> = {};
@@ -239,9 +243,20 @@ export class LeadCaptureComponent {
 
       localStorage.setItem('onboarding_answers', JSON.stringify(answers));
 
-      this.simulado.postLead(answers);
+      // Salva fone1
+      const fone1Raw = this.leadForm.get('fone1')?.value || '';
+      const fone1 = fone1Raw.replace(/\D/g, ''); // limpa a formatação ou como preferir
+      this.store.fone1.set(fone1);
 
+      // Espera enviar o lead
+      await this.simulado.postLead(answers);
+
+      // Emite o evento logo após salvar o lead,
+      // ou aguarda as notificações (a notificação é assíncrona, não precisamos travar a UI)
       this.captured.emit();
+
+      // Pede push notification
+      await this.pushService.initPush();
     }
   }
 }
