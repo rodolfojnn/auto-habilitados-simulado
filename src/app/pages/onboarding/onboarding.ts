@@ -105,7 +105,7 @@ export class OnboardingComponent {
     },
     {
       id: 'metodo_estudo',
-      title: 'Você está fazendo sozinho ou contratou uma autoescola?',
+      title: 'Você está fazendo sozinho ou já contratou uma autoescola?',
       subtitle: 'Isso nos ajuda a direcionar melhor o conteúdo.',
       options: [
         { value: 'sozinho', label: 'Sozinho', icon: 'smartphone', color: 'bg-purple-100 text-purple-600 dark:bg-purple-500/20 dark:text-purple-400' },

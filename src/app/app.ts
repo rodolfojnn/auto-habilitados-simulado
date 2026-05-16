@@ -14,10 +14,10 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
     @if (!onboardingCompleted()) {
       <app-onboarding (completed)="finishOnboarding($event)"></app-onboarding>
     } @else {
-      <div class="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-200 lg:flex text-gray-900 dark:text-gray-100 font-sans">
+      <div class="h-full flex flex-col lg:flex-row bg-white dark:bg-slate-900 transition-colors duration-200 text-gray-900 dark:text-gray-100 font-sans">
 
       <!-- Top App Bar (Mobile Only) -->
-      <header class="lg:hidden sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-white/5 shadow-sm transition-colors duration-200">
+      <header class="lg:hidden shrink-0 sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-white/5 shadow-sm transition-colors duration-200">
         <div class="flex items-center justify-between px-4 h-16">
           <div class="flex items-center gap-3">
             <button (click)="toggleSidebar()" class="p-2 -ml-2 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
@@ -42,7 +42,7 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
 
       <!-- Sidebar -->
       <aside
-        class="fixed inset-y-0 left-0 z-[60] w-72 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-white/5 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:h-screen lg:shrink-0 flex flex-col"
+        class="fixed inset-y-0 left-0 z-[60] w-72 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-white/5 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:h-full lg:shrink-0 flex flex-col"
         [class.-translate-x-full]="!sidebarOpen()"
       >
         <!-- Sidebar Header -->
@@ -124,7 +124,7 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
       </aside>
 
       <!-- Main Content -->
-      <main class="flex-1 relative h-[calc(100vh-4rem)] lg:h-screen overflow-y-auto">
+      <main class="flex-1 relative overflow-y-auto">
         <router-outlet></router-outlet>
       </main>
 

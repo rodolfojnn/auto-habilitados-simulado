@@ -40,7 +40,7 @@ interface GameFloatingPoint {
   imports: [MatIconModule, LeadCaptureComponent, DecimalPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="min-h-[calc(100dvh-80px)] md:min-h-screen bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-white font-sans selection:bg-indigo-500/30 overflow-hidden relative">
+    <div class="min-h-full bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-white font-sans selection:bg-indigo-500/30 overflow-hidden relative">
       @if (!leadCaptured()) {
         <app-lead-capture
           title="Duelo Multiplayer"
@@ -91,7 +91,7 @@ interface GameFloatingPoint {
         </app-lead-capture>
       } @else if (!isStarted()) {
         <!-- Home State within Duel -->
-        <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto min-h-[calc(100dvh-80px)] flex flex-col pt-10">
+        <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto min-h-full flex flex-col pt-10">
           <!-- Top Card -->
           <div class="bg-indigo-600 dark:bg-indigo-700 rounded-[2rem] p-6 text-white mb-8 shadow-lg shadow-indigo-600/20 relative overflow-hidden">
             <div class="absolute -right-6 -top-6 w-32 h-32 bg-white flex rounded-full opacity-10"></div>
@@ -189,7 +189,7 @@ interface GameFloatingPoint {
         </div>
       } @else {
         <!-- Live Duel Game State -->
-        <div class="flex flex-col h-[calc(100dvh-80px)] md:h-screen max-w-2xl mx-auto overflow-hidden transition-colors"
+        <div class="flex flex-col h-full max-w-2xl mx-auto overflow-hidden transition-colors"
           [class.animate-flash-error]="hasAnswered() && !isLastAnswerCorrect()"
           [class.animate-flash-success]="hasAnswered() && isLastAnswerCorrect()">
 

@@ -41,6 +41,7 @@ yarn-error.log
 testem.log
 /typings
 __screenshots__/
+/android
 
 # System files
 .DS_Store

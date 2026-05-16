@@ -45,7 +45,7 @@ interface FloatingPoint {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (!isStarted() && !isFinished()) {
-      <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto min-h-[calc(100dvh-80px)] flex flex-col">
+      <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto min-h-full flex flex-col">
         <!-- Top Card -->
         <div class="bg-brand-600 dark:bg-brand-700 rounded-[2rem] p-6 text-white mb-8 shadow-lg shadow-brand-600/20 relative overflow-hidden">
           <!-- Decoration -->
@@ -110,13 +110,13 @@ interface FloatingPoint {
             (click)="startSimulation()"
             class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-lg py-4 px-6 rounded-2xl shadow-xl shadow-brand-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
           >
-            <span>Iniciar Simulado</span>
+            <span>Iniciar Simuladoxxx</span>
             <mat-icon class="material-icons">arrow_forward</mat-icon>
           </button>
         </div>
       </div>
     } @else if (isStarted() && !isFinished()) {
-      <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto min-h-[calc(100dvh-80px)] flex flex-col font-sans relative overflow-hidden transition-colors"
+      <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto min-h-full flex flex-col font-sans relative overflow-hidden transition-colors"
         [class.animate-flash-error]="isAnswered() && !isCorrect()"
         [class.animate-flash-success]="isAnswered() && isCorrect()">
 
@@ -262,7 +262,7 @@ interface FloatingPoint {
         }
       </div>
     } @else if (isFinished()) {
-      <div class="px-6 pt-10 pb-24 max-w-2xl mx-auto min-h-[calc(100dvh-80px)] flex flex-col animate-fade-in font-sans relative overflow-hidden">
+      <div class="px-6 pt-10 pb-24 max-w-2xl mx-auto min-h-full flex flex-col animate-fade-in font-sans relative overflow-hidden">
 
         <!-- Floating Finish Bonus Anim -->
         @for (fp of floatingPoints(); track fp.id) {
