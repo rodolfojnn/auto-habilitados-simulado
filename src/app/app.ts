@@ -4,6 +4,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { DOCUMENT } from '@angular/common';
 import { OnboardingComponent } from './pages/onboarding/onboarding';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal';
+import { PushService } from './push.service';
+import { AppStoreService } from './app-store.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -158,6 +160,8 @@ export class App implements OnInit {
 
   private document = inject(DOCUMENT);
   private router = inject(Router);
+  private pushService = inject(PushService);
+  private store = inject(AppStoreService);
 
   constructor() {
     const isOnboarded = localStorage.getItem('onboarding_completed') === 'true';
@@ -184,14 +188,27 @@ export class App implements OnInit {
       if (data) {
         const answers = JSON.parse(data);
         if (answers && answers['lead_data'] && answers['lead_data'].nome) {
-          const name = answers['lead_data'].nome.trim();
+          const leadData = answers['lead_data'];
+          const name = leadData.nome.trim();
           this.userName.set(name);
+
+          if (leadData.fone1) {
+            const fone1Raw = leadData.fone1 || '';
+            const fone1 = fone1Raw.replace(/\D/g, '');
+            this.store.fone1.set(fone1);
+          }
 
           const parts = name.split(' ').filter((p: string) => p.trim() !== '');
           if (parts.length >= 2) {
              this.userInitials.set(`${parts[0][0]}${parts[parts.length-1][0]}`.toUpperCase());
           } else if (parts.length === 1 && parts[0].length >= 1) {
              this.userInitials.set(parts[0].substring(0, 2).toUpperCase());
+          }
+
+          // If we have lead_data, the user has completed onboarding and lead capture
+          // Ensure we try to initialize push notifications if not already done.
+          if (answers['lead_captured']) {
+            this.pushService.initPush();
           }
         }
       }

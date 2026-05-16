@@ -116,8 +116,13 @@ import { PushService } from '../../push.service';
             }
 
             @if (step() === 5) {
-              <button type="submit" [disabled]="leadForm.invalid" class="w-full bg-brand-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider mt-2">
-                Acessar
+              <button type="submit" [disabled]="leadForm.invalid || submitting()" class="w-full bg-brand-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider mt-2 flex items-center justify-center gap-2">
+                @if (submitting()) {
+                  <mat-icon class="material-icons animate-spin !text-xl !w-5 !h-5 !leading-none">refresh</mat-icon>
+                  <span>Enviando...</span>
+                } @else {
+                  <span>Acessar</span>
+                }
               </button>
             } @else {
               <button type="button" (click)="nextStep()" [disabled]="!isCurrentStepValid() || cepLoading()" class="w-full bg-brand-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider mt-2 flex items-center justify-center gap-2">
@@ -161,6 +166,7 @@ export class LeadCaptureComponent {
   step = signal<number>(0);
   cepLoading = signal<boolean>(false);
   cepError = signal<string | null>(null);
+  submitting = signal<boolean>(false);
 
   leadForm = new FormGroup({
     nome: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -227,36 +233,41 @@ export class LeadCaptureComponent {
   }
 
   async submitLead() {
-    if (this.leadForm.valid) {
-      const data = localStorage.getItem('onboarding_answers');
-      let answers: Record<string, unknown> = {};
-      if (data) {
-        try {
-          answers = JSON.parse(data) as Record<string, unknown>;
-        } catch {
-          // ignore parse error
+    if (this.leadForm.valid && !this.submitting()) {
+      this.submitting.set(true);
+      try {
+        const data = localStorage.getItem('onboarding_answers');
+        let answers: Record<string, unknown> = {};
+        if (data) {
+          try {
+            answers = JSON.parse(data) as Record<string, unknown>;
+          } catch {
+            // ignore parse error
+          }
         }
+
+        answers['lead_data'] = this.leadForm.value;
+        answers['lead_captured'] = true;
+
+        localStorage.setItem('onboarding_answers', JSON.stringify(answers));
+
+        // Salva fone1
+        const fone1Raw = this.leadForm.get('fone1')?.value || '';
+        const fone1 = fone1Raw.replace(/\D/g, ''); // limpa a formatação ou como preferir
+        this.store.fone1.set(fone1);
+
+        // Espera enviar o lead
+        await this.simulado.postLead(answers);
+
+        // Emite o evento logo após salvar o lead,
+        // ou aguarda as notificações (a notificação é assíncrona, não precisamos travar a UI)
+        this.captured.emit();
+
+        // Pede push notification
+        await this.pushService.initPush();
+      } finally {
+        this.submitting.set(false);
       }
-
-      answers['lead_data'] = this.leadForm.value;
-      answers['lead_captured'] = true;
-
-      localStorage.setItem('onboarding_answers', JSON.stringify(answers));
-
-      // Salva fone1
-      const fone1Raw = this.leadForm.get('fone1')?.value || '';
-      const fone1 = fone1Raw.replace(/\D/g, ''); // limpa a formatação ou como preferir
-      this.store.fone1.set(fone1);
-
-      // Espera enviar o lead
-      await this.simulado.postLead(answers);
-
-      // Emite o evento logo após salvar o lead,
-      // ou aguarda as notificações (a notificação é assíncrona, não precisamos travar a UI)
-      this.captured.emit();
-
-      // Pede push notification
-      await this.pushService.initPush();
     }
   }
 }
