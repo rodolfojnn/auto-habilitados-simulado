@@ -281,6 +281,7 @@ export class App implements OnInit {
 
   resetApp() {
     this.showResetModal.set(true);
+    this.closeSidebar();
   }
 
   confirmResetApp() {

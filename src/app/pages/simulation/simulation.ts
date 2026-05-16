@@ -110,7 +110,7 @@ interface FloatingPoint {
             (click)="startSimulation()"
             class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-lg py-4 px-6 rounded-2xl shadow-xl shadow-brand-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
           >
-            <span>Iniciar Simuladoxxx</span>
+            <span>Iniciar Simulado</span>
             <mat-icon class="material-icons">arrow_forward</mat-icon>
           </button>
         </div>
@@ -646,7 +646,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
 
   getAnswerClasses(answer: Answer): string {
     if (!this.isAnswered()) {
-      return 'border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 hover:border-brand-400 hover:bg-brand-50/30 dark:hover:bg-brand-500/10 text-slate-700 dark:text-slate-300';
+      return 'border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 md:hover:border-brand-400 md:hover:bg-brand-50/30 dark:md:hover:bg-brand-500/10 active:border-brand-400 active:bg-brand-50/30 dark:active:bg-brand-500/10 text-slate-700 dark:text-slate-300';
     }
 
     if (answer.is_correct) {
@@ -662,7 +662,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
 
   getBadgeClasses(answer: Answer): string {
     if (!this.isAnswered()) {
-      return 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 group-hover:bg-brand-500 group-hover:text-white';
+      return 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 md:group-hover:bg-brand-500 md:group-hover:text-white group-active:bg-brand-500 group-active:text-white';
     }
 
     if (answer.is_correct) {

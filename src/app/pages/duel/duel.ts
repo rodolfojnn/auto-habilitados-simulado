@@ -710,7 +710,7 @@ export class DuelComponent implements OnInit, OnDestroy {
 
   getAnswerClasses(answer: DuelAnswer): string {
     if (!this.hasAnswered()) {
-      return 'border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 hover:border-indigo-400 hover:bg-indigo-50/30 dark:hover:bg-indigo-500/10 text-slate-700 dark:text-slate-300';
+      return 'border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 md:hover:border-indigo-400 md:hover:bg-indigo-50/30 dark:md:hover:bg-indigo-500/10 active:border-indigo-400 active:bg-indigo-50/30 dark:active:bg-indigo-500/10 text-slate-700 dark:text-slate-300';
     }
 
     if (answer.isCorrect) {
@@ -726,7 +726,7 @@ export class DuelComponent implements OnInit, OnDestroy {
 
   getBadgeClasses(answer: DuelAnswer): string {
     if (!this.hasAnswered()) {
-      return 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 group-hover:bg-indigo-500 group-hover:text-white';
+      return 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 md:group-hover:bg-indigo-500 md:group-hover:text-white group-active:bg-indigo-500 group-active:text-white';
     }
 
     if (answer.isCorrect) {
