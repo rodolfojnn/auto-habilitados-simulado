@@ -294,7 +294,7 @@ interface GameFloatingPoint {
             </div>
 
             <!-- Answers -->
-            <div class="space-y-3 flex-grow overflow-y-auto pr-1">
+            <div class="space-y-3 flex-grow overflow-y-auto pr-1 pb-32">
               @for (answer of answers(); track answer.label) {
                 <button
                   (click)="selectAnswer(answer, $event)"
@@ -321,13 +321,14 @@ interface GameFloatingPoint {
             </div>
 
             <!-- Interactive Summary Trigger -->
-            <div
-              (click)="toggleStats()"
-              (keydown.enter)="toggleStats()"
-              tabindex="0"
-              class="relative z-30 w-full mt-auto mb-2 p-4 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:border-indigo-300 dark:hover:border-indigo-500/50 active:scale-[0.98] transition-all cursor-pointer select-none group"
-            >
-              <div class="flex items-center justify-between">
+            <div class="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+              <div
+                (click)="toggleStats()"
+                (keydown.enter)="toggleStats()"
+                tabindex="0"
+                class="w-full max-w-2xl mx-auto px-6 py-4 cursor-pointer select-none group flex flex-col transition-all active:scale-[0.99] hover:bg-slate-50 dark:hover:bg-slate-800/50"
+              >
+                <div class="flex items-center justify-between">
                 <!-- Player You -->
                 <div class="flex items-center gap-3">
                   <div #myAvatar class="w-12 h-12 rounded-full border-2 border-blue-500/30 dark:border-blue-500/50 bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center relative">
@@ -360,6 +361,7 @@ interface GameFloatingPoint {
                    Ver detalhes da partida
                  </div>
               </div>
+            </div>
             </div>
           </div>
         </div>
