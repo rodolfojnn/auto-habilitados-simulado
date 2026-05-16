@@ -257,14 +257,16 @@ export class LeadCaptureComponent {
         this.store.fone1.set(fone1);
 
         // Espera enviar o lead
+        console.log('Sending newLead com dados:', answers);
         await this.simulado.postLead(answers);
+        console.log('newLead sent');
 
-        // Emite o evento logo após salvar o lead,
-        // ou aguarda as notificações (a notificação é assíncrona, não precisamos travar a UI)
-        this.captured.emit();
-
-        // Pede push notification
+        // Pede push notification ANTES de fechar a view, se necessário
+        console.log('Initing push token...');
         await this.pushService.initPush();
+
+        // Emite o evento logo após salvar o lead e pedir o push
+        this.captured.emit();
       } finally {
         this.submitting.set(false);
       }

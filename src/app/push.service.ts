@@ -12,32 +12,36 @@ export class PushService {
   private store = inject(AppStoreService);
   private router = inject(Router);
   private http = inject(HttpClient);
+  private listenersInitialized = false;
 
   async initPush() {
     const platform = Capacitor.getPlatform();
     if (platform === 'web') return;
-    if (this.store.pushPermission()) return;
 
     this.initListeners();
     const permission = await this.checkPermission();
     this.store.pushPermission.set(permission);
 
-    // pode chamar register() (se ainda não chamou)
+    // pode chamar register() (se ainda não chamou ou para atualizar o token com o fone mais recente)
     if (permission === 'granted') {
       return PushNotifications.register();
     }
 
-    // NÃO mostrar popup do sistema
-    // talvez mostrar aviso com link para configurações
-    if (permission === 'denied') return;
+    // NÃO mostrar popup do sistema se não der
+    if (permission === 'denied') {
+      return;
+    }
 
-    // mostrar modal explicando notificações
+    // mostrar modal/prompt nativo explicando notificações
     if (permission === 'prompt' || permission === 'prompt-with-rationale') {
       this.requestPermissions();
     }
   }
 
   initListeners() {
+    if (this.listenersInitialized) return;
+    this.listenersInitialized = true;
+
     // 🔑 Token gerado / atualizado
     PushNotifications.addListener('registration', (token) => {
       const platform  = Capacitor.getPlatform();

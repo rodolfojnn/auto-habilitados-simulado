@@ -204,12 +204,6 @@ export class App implements OnInit {
           } else if (parts.length === 1 && parts[0].length >= 1) {
              this.userInitials.set(parts[0].substring(0, 2).toUpperCase());
           }
-
-          // If we have lead_data, the user has completed onboarding and lead capture
-          // Ensure we try to initialize push notifications if not already done.
-          if (answers['lead_captured']) {
-            this.pushService.initPush();
-          }
         }
       }
     } catch (e) {
