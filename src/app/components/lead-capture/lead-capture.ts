@@ -73,7 +73,7 @@ import { PushService } from '../../push.service';
               <div class="animate-fade-in-up flex flex-col gap-2">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white">Seu CEP</h2>
                 <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Para montarmos as ligas de ranking por região.</p>
-                <input type="text" formControlName="cep" (input)="cepError.set(null)" mask="00000-000" placeholder="00000-000" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg" [class.border-rose-500]="!!cepError()" [class.border-gray-200]="!cepError()" [class.dark:border-slate-700]="!cepError()">
+                <input type="tel" formControlName="cep" (input)="cepError.set(null)" mask="00000-000" placeholder="00000-000" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg" [class.border-rose-500]="!!cepError()" [class.border-gray-200]="!cepError()" [class.dark:border-slate-700]="!cepError()">
                 @if (cepError()) {
                   <p class="text-sm font-medium text-rose-500 mt-1 flex items-center gap-1">
                     <mat-icon class="material-icons !text-sm !w-4 !h-4 !leading-none">error</mat-icon>
