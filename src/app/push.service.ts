@@ -75,9 +75,7 @@ export class PushService {
     PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
       console.log('👉 Clique:', notification);
       const data = notification?.notification?.data;
-      if (data && data.pagina === 'iframe-container') {
-        this.router.navigate(['/iframe-container']);
-      }
+      if (data && data.pagina) this.router.navigate(['/' + data.pagina]);
     });
   }
 
