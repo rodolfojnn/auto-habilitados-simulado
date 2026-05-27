@@ -204,6 +204,9 @@ export class App implements OnInit {
           } else if (parts.length === 1 && parts[0].length >= 1) {
              this.userInitials.set(parts[0].substring(0, 2).toUpperCase());
           }
+
+          // Se temos lead_data, já podemos verificar permissões no background
+          this.pushService.registerOnStartup();
         }
       }
     } catch (e) {

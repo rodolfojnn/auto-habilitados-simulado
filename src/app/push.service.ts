@@ -38,6 +38,21 @@ export class PushService {
     }
   }
 
+  async registerOnStartup() {
+    const platform = Capacitor.getPlatform();
+    if (platform === 'web') return;
+
+    this.initListeners();
+
+    const permission = await this.checkPermission();
+    this.store.pushPermission.set(permission);
+
+    // Apenas registra e envia o token pro backend se a permissão já estiver concedida
+    if (permission === 'granted') {
+      PushNotifications.register();
+    }
+  }
+
   initListeners() {
     if (this.listenersInitialized) return;
     this.listenersInitialized = true;
@@ -75,7 +90,9 @@ export class PushService {
     PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
       console.log('👉 Clique:', notification);
       const data = notification?.notification?.data;
-      if (data && data.pagina) this.router.navigate(['/' + data.pagina]);
+      if (data && data.pagina === 'iframe-container') {
+        this.router.navigate(['/iframe-container']);
+      }
     });
   }
 
