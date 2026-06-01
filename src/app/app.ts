@@ -1,20 +1,32 @@
-import { ChangeDetectionStrategy, Component, signal, inject, OnInit } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
 import { DOCUMENT } from '@angular/common';
-import { OnboardingComponent } from './pages/onboarding/onboarding';
-import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal';
-import { PushService } from './push.service';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Capacitor } from '@capacitor/core';
 import { AppStoreService } from './app-store.service';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal';
+import { EnablePushComponent } from './components/enable-push/enable-push.component';
+import { LeadCaptureComponent } from './components/lead-capture/lead-capture';
+import { OnboardingComponent } from './pages/onboarding/onboarding';
+import { PushService } from './push.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, OnboardingComponent, ConfirmModalComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, OnboardingComponent, ConfirmModalComponent, LeadCaptureComponent, EnablePushComponent],
   template: `
     @if (!onboardingCompleted()) {
       <app-onboarding (completed)="finishOnboarding($event)"></app-onboarding>
+    } @else if (!leadCaptured()) {
+      <div class="fixed inset-0 z-[100] bg-gray-50 dark:bg-slate-900 overflow-y-auto">
+        <app-lead-capture (captured)="onLeadCaptured()"
+            title="Completar Cadastro"
+            description="Precisamos de algumas informações para continuar.">
+        </app-lead-capture>
+      </div>
+    } @else if (needsPushPermission()) {
+      <app-enable-push></app-enable-push>
     } @else {
       <div class="h-full flex flex-col lg:flex-row bg-white dark:bg-slate-900 transition-colors duration-200 text-gray-900 dark:text-gray-100 font-sans">
 
@@ -152,11 +164,18 @@ export class App implements OnInit {
   sidebarOpen = signal(false);
   isDark = signal(false);
   onboardingCompleted = signal(true);
+  leadCaptured = signal(true);
   userPoints = signal<number>(0);
   showResetModal = signal(false);
 
   userName = signal<string>('Aluno');
   userInitials = signal<string>('AL');
+
+  needsPushPermission = computed(() => {
+    if (Capacitor.getPlatform() === 'web') return false;
+    const perm = this.store.pushPermission();
+    return perm !== 'granted';
+  });
 
   private document = inject(DOCUMENT);
   private router = inject(Router);
@@ -166,6 +185,20 @@ export class App implements OnInit {
   constructor() {
     const isOnboarded = localStorage.getItem('onboarding_completed') === 'true';
     this.onboardingCompleted.set(isOnboarded);
+
+    // Check if lead is captured
+    try {
+      const data = localStorage.getItem('onboarding_answers');
+      if (data) {
+        const answers = JSON.parse(data);
+        this.leadCaptured.set(answers['lead_captured'] === true);
+      } else {
+        this.leadCaptured.set(false);
+      }
+    } catch {
+      this.leadCaptured.set(false);
+    }
+
     this.updateThemeClass(this.isDark());
 
     const pointsStr = localStorage.getItem('user_points');
@@ -261,6 +294,13 @@ export class App implements OnInit {
     localStorage.setItem('onboarding_completed', 'true');
     localStorage.setItem('onboarding_answers', JSON.stringify(answers));
     this.onboardingCompleted.set(true);
+    // Move to lead capture since it's next in the sequence
+    this.leadCaptured.set(false);
+  }
+
+  onLeadCaptured() {
+    this.leadCaptured.set(true);
+    this.checkLeadData();
   }
 
   toggleSidebar() {
@@ -287,6 +327,7 @@ export class App implements OnInit {
     localStorage.removeItem('user_points');
     this.userPoints.set(0);
     this.onboardingCompleted.set(false);
+    this.leadCaptured.set(false);
     this.showResetModal.set(false);
     this.closeSidebar();
     this.router.navigate(['/']);

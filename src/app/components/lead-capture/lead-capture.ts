@@ -34,7 +34,7 @@ import { PushService } from '../../push.service';
       } @else {
         <div class="animate-fade-in-up flex flex-col gap-6">
           <div class="flex items-center gap-4 mb-2 mt-2">
-             <button type="button" (click)="prevStep()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+              <button type="button" [class.invisible]="step() === 1" (click)="prevStep()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                 <mat-icon class="material-icons !leading-none">arrow_back_ios_new</mat-icon>
              </button>
              <div class="flex-1 h-2 bg-gray-200 dark:bg-slate-800 rounded-full overflow-hidden">
@@ -163,7 +163,7 @@ export class LeadCaptureComponent {
   private store = inject(AppStoreService);
   private pushService = inject(PushService);
 
-  step = signal<number>(0);
+  step = signal<number>(1);
   cepLoading = signal<boolean>(false);
   cepError = signal<string | null>(null);
   submitting = signal<boolean>(false);
@@ -218,7 +218,7 @@ export class LeadCaptureComponent {
   }
 
   prevStep() {
-    if (this.step() > 0) {
+    if (this.step() > 1) {
       this.step.update(v => v - 1);
     }
   }

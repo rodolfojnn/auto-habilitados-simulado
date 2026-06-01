@@ -96,6 +96,14 @@ export class PushService {
     });
   }
 
+  async checkAndRegister() {
+    const perm = await this.checkPermission();
+    this.store.pushPermission.set(perm);
+    if (perm === 'granted') {
+      PushNotifications.register();
+    }
+  }
+
   requestPermissions() {
     PushNotifications.requestPermissions().then((result) => {
       this.store.pushPermission.set(result.receive);
