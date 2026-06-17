@@ -80,13 +80,66 @@ import { MatIconModule } from '@angular/material/icon';
             </button>
           </header>
 
-          <div class="bg-white dark:bg-slate-800/40 border border-gray-100 dark:border-white/5 rounded-3xl p-8 flex flex-col items-center text-center shadow-sm">
+            <!-- <div class="bg-white dark:bg-slate-800/40 border border-gray-100 dark:border-white/5 rounded-3xl p-8 flex flex-col items-center text-center shadow-sm">
             <div class="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-6 text-slate-400 dark:text-slate-500">
               <mat-icon class="!text-5xl !w-12 !h-12 !leading-none">calendar_month</mat-icon>
             </div>
             <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Nenhum ranking no momento</h2>
             <p class="text-gray-600 dark:text-slate-400 text-sm leading-relaxed max-w-[250px]">
               Os resultados são agrupados e divulgados todo dia 20 de cada mês. Continue praticando para garantir seu lugar no topo!
+            </p>
+          </div> -->
+
+          <div class="flex flex-col gap-4 mt-4 relative">
+            <h2 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest text-center mb-2">Vencedores - 20/06</h2>
+
+            <!-- 1st Place -->
+            <div class="flex items-center gap-4 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 p-4 rounded-2xl relative overflow-hidden shadow-sm">
+              <div class="absolute -right-2 -bottom-2 text-amber-200 dark:text-amber-500/10">
+                <mat-icon class="!text-6xl !w-16 !h-16">emoji_events</mat-icon>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-amber-400 text-amber-950 flex flex-col items-center justify-center shrink-0 shadow-lg shadow-amber-400/40 relative z-10 font-black text-lg">
+                1
+              </div>
+              <div class="flex flex-col relative z-10 flex-1">
+                <span class="text-amber-900 dark:text-amber-400 font-bold text-base">Roberto Felipe</span>
+                <span class="text-xs text-amber-700/80 dark:text-amber-400/70 font-medium">São Paulo - SP</span>
+              </div>
+              <div class="relative z-10 font-bold text-amber-600 dark:text-amber-500 pr-2">
+                1835 pts
+              </div>
+            </div>
+
+            <!-- 2nd Place -->
+            <div class="flex items-center gap-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl relative overflow-hidden shadow-sm">
+              <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white flex flex-col items-center justify-center shrink-0 shadow-sm relative z-10 font-black text-lg">
+                2
+              </div>
+              <div class="flex flex-col relative z-10 flex-1">
+                <span class="text-slate-800 dark:text-slate-200 font-bold text-base">Andrea Carvalho</span>
+                <span class="text-xs text-slate-500 font-medium">Rio de Janeiro - RJ</span>
+              </div>
+              <div class="relative z-10 font-bold text-slate-500 dark:text-slate-400 pr-2">
+                1620 pts
+              </div>
+            </div>
+
+            <!-- 3rd Place -->
+            <div class="flex items-center gap-4 bg-orange-50 dark:bg-orange-900/10 border border-orange-200 dark:border-orange-500/20 p-4 rounded-2xl relative overflow-hidden shadow-sm">
+              <div class="w-10 h-10 rounded-full bg-orange-400 text-white flex flex-col items-center justify-center shrink-0 shadow-sm relative z-10 font-black text-lg">
+                3
+              </div>
+              <div class="flex flex-col relative z-10 flex-1">
+                <span class="text-orange-900 dark:text-orange-300 font-bold text-base">Carlos Constantino</span>
+                <span class="text-xs text-orange-700/80 dark:text-orange-400/70 font-medium">Belo Horizonte - MG</span>
+              </div>
+              <div class="relative z-10 font-bold text-orange-600 dark:text-orange-500 pr-2">
+                1410 pts
+              </div>
+            </div>
+
+            <p class="text-center text-xs text-gray-500 dark:text-gray-400 mt-4 leading-relaxed">
+              O próximo ranking será divulgado dia 20/08.<br>Continue praticando para garantir o seu lugar!
             </p>
           </div>
         </div>
