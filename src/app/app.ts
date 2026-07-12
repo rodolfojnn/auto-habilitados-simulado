@@ -7,18 +7,15 @@ import { AppStoreService } from './app-store.service';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal';
 import { EnablePushComponent } from './components/enable-push/enable-push.component';
 import { LeadCaptureComponent } from './components/lead-capture/lead-capture';
-import { OnboardingComponent } from './pages/onboarding/onboarding';
 import { PushService } from './push.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, OnboardingComponent, ConfirmModalComponent, LeadCaptureComponent, EnablePushComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, ConfirmModalComponent, LeadCaptureComponent, EnablePushComponent],
   template: `
-    @if (!onboardingCompleted()) {
-      <app-onboarding (completed)="finishOnboarding($event)"></app-onboarding>
-    } @else if (!leadCaptured()) {
+    @if (!leadCaptured()) {
       <div class="fixed inset-0 z-[100] bg-gray-50 dark:bg-slate-900 overflow-y-auto">
         <app-lead-capture (captured)="onLeadCaptured()"
             title="Completar Cadastro"
@@ -163,7 +160,6 @@ import { PushService } from './push.service';
 export class App implements OnInit {
   sidebarOpen = signal(false);
   isDark = signal(false);
-  onboardingCompleted = signal(true);
   leadCaptured = signal(true);
   userPoints = signal<number>(0);
   showResetModal = signal(false);
@@ -183,9 +179,6 @@ export class App implements OnInit {
   private store = inject(AppStoreService);
 
   constructor() {
-    const isOnboarded = localStorage.getItem('onboarding_completed') === 'true';
-    this.onboardingCompleted.set(isOnboarded);
-
     // Check if lead is captured
     try {
       const data = localStorage.getItem('onboarding_answers');
@@ -290,14 +283,6 @@ export class App implements OnInit {
     });
   }
 
-  finishOnboarding(answers: Record<string, string>) {
-    localStorage.setItem('onboarding_completed', 'true');
-    localStorage.setItem('onboarding_answers', JSON.stringify(answers));
-    this.onboardingCompleted.set(true);
-    // Move to lead capture since it's next in the sequence
-    this.leadCaptured.set(false);
-  }
-
   onLeadCaptured() {
     this.leadCaptured.set(true);
     this.checkLeadData();
@@ -326,7 +311,6 @@ export class App implements OnInit {
     localStorage.removeItem('onboarding_answers');
     localStorage.removeItem('user_points');
     this.userPoints.set(0);
-    this.onboardingCompleted.set(false);
     this.leadCaptured.set(false);
     this.showResetModal.set(false);
     this.closeSidebar();

@@ -38,9 +38,9 @@ import { PushService } from '../../push.service';
                 <mat-icon class="material-icons !leading-none">arrow_back_ios_new</mat-icon>
              </button>
              <div class="flex-1 h-2 bg-gray-200 dark:bg-slate-800 rounded-full overflow-hidden">
-                <div class="h-full bg-brand-500 transition-all duration-300 ease-out" [style.width.%]="(step() / 5) * 100"></div>
+                <div class="h-full bg-brand-500 transition-all duration-300 ease-out" [style.width.%]="(step() / 2) * 100"></div>
              </div>
-             <span class="text-xs font-bold text-gray-500">{{ step() }}/5</span>
+             <span class="text-xs font-bold text-gray-500">{{ step() }}/2</span>
           </div>
 
           <form [formGroup]="leadForm" (ngSubmit)="submitLead()" class="flex flex-col gap-6">
@@ -49,27 +49,11 @@ import { PushService } from '../../push.service';
               <div class="animate-fade-in-up flex flex-col gap-2">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white">Como podemos te chamar?</h2>
                 <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Este será seu nome exibido.</p>
-                <input type="text" formControlName="nome" placeholder="Seu nome completo" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg">
+                <input type="text" formControlName="nome" placeholder="Seu nome" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg">
               </div>
             }
 
             @if (step() === 2) {
-              <div class="animate-fade-in-up flex flex-col gap-2">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Qual seu WhatsApp?</h2>
-                <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Caso você ganhe ou para suporte, vamos avisar por lá.</p>
-                <input type="tel" formControlName="fone1" mask="(00) 00000-0000" placeholder="(11) 99999-9999" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg">
-              </div>
-            }
-
-            @if (step() === 3) {
-              <div class="animate-fade-in-up flex flex-col gap-2">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Seu melhor E-mail</h2>
-                <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Prometemos não mandar spam.</p>
-                <input type="email" formControlName="email" placeholder="seu@email.com" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg">
-              </div>
-            }
-
-            @if (step() === 4) {
               <div class="animate-fade-in-up flex flex-col gap-2">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white">Seu CEP</h2>
                 <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Para montarmos as ligas de ranking por região.</p>
@@ -83,55 +67,18 @@ import { PushService } from '../../push.service';
               </div>
             }
 
-            @if (step() === 5) {
-              <div class="animate-fade-in-up flex flex-col gap-2">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Qual categoria você tem interesse?</h2>
-                <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Para disputar com quem está na mesma situação.</p>
-                <div class="flex flex-col gap-3">
-                  <label class="flex items-center gap-4 p-4 border rounded-2xl cursor-pointer transition-all" [class.border-emerald-500]="leadForm.get('solicitacao')?.value === 'Aulas de Carro'" [class.bg-emerald-50]="leadForm.get('solicitacao')?.value === 'Aulas de Carro'" [class.dark:bg-emerald-500/10]="leadForm.get('solicitacao')?.value === 'Aulas de Carro'" [class.border-gray-200]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro'" [class.dark:border-slate-700]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro'" [class.dark:bg-slate-800]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro'">
-                    <input type="radio" formControlName="solicitacao" value="Aulas de Carro" class="hidden">
-                    <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center shrink-0">
-                       <mat-icon class="material-icons">directions_car</mat-icon>
-                    </div>
-                    <span class="font-semibold text-lg text-gray-900 dark:text-white">Aulas de Carro</span>
-                  </label>
-
-                  <label class="flex items-center gap-4 p-4 border rounded-2xl cursor-pointer transition-all" [class.border-emerald-500]="leadForm.get('solicitacao')?.value === 'Aulas de Moto'" [class.bg-emerald-50]="leadForm.get('solicitacao')?.value === 'Aulas de Moto'" [class.dark:bg-emerald-500/10]="leadForm.get('solicitacao')?.value === 'Aulas de Moto'" [class.border-gray-200]="leadForm.get('solicitacao')?.value !== 'Aulas de Moto'" [class.dark:border-slate-700]="leadForm.get('solicitacao')?.value !== 'Aulas de Moto'" [class.dark:bg-slate-800]="leadForm.get('solicitacao')?.value !== 'Aulas de Moto'">
-                    <input type="radio" formControlName="solicitacao" value="Aulas de Moto" class="hidden">
-                    <div class="w-12 h-12 bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 rounded-xl flex items-center justify-center shrink-0">
-                       <mat-icon class="material-icons">two_wheeler</mat-icon>
-                    </div>
-                    <span class="font-semibold text-lg text-gray-900 dark:text-white">Aulas de Moto</span>
-                  </label>
-
-                  <label class="flex items-center gap-4 p-4 border rounded-2xl cursor-pointer transition-all" [class.border-emerald-500]="leadForm.get('solicitacao')?.value === 'Aulas de Carro e Moto'" [class.bg-emerald-50]="leadForm.get('solicitacao')?.value === 'Aulas de Carro e Moto'" [class.dark:bg-emerald-500/10]="leadForm.get('solicitacao')?.value === 'Aulas de Carro e Moto'" [class.border-gray-200]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro e Moto'" [class.dark:border-slate-700]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro e Moto'" [class.dark:bg-slate-800]="leadForm.get('solicitacao')?.value !== 'Aulas de Carro e Moto'">
-                    <input type="radio" formControlName="solicitacao" value="Aulas de Carro e Moto" class="hidden">
-                    <div class="w-12 h-12 bg-teal-100 dark:bg-teal-500/20 text-teal-600 dark:text-teal-400 rounded-xl flex items-center justify-center shrink-0">
-                       <mat-icon class="material-icons">commute</mat-icon>
-                    </div>
-                    <span class="font-semibold text-lg text-gray-900 dark:text-white">Aulas de Carro e Moto</span>
-                  </label>
-                </div>
-              </div>
-            }
-
-            @if (step() === 5) {
-              <button type="submit" [disabled]="leadForm.invalid || submitting()" class="w-full bg-brand-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider mt-2 flex items-center justify-center gap-2">
-                @if (submitting()) {
+            @if (step() === 2) {
+              <button type="submit" [disabled]="!isCurrentStepValid() || submitting() || cepLoading()" class="w-full bg-brand-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider mt-2 flex items-center justify-center gap-2">
+                @if (submitting() || cepLoading()) {
                   <mat-icon class="material-icons animate-spin !text-xl !w-5 !h-5 !leading-none">refresh</mat-icon>
-                  <span>Enviando...</span>
+                  <span>{{ cepLoading() ? 'Validando...' : 'Enviando...' }}</span>
                 } @else {
                   <span>Acessar</span>
                 }
               </button>
             } @else {
-              <button type="button" (click)="nextStep()" [disabled]="!isCurrentStepValid() || cepLoading()" class="w-full bg-brand-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider mt-2 flex items-center justify-center gap-2">
-                @if (cepLoading()) {
-                  <mat-icon class="material-icons animate-spin !text-xl !w-5 !h-5 !leading-none">refresh</mat-icon>
-                  <span>Validando...</span>
-                } @else {
-                  <span>Continuar</span>
-                }
+              <button type="button" (click)="nextStep()" [disabled]="!isCurrentStepValid()" class="w-full bg-brand-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider mt-2 flex items-center justify-center gap-2">
+                <span>Continuar</span>
               </button>
             }
 
@@ -170,50 +117,15 @@ export class LeadCaptureComponent {
 
   leadForm = new FormGroup({
     nome: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    fone1: new FormControl('', [Validators.required, Validators.minLength(10)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
+    fone1: new FormControl(''),
+    email: new FormControl(''),
     cep: new FormControl('', [Validators.required, Validators.minLength(8)]),
     municipio: new FormControl(''),
     uf: new FormControl(''),
-    solicitacao: new FormControl('', [Validators.required])
+    solicitacao: new FormControl('')
   });
 
-  async nextStep() {
-    if (this.step() === 4) {
-      const cepValueRaw = this.leadForm.get('cep')?.value || '';
-      const cepValue = cepValueRaw.replace(/\D/g, '');
-
-      if (cepValue.length === 8) {
-        this.cepLoading.set(true);
-        this.cepError.set(null);
-        try {
-          const res = await fetch(`https://viacep.com.br/ws/${cepValue}/json/`);
-          if (!res.ok) throw new Error('Erro na requisição');
-          const data = await res.json();
-
-          if (data.erro) {
-            this.cepError.set('CEP não encontrado.');
-            this.cepLoading.set(false);
-            return;
-          }
-
-          this.leadForm.patchValue({
-            municipio: data.localidade,
-            uf: data.uf
-          });
-        } catch {
-          this.cepError.set('Erro ao buscar o CEP. Tente novamente.');
-          this.cepLoading.set(false);
-          return;
-        } finally {
-          this.cepLoading.set(false);
-        }
-      } else {
-        this.cepError.set('CEP inválido.');
-        return;
-      }
-    }
-
+  nextStep() {
     this.step.update(v => v + 1);
   }
 
@@ -226,13 +138,48 @@ export class LeadCaptureComponent {
   isCurrentStepValid(): boolean {
     const currentStep = this.step();
     if (currentStep === 1) return this.leadForm.get('nome')?.valid ?? false;
-    if (currentStep === 2) return this.leadForm.get('fone1')?.valid ?? false;
-    if (currentStep === 3) return this.leadForm.get('email')?.valid ?? false;
-    if (currentStep === 4) return this.leadForm.get('cep')?.valid ?? false;
-    return true; // For step 0
+    if (currentStep === 2) return this.leadForm.get('cep')?.valid ?? false;
+    return true;
   }
 
   async submitLead() {
+    if (!this.isCurrentStepValid()) return;
+    if (this.submitting() || this.cepLoading()) return;
+
+    // Validate CEP first
+    const cepValueRaw = this.leadForm.get('cep')?.value || '';
+    const cepValue = cepValueRaw.replace(/\D/g, '');
+
+    if (cepValue.length === 8) {
+      this.cepLoading.set(true);
+      this.cepError.set(null);
+      try {
+        const res = await fetch(`https://viacep.com.br/ws/${cepValue}/json/`);
+        if (!res.ok) throw new Error('Erro na requisição');
+        const data = await res.json();
+
+        if (data.erro) {
+          this.cepError.set('CEP não encontrado.');
+          this.cepLoading.set(false);
+          return;
+        }
+
+        this.leadForm.patchValue({
+          municipio: data.localidade,
+          uf: data.uf
+        });
+      } catch {
+        this.cepError.set('Erro ao buscar o CEP. Tente novamente.');
+        this.cepLoading.set(false);
+        return;
+      } finally {
+        this.cepLoading.set(false);
+      }
+    } else {
+      this.cepError.set('CEP inválido.');
+      return;
+    }
+
     if (this.leadForm.valid && !this.submitting()) {
       this.submitting.set(true);
       try {
@@ -250,11 +197,6 @@ export class LeadCaptureComponent {
         answers['lead_captured'] = true;
 
         localStorage.setItem('onboarding_answers', JSON.stringify(answers));
-
-        // Salva fone1
-        const fone1Raw = this.leadForm.get('fone1')?.value || '';
-        const fone1 = fone1Raw.replace(/\D/g, ''); // limpa a formatação ou como preferir
-        this.store.fone1.set(fone1);
 
         // Espera enviar o lead
         console.log('Sending newLead com dados:', answers);
