@@ -45,6 +45,22 @@ import { PushService } from '../../push.service';
 
           <form [formGroup]="leadForm" (ngSubmit)="submitLead()" class="flex flex-col gap-6">
 
+            <!-- @if (step() === 2) {
+              <div class="animate-fade-in-up flex flex-col gap-2">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Qual seu WhatsApp?</h2>
+                <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Caso você ganhe ou para suporte, vamos avisar por lá.</p>
+                <input type="tel" formControlName="fone1" mask="(00) 00000-0000" placeholder="(11) 99999-9999" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg">
+              </div>
+            }
+
+            @if (step() === 3) {
+              <div class="animate-fade-in-up flex flex-col gap-2">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Seu melhor E-mail</h2>
+                <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Prometemos não mandar spam.</p>
+                <input type="email" formControlName="email" placeholder="seu@email.com" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg">
+              </div>
+            } -->
+
             @if (step() === 1) {
               <div class="animate-fade-in-up flex flex-col gap-2">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white">Como podemos te chamar?</h2>
