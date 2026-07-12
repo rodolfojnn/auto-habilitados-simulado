@@ -73,7 +73,7 @@ import { MatIconModule } from '@angular/material/icon';
       } @else {
         <div class="animate-fade-in-up flex flex-col gap-6">
           <header class="mb-2 text-center relative">
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Ranking Semanal</h1>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Ranking</h1>
             <p class="text-gray-600 dark:text-slate-400 text-sm mt-1">Dispute o topo com outros alunos</p>
             <button (click)="showPrizes.set(true)" class="absolute right-0 top-0 w-8 h-8 flex items-center justify-center text-slate-400 hover:text-brand-500 transition-colors bg-white dark:bg-slate-800 rounded-full shadow-sm">
               <mat-icon class="!text-xl !w-5 !h-5 !leading-none">help_outline</mat-icon>
