@@ -60,16 +60,33 @@ export class PushService {
     // 🔑 Token gerado / atualizado
     PushNotifications.addListener('registration', (token) => {
       const platform  = Capacitor.getPlatform();
-      const fone1 = this.store.fone1();
+
+      let nome = '';
+      let cep = '';
+
+      try {
+        const answersStr = localStorage.getItem('onboarding_answers');
+        if (answersStr) {
+          const answers = JSON.parse(answersStr);
+          if (answers.lead_data) {
+            nome = answers.lead_data.nome || '';
+            cep = answers.lead_data.cep || '';
+          }
+        }
+      } catch (e) {
+        console.error('Error parsing onboarding_answers', e);
+      }
 
       console.log('Push token received:', token.value);
       console.log('Platform:', platform);
-      console.log('Fone1:', fone1);
+      console.log('Nome:', nome);
+      console.log('CEP:', cep);
 
       this.http.post('https://api.dirigiragora.com.br/v1/simulado/pushToken', {
         token: token.value,
         platform,
-        fone1
+        nome,
+        cep
       }).subscribe({
         next: () => console.log('Push token registered with backend successfully'),
         error: (err) => console.error('Error registering push token with backend:', err)

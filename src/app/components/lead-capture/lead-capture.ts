@@ -65,7 +65,7 @@ import { PushService } from '../../push.service';
               <div class="animate-fade-in-up flex flex-col gap-2">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white">Como podemos te chamar?</h2>
                 <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Este será seu nome exibido.</p>
-                <input type="text" formControlName="nome" placeholder="Seu nome" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg">
+                <input type="text" formControlName="nome" placeholder="Seu nome completo" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg">
               </div>
             }
 
