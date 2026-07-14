@@ -80,6 +80,32 @@ const TIPS = [
         />
       </header>
 
+      <!-- Dirigir Agora Featured Banner -->
+      <a href="https://www.dirigiragora.com.br" target="_blank" rel="noopener noreferrer"
+        class="w-full relative overflow-hidden bg-[#00D25B] p-5 rounded-3xl flex items-center gap-4 shadow-md shadow-[#00D25B]/20 group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border-[#00a647] hover:border-b-[2px] hover:translate-y-[1px] text-white">
+
+        <!-- Decoration -->
+        <div class="absolute -right-6 -top-6 w-32 h-32 bg-white/20 rounded-full blur-2xl pointer-events-none transition-transform duration-700 group-hover:scale-150"></div>
+        <div class="absolute -right-2 -bottom-4 opacity-20 rotate-12 pointer-events-none">
+          <mat-icon class="material-icons !text-9xl">directions_car</mat-icon>
+        </div>
+
+        <div class="flex flex-col flex-1 z-10 text-left">
+          <div class="flex items-center gap-1.5 mb-1 opacity-90">
+            <mat-icon class="material-icons !text-[12px] !w-3 !h-3 text-white">smartphone</mat-icon>
+            <p class="text-[9px] uppercase font-bold tracking-widest text-white">CNH Pelo App</p>
+          </div>
+          <h3 class="font-black text-2xl tracking-tight text-white leading-none mb-1 drop-shadow-sm">
+            Dirigir Agora
+          </h3>
+          <p class="text-xs font-semibold text-white/95">A 1ª autoescola digital do Brasil</p>
+        </div>
+
+        <div class="w-12 h-12 flex-shrink-0 bg-white text-[#00D25B] rounded-2xl flex items-center justify-center shadow-lg z-10 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">
+           <mat-icon class="material-icons !text-2xl !leading-none !w-6 !h-6">open_in_new</mat-icon>
+        </div>
+      </a>
+
       <!-- Secondary Actions Grid -->
       <section class="flex flex-col gap-4">
 

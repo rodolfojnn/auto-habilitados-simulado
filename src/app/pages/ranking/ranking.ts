@@ -91,7 +91,7 @@ import { MatIconModule } from '@angular/material/icon';
           </div> -->
 
           <div class="flex flex-col gap-4 mt-4 relative">
-            <h2 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest text-center mb-2">Vencedores - 20/06</h2>
+            <h2 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest text-center mb-2">Vencedores - Julho / 2026</h2>
 
             <!-- 1st Place -->
             <div class="flex items-center gap-4 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 p-4 rounded-2xl relative overflow-hidden shadow-sm">
@@ -102,11 +102,11 @@ import { MatIconModule } from '@angular/material/icon';
                 1
               </div>
               <div class="flex flex-col relative z-10 flex-1">
-                <span class="text-amber-900 dark:text-amber-400 font-bold text-base">Roberto Felipe</span>
-                <span class="text-xs text-amber-700/80 dark:text-amber-400/70 font-medium">São Paulo - SP</span>
+                <span class="text-amber-900 dark:text-amber-400 font-bold text-base">Marcelo Souza</span>
+                <span class="text-xs text-amber-700/80 dark:text-amber-400/70 font-medium">Curitiba - PR</span>
               </div>
               <div class="relative z-10 font-bold text-amber-600 dark:text-amber-500 pr-2">
-                1835 pts
+                1232 pts
               </div>
             </div>
 
@@ -116,11 +116,11 @@ import { MatIconModule } from '@angular/material/icon';
                 2
               </div>
               <div class="flex flex-col relative z-10 flex-1">
-                <span class="text-slate-800 dark:text-slate-200 font-bold text-base">Andrea Carvalho</span>
-                <span class="text-xs text-slate-500 font-medium">Rio de Janeiro - RJ</span>
+                <span class="text-slate-800 dark:text-slate-200 font-bold text-base">Juliana Martins</span>
+                <span class="text-xs text-slate-500 font-medium">Salvador - BA</span>
               </div>
               <div class="relative z-10 font-bold text-slate-500 dark:text-slate-400 pr-2">
-                1620 pts
+                1112 pts
               </div>
             </div>
 
@@ -130,17 +130,14 @@ import { MatIconModule } from '@angular/material/icon';
                 3
               </div>
               <div class="flex flex-col relative z-10 flex-1">
-                <span class="text-orange-900 dark:text-orange-300 font-bold text-base">Carlos Constantino</span>
-                <span class="text-xs text-orange-700/80 dark:text-orange-400/70 font-medium">Belo Horizonte - MG</span>
+                <span class="text-orange-900 dark:text-orange-300 font-bold text-base">Fernanda Tavares</span>
+                <span class="text-xs text-orange-700/80 dark:text-orange-400/70 font-medium">Recife - PE</span>
               </div>
               <div class="relative z-10 font-bold text-orange-600 dark:text-orange-500 pr-2">
-                1410 pts
+                1015 pts
               </div>
             </div>
 
-            <p class="text-center text-xs text-gray-500 dark:text-gray-400 mt-4 leading-relaxed">
-              O próximo ranking será divulgado dia 20/08.<br>Continue praticando para garantir o seu lugar!
-            </p>
           </div>
         </div>
       }
