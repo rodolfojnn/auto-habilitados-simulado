@@ -496,9 +496,24 @@ export class SimulationComponent implements OnInit, OnDestroy {
     const medium = allQuestions.filter(q => difficultyScore(q.difficulty) === 2).sort(() => 0.5 - Math.random());
     const easy = allQuestions.filter(q => difficultyScore(q.difficulty) === 1).sort(() => 0.5 - Math.random());
 
-    // Ordered by difficulty priority
-    const ordered = [...hard, ...medium, ...easy];
-    let selected = ordered.slice(0, this.totalQuestions);
+    const numHard = Math.round(this.totalQuestions * 0.70);
+    const numMedium = Math.round(this.totalQuestions * 0.20);
+    const numEasy = this.totalQuestions - numHard - numMedium;
+
+    let selected = [
+      ...hard.slice(0, numHard),
+      ...medium.slice(0, numMedium),
+      ...easy.slice(0, numEasy)
+    ];
+
+    if (selected.length < this.totalQuestions) {
+      const remaining = [
+        ...hard.slice(numHard),
+        ...medium.slice(numMedium),
+        ...easy.slice(numEasy)
+      ].sort(() => 0.5 - Math.random());
+      selected = [...selected, ...remaining.slice(0, this.totalQuestions - selected.length)];
+    }
 
     // Shuffle the selected questions and their answers so their order is random during the simulation
     selected = selected.map(q => ({

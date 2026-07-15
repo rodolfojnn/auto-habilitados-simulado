@@ -912,8 +912,25 @@ export class DuelComponent implements OnInit, OnDestroy {
     const medium = allQuestions.filter(q => difficultyScore(q.difficulty) === 2).sort(() => 0.5 - Math.random());
     const easy = allQuestions.filter(q => difficultyScore(q.difficulty) === 1).sort(() => 0.5 - Math.random());
 
-    const ordered = [...hard, ...medium, ...easy];
-    let selected = ordered.slice(0, this.totalQuestions);
+    const numHard = Math.round(this.totalQuestions * 0.70);
+    const numMedium = Math.round(this.totalQuestions * 0.20);
+    const numEasy = this.totalQuestions - numHard - numMedium;
+
+    let selected = [
+      ...hard.slice(0, numHard),
+      ...medium.slice(0, numMedium),
+      ...easy.slice(0, numEasy)
+    ];
+
+    if (selected.length < this.totalQuestions) {
+      const remaining = [
+        ...hard.slice(numHard),
+        ...medium.slice(numMedium),
+        ...easy.slice(numEasy)
+      ].sort(() => 0.5 - Math.random());
+      selected = [...selected, ...remaining.slice(0, this.totalQuestions - selected.length)];
+    }
+
     selected = selected.sort(() => 0.5 - Math.random());
 
     this.questions.set(selected);
@@ -952,7 +969,7 @@ export class DuelComponent implements OnInit, OnDestroy {
            return;
        }
 
-       const delay = Math.floor(Math.random() * 15000) + 15000; // 15 to 30 seconds
+       const delay = Math.floor(Math.random() * 15000) + 3000; // 3 to 18 seconds
        const sub = interval(delay).subscribe(() => {
            sub.unsubscribe();
            if (this.isFinished()) return;
