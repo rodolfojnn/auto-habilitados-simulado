@@ -106,7 +106,7 @@ const TIPS = [
           </div>
           <div class="flex flex-col flex-1">
             <h3 class="font-bold text-gray-900 dark:text-white text-lg">Aulas Práticas</h3>
-            <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">A 1ª autoescola digital do Brasil</p>
+            <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">Sua autoescola digital</p>
           </div>
           <div class="w-10 h-10 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-500">
             <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
