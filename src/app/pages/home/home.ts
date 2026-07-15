@@ -135,7 +135,7 @@ const TIPS = [
              <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">emoji_events</mat-icon>
           </div>
           <div class="flex flex-col flex-1">
-            <h3 class="font-bold text-gray-900 dark:text-white text-lg">Ranking Semanal</h3>
+            <h3 class="font-bold text-gray-900 dark:text-white text-lg">Ranking</h3>
             <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">Dispute o topo online</p>
           </div>
           <div class="w-10 h-10 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-500">
