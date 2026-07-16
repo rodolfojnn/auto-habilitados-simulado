@@ -91,7 +91,7 @@ interface FloatingPoint {
                 <mat-icon class="material-icons text-xl w-5 h-5 leading-[20px]">check_circle</mat-icon>
               </div>
               <p class="text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed pt-0.5">
-                Para ser aprovado, você deve acertar no mínimo <strong class="text-brand-900 dark:text-white">21 questões</strong>.
+                Para ser aprovado, você deve acertar no mínimo <strong class="text-brand-900 dark:text-white">20 questões</strong>.
               </p>
             </li>
           </ul>
@@ -283,15 +283,15 @@ interface FloatingPoint {
           </div>
 
           <div class="relative z-10">
-            <div [class]="(score() >= 21) ? 'w-24 h-24 bg-emerald-500 text-white mx-auto rounded-[2rem] flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/30' : 'w-24 h-24 bg-rose-500 text-white mx-auto rounded-[2rem] flex items-center justify-center mb-6 shadow-lg shadow-rose-500/30'">
-              <mat-icon class="material-icons !text-5xl !w-12 !h-12 !leading-none">{{ (score() >= 21) ? 'emoji_events' : 'sentiment_very_dissatisfied' }}</mat-icon>
+            <div [class]="(score() >= 20) ? 'w-24 h-24 bg-emerald-500 text-white mx-auto rounded-[2rem] flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/30' : 'w-24 h-24 bg-rose-500 text-white mx-auto rounded-[2rem] flex items-center justify-center mb-6 shadow-lg shadow-rose-500/30'">
+              <mat-icon class="material-icons !text-5xl !w-12 !h-12 !leading-none">{{ (score() >= 20) ? 'emoji_events' : 'sentiment_very_dissatisfied' }}</mat-icon>
             </div>
 
             <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-2">
-              {{ (score() >= 21) ? 'Parabéns, Motorista!' : 'Quase lá, continue!' }}
+              {{ (score() >= 20) ? 'Parabéns, Motorista!' : 'Quase lá, continue!' }}
             </h2>
             <p class="text-slate-500 dark:text-slate-400 font-medium mb-8">
-              {{ (score() >= 21) ? 'Você foi aprovado no simulado!' : 'Infelizmente você não atingiu o score necessário.' }}
+              {{ (score() >= 20) ? 'Você foi aprovado no simulado!' : 'Infelizmente você não atingiu o score necessário.' }}
             </p>
 
             <div class="grid grid-cols-3 gap-4 mb-2">
@@ -322,12 +322,12 @@ interface FloatingPoint {
                    </div>
                    <span class="font-bold text-slate-700 dark:text-slate-200">Simulado Detran</span>
                 </div>
-                <span [class]="(score() >= 21) ? 'px-3 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 rounded-full text-xs font-black uppercase' : 'px-3 py-1 bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400 rounded-full text-xs font-black uppercase'">
-                   {{ (score() >= 21) ? 'Aprovado' : 'Reprovado' }}
+                <span [class]="(score() >= 20) ? 'px-3 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 rounded-full text-xs font-black uppercase' : 'px-3 py-1 bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400 rounded-full text-xs font-black uppercase'">
+                   {{ (score() >= 20) ? 'Aprovado' : 'Reprovado' }}
                 </span>
              </div>
              <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                Você acertou {{ score() }} de {{ totalQuestions }} questões. O mínimo necessário para aprovação na prova real é de 21 acertos (70%).
+                Você acertou {{ score() }} de {{ totalQuestions }} questões. O mínimo necessário para aprovação na prova real é de 20 acertos (66%).
              </p>
           </div>
         </div>
@@ -615,7 +615,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
       simulations.push({
         date: new Date().toISOString(),
         score: this.score(),
-        approved: this.score() >= 21,
+        approved: this.score() >= 20,
         points_earned: pointsEarned
       });
       answers.simulations = simulations;
