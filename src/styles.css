@@ -24,6 +24,17 @@
   }
 }
 
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+/* Permita seleção apenas onde necessário (como inputs) */
+input, textarea {
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
 html, body {
   height: 100%;
   margin: 0;

@@ -158,6 +158,51 @@ const TIPS = [
           </div>
         </a>
 
+        <!-- Card de avaliação -->
+        @if (showReviewCard()) {
+          <div class="relative flex flex-col gap-3 w-full rounded-2xl border border-blue-100 bg-[#eef1fb] p-4 shadow-sm">
+            <!-- Botão fechar -->
+            <button
+              type="button"
+              aria-label="Fechar"
+              (click)="dismissReviewCard()"
+              class="absolute right-3 top-3 text-slate-400 transition-colors hover:text-slate-600"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+
+            <div class="flex items-start gap-3">
+              <!-- Ícone estrela -->
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+              <!-- Texto -->
+              <div class="min-w-0 flex-1 pr-5">
+                <h2 class="text-sm font-bold leading-tight text-slate-900 text-balance">
+                  Ajude-nos a continuar gratuitos!
+                </h2>
+                <p class="mt-1 text-xs leading-snug text-slate-500 text-pretty">
+                  Sua avaliação nos motiva a melhorar e manter o app 100% gratuito para todos.
+                </p>
+              </div>
+            </div>
+
+            <!-- Botão -->
+            <a
+              href="https://play.google.com/store/apps/details?id=br.com.simulado.cnh.brasil"
+              target="_blank"
+              class="mt-1 flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+            >
+              Avaliar agora
+            </a>
+          </div>
+        }
+
       </section>
 
       <!-- Quick Tips Card -->
@@ -183,10 +228,29 @@ const TIPS = [
 })
 export class HomeComponent implements OnInit {
   currentTip = signal<string>('');
+  showReviewCard = signal<boolean>(true);
 
   ngOnInit() {
     const randomIndex = Math.floor(Math.random() * TIPS.length);
     this.currentTip.set(TIPS[randomIndex]);
+
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const isDismissed = localStorage.getItem('review_card_dismissed') === 'true';
+      if (isDismissed) {
+        this.showReviewCard.set(false);
+      }
+    }
+  }
+
+  dismissReviewCard() {
+    this.showReviewCard.set(false);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      try {
+        localStorage.setItem('review_card_dismissed', 'true');
+      } catch (e) {
+        console.error('Erro ao salvar estado do card no localStorage:', e);
+      }
+    }
   }
 }
 
