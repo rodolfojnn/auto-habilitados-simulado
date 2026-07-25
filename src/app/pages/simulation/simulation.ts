@@ -18,11 +18,17 @@ interface Question {
   moduleTitle?: string;
 }
 
+interface ModulePerformance {
+  correct: number;
+  incorrect: number;
+}
+
 interface SimulationResult {
   date: string;
   score: number;
   approved: boolean;
   points_earned?: number;
+  modulePerformance?: Record<string, ModulePerformance>;
 }
 
 interface OnboardingAnswers {
@@ -445,6 +451,8 @@ export class SimulationComponent implements OnInit, OnDestroy {
   timeElapsed = signal<number>(0);
   private timerSubscription?: Subscription;
 
+  modulePerformance = signal<Record<string, ModulePerformance>>({});
+
   progress = computed(() => {
     const answeredOffset = this.isAnswered() ? 1 : 0;
     return Math.round(((this.currentIndex() + answeredOffset) / this.totalQuestions) * 100);
@@ -549,6 +557,20 @@ export class SimulationComponent implements OnInit, OnDestroy {
     this.selectedAnswer.set(answer);
     this.isAnswered.set(true);
 
+    const question = this.currentQuestion();
+    const moduleTitle = question.moduleTitle || 'Outros';
+
+    this.modulePerformance.update(perf => {
+      const current = perf[moduleTitle] || { correct: 0, incorrect: 0 };
+      return {
+        ...perf,
+        [moduleTitle]: {
+          correct: current.correct + (answer.is_correct ? 1 : 0),
+          incorrect: current.incorrect + (answer.is_correct ? 0 : 1)
+        }
+      };
+    });
+
     if (answer.is_correct) {
       this.score.update(s => s + 1);
       this.isCorrect.set(true);
@@ -616,7 +638,8 @@ export class SimulationComponent implements OnInit, OnDestroy {
         date: new Date().toISOString(),
         score: this.score(),
         approved: this.score() >= 20,
-        points_earned: pointsEarned
+        points_earned: pointsEarned,
+        modulePerformance: this.modulePerformance()
       });
       answers.simulations = simulations;
 
@@ -641,6 +664,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
     this.timeElapsed.set(0);
     this.isAnswered.set(false);
     this.selectedAnswer.set(null);
+    this.modulePerformance.set({});
     this.prepareQuestions();
 
     const currentGlobalPoints = parseInt(localStorage.getItem('user_points') || '0', 10);
