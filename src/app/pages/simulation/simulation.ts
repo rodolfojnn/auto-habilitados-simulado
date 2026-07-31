@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, computed, ElementRef, viewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, computed, ElementRef, viewChild, isDevMode } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { interval, Subscription } from 'rxjs';
 import questionsData from '../../../assets/questions.json';
@@ -268,7 +268,7 @@ interface FloatingPoint {
         }
       </div>
     } @else if (isFinished()) {
-      <div class="px-6 pt-10 pb-24 max-w-2xl mx-auto min-h-full flex flex-col animate-fade-in font-sans relative overflow-hidden">
+      <div class="px-5 pt-8 pb-24 max-w-[420px] mx-auto min-h-full flex flex-col animate-fade-in font-sans relative overflow-hidden">
 
         <!-- Floating Finish Bonus Anim -->
         @for (fp of floatingPoints(); track fp.id) {
@@ -281,62 +281,155 @@ interface FloatingPoint {
             {{ fp.value }}
           </div>
         }
-        <!-- Results Card -->
-        <div class="bg-white dark:bg-slate-800 rounded-[3rem] p-10 shadow-2xl shadow-slate-200 dark:shadow-none border border-slate-100 dark:border-white/5 text-center relative overflow-hidden mb-8">
-          <!-- Background Effect -->
-          <div class="absolute inset-0 opacity-5 dark:opacity-10">
-            <mat-icon class="material-icons absolute -top-10 -left-10 !text-[200px] !w-[200px] !h-[200px]">emoji_events</mat-icon>
-          </div>
 
-          <div class="relative z-10">
-            <div [class]="(score() >= 20) ? 'w-24 h-24 bg-emerald-500 text-white mx-auto rounded-[2rem] flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/30' : 'w-24 h-24 bg-rose-500 text-white mx-auto rounded-[2rem] flex items-center justify-center mb-6 shadow-lg shadow-rose-500/30'">
-              <mat-icon class="material-icons !text-5xl !w-12 !h-12 !leading-none">{{ (score() >= 20) ? 'emoji_events' : 'sentiment_very_dissatisfied' }}</mat-icon>
+        @if (score() < 20) {
+          <!-- FAILED STATE -->
+          <div class="relative mb-4">
+            <div class="inline-flex items-center gap-2 bg-rose-50 dark:bg-rose-500/10 text-rose-500 font-bold px-4 py-2 rounded-full mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ff2056"><path d="M620-520q25 0 42.5-17.5T680-580q0-25-17.5-42.5T620-640q-25 0-42.5 17.5T560-580q0 25 17.5 42.5T620-520Zm-280 0q25 0 42.5-17.5T400-580q0-25-17.5-42.5T340-640q-25 0-42.5 17.5T280-580q0 25 17.5 42.5T340-520Zm16.5 138.5Q301-343 276-280h66q22-37 58.5-58.5T480-360q43 0 79.5 21.5T618-280h66q-25-63-80.5-101.5T480-420q-68 0-123.5 38.5Zm-32.5 270Q251-143 197-197t-85.5-127Q80-397 80-480t31.5-156Q143-709 197-763t127-85.5Q397-880 480-880t156 31.5Q709-817 763-763t85.5 127Q880-563 880-480t-31.5 156Q817-251 763-197t-127 85.5Q563-80 480-80t-156-31.5ZM480-480Zm227 227q93-93 93-227t-93-227q-93-93-227-93t-227 93q-93 93-93 227t93 227q93 93 227 93t227-93Z"/></svg>
+              <span class="text-sm">Não foi dessa vez</span>
             </div>
 
-            <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-2">
-              {{ (score() >= 20) ? 'Parabéns, Motorista!' : 'Quase lá, continue!' }}
-            </h2>
-            <p class="text-slate-500 dark:text-slate-400 font-medium mb-8">
-              {{ (score() >= 20) ? 'Você foi aprovado no simulado!' : 'Infelizmente você não atingiu o score necessário.' }}
-            </p>
+            <div class="pr-32">
+              <h2 class="text-[22px] font-black text-slate-900 dark:text-white leading-[1.15] tracking-tight mb-3">
+                Seu score foi<br/>
+                <span class="text-rose-500">insuficiente.</span>
+              </h2>
+              <p class="text-slate-500 dark:text-slate-400 font-medium text-[15px] leading-snug">
+                Mas com o estudo certo,<br/>a aprovação vem!
+              </p>
+            </div>
 
-            <div class="grid grid-cols-3 gap-4 mb-2">
-              <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-white/5">
-                <span class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Acertos</span>
-                <span class="text-2xl font-black text-emerald-500">{{ score() }}</span>
-              </div>
-              <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-white/5">
-                <span class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Erros</span>
-                <span class="text-2xl font-black text-rose-500">{{ totalQuestions - score() }}</span>
-              </div>
-              <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-white/5">
-                <span class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Score</span>
-                <span class="text-2xl font-black text-brand-600">{{ Math.round((score() / totalQuestions) * 100) }}%</span>
+            <img src="assets/sad-emoji-2.png" alt="Não aprovado" class="absolute -right-0 top-0 h-[140px] object-contain drop-shadow-xl" referrerpolicy="no-referrer" />
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 rounded-[28px] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-none border
+            border-slate-100 dark:border-white/5 flex items-center gap-6 mb-10">
+            <!-- Left Side: Donut Chart -->
+            <div class="relative flex-shrink-0 w-[110px] h-[110px] flex items-center justify-center">
+              <svg viewBox="0 0 36 36" class="absolute inset-0 w-full h-full transform -rotate-90">
+                <path
+                  class="text-slate-100 dark:text-slate-700/50"
+                  stroke-width="3.5"
+                  stroke="currentColor"
+                  fill="none"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <path
+                  class="text-rose-500 transition-all duration-1000 ease-out"
+                  [attr.stroke-dasharray]="Math.round((score() / totalQuestions) * 100) + ', 100'"
+                  stroke-linecap="round"
+                  stroke-width="3.5"
+                  stroke="currentColor"
+                  fill="none"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+              </svg>
+              <div class="text-center z-10 flex flex-col items-center justify-center pt-1">
+                <div class="text-[26px] font-black text-rose-500 leading-none tracking-tighter">{{ Math.round((score() / totalQuestions) * 100) }}%</div>
+                <div class="text-[9px] font-medium text-slate-500 dark:text-slate-400 mt-0.5">de acertos</div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Performance Details -->
-        <div class="space-y-4 mb-10">
-          <h3 class="text-xl font-black text-slate-900 dark:text-white px-2">Performance Geral</h3>
-          <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-100 dark:border-white/5 shadow-lg shadow-slate-100 dark:shadow-none">
-             <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center gap-3">
-                   <div class="w-10 h-10 bg-brand-50 dark:bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center">
-                      <mat-icon class="material-icons !text-xl">trending_up</mat-icon>
-                   </div>
-                   <span class="font-bold text-slate-700 dark:text-slate-200">Simulado Detran</span>
+            <!-- Vertical Divider -->
+            <div class="w-px h-[100px] bg-slate-100 dark:bg-slate-700/50"></div>
+
+            <!-- Right Side: Stats list -->
+            <div class="flex flex-col flex-1 gap-2 justify-center">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0">
+                    <mat-icon class="material-icons !text-[16px] !w-[16px] !h-[16px] !leading-none">my_location</mat-icon>
+                  </div>
+                  <span class="text-[13px] font-medium text-slate-500 dark:text-slate-400">Acertos</span>
                 </div>
-                <span [class]="(score() >= 20) ? 'px-3 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 rounded-full text-xs font-black uppercase' : 'px-3 py-1 bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400 rounded-full text-xs font-black uppercase'">
-                   {{ (score() >= 20) ? 'Aprovado' : 'Reprovado' }}
-                </span>
-             </div>
-             <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                Você acertou {{ score() }} de {{ totalQuestions }} questões. O mínimo necessário para aprovação na prova real é de 20 acertos (66%).
-             </p>
+                <span class="text-lg font-black text-slate-900 dark:text-white">{{ score() }}</span>
+              </div>
+
+              <div class="h-px w-full bg-slate-100 dark:bg-slate-700/50"></div>
+
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0">
+                    <mat-icon class="material-icons !text-[16px] !w-[16px] !h-[16px] !leading-none">close</mat-icon>
+                  </div>
+                  <span class="text-[13px] font-medium text-slate-500 dark:text-slate-400">Erros</span>
+                </div>
+                <span class="text-lg font-black text-slate-900 dark:text-white">{{ totalQuestions - score() }}</span>
+              </div>
+
+              <div class="h-px w-full bg-slate-100 dark:bg-slate-700/50"></div>
+
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0">
+                    <mat-icon class="material-icons !text-[16px] !w-[16px] !h-[16px] !leading-none">bar_chart</mat-icon>
+                  </div>
+                  <span class="text-[13px] font-medium text-slate-500 dark:text-slate-400">Score</span>
+                </div>
+                <span class="text-lg font-black text-rose-500">{{ Math.round((score() / totalQuestions) * 100) }}%</span>
+              </div>
+            </div>
           </div>
-        </div>
+        } @else {
+          <!-- PASSED STATE -->
+          <!-- Results Card -->
+          <div class="bg-white dark:bg-slate-800 rounded-[3rem] p-10 shadow-2xl shadow-slate-200 dark:shadow-none border border-slate-100 dark:border-white/5 text-center relative overflow-hidden mb-8">
+            <!-- Background Effect -->
+            <div class="absolute inset-0 opacity-5 dark:opacity-10">
+              <mat-icon class="material-icons absolute -top-10 -left-10 !text-[200px] !w-[200px] !h-[200px]">emoji_events</mat-icon>
+            </div>
+
+            <div class="relative z-10">
+              <div class="w-24 h-24 bg-emerald-500 text-white mx-auto rounded-[2rem] flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/30">
+                <mat-icon class="material-icons !text-5xl !w-12 !h-12 !leading-none">emoji_events</mat-icon>
+              </div>
+
+              <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-2">
+                Parabéns, Motorista!
+              </h2>
+              <p class="text-slate-500 dark:text-slate-400 font-medium mb-8">
+                Você foi aprovado no simulado!
+              </p>
+
+              <div class="grid grid-cols-3 gap-4 mb-2">
+                <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-white/5">
+                  <span class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Acertos</span>
+                  <span class="text-2xl font-black text-emerald-500">{{ score() }}</span>
+                </div>
+                <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-white/5">
+                  <span class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Erros</span>
+                  <span class="text-2xl font-black text-rose-500">{{ totalQuestions - score() }}</span>
+                </div>
+                <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-white/5">
+                  <span class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Score</span>
+                  <span class="text-2xl font-black text-emerald-600">{{ Math.round((score() / totalQuestions) * 100) }}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Performance Details -->
+          <div class="space-y-4 mb-10">
+            <h3 class="text-xl font-black text-slate-900 dark:text-white px-2">Performance Geral</h3>
+            <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-100 dark:border-white/5 shadow-lg shadow-slate-100 dark:shadow-none">
+               <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center gap-3">
+                     <div class="w-10 h-10 bg-brand-50 dark:bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center">
+                        <mat-icon class="material-icons !text-xl">trending_up</mat-icon>
+                     </div>
+                     <span class="font-bold text-slate-700 dark:text-slate-200">Simulado Detran</span>
+                  </div>
+                  <span class="px-3 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 rounded-full text-xs font-black uppercase">
+                     Aprovado
+                  </span>
+               </div>
+               <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                  Você acertou {{ score() }} de {{ totalQuestions }} questões. O mínimo necessário para aprovação na prova real é de 20 acertos (66%).
+               </p>
+            </div>
+          </div>
+        }
 
         <!-- Buttons -->
         <div class="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -469,6 +562,21 @@ export class SimulationComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit() {
+
+    if (isDevMode()) {
+      // Debug mode: mostra a tela de resultado final para editar o layout
+      this.prepareQuestions();
+      this.isStarted.set(true);
+      this.isFinished.set(true);
+      this.score.set(19); // Altere para testar layout aprovado (>=20) ou reprovado (<20)
+      this.modulePerformance.set({
+        'Legislação de Trânsito': { correct: 10, incorrect: 2 },
+        'Sinalização': { correct: 8, incorrect: 1 },
+        'Direção Defensiva': { correct: 7, incorrect: 2 },
+      });
+      return;
+    }
+
     this.prepareQuestions();
     const currentGlobalPoints = parseInt(localStorage.getItem('user_points') || '0', 10);
     this.simulationPoints.set(currentGlobalPoints);
