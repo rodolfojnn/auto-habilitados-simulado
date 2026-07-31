@@ -360,34 +360,36 @@ interface FloatingPoint {
 
               <div class="h-px w-full bg-slate-100 dark:bg-slate-700/50"></div>
 
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-7 h-7 rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0">
-                    <mat-icon class="material-icons !text-[16px] !w-[16px] !h-[16px] !leading-none">bar_chart</mat-icon>
-                  </div>
-                  <span class="text-[13px] font-medium text-slate-500 dark:text-slate-400">Score</span>
-                </div>
-                <span class="text-lg font-black text-rose-500">{{ Math.round((score() / totalQuestions) * 100) }}%</span>
-              </div>
             </div>
           </div>
 
           <!-- Upsell CTA -->
-          <button class="w-full text-left bg-white dark:bg-slate-800 hover:bg-blue-50/30 dark:hover:bg-slate-700/40 active:scale-[0.99] transition-all rounded-[22px] p-4 shadow-[0_4px_20px_rgb(0,0,0,0.04)] dark:shadow-none border border-slate-100 dark:border-white/5 flex items-center gap-3.5 mb-4 group cursor-pointer">
-            <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">
-              <mat-icon class="material-icons !text-[26px] !w-[26px] !h-[26px] !leading-none">school</mat-icon>
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-[14px] font-black text-slate-900 dark:text-white leading-[1.25] mb-1 tracking-tight">
-                Estude o Teórico e aumente suas chances de aprovação!
-              </h3>
-              <p class="text-[12px] font-medium text-slate-500 dark:text-slate-400 leading-snug">
-                Aulas ao vivo, conteúdo atualizado e simulados focados na banca.
-              </p>
-            </div>
-            <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none text-slate-400 group-hover:text-blue-500 transition-colors shrink-0">chevron_right</mat-icon>
-          </button>
+          <a
+            href="https://teorico.dirigiragora.com.br/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block text-left bg-gradient-to-r from-blue-600 via-blue-600 to-indigo-700 text-white hover:from-blue-500 hover:to-indigo-600 active:scale-[0.98] transition-all rounded-[24px] p-4 shadow-lg shadow-blue-500/20 border border-blue-400/30 relative overflow-hidden mb-4 group cursor-pointer no-underline"
+          >
+            <!-- Decorative background accent -->
+            <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
 
+            <div class="flex items-center gap-3.5 relative z-10">
+              <div class="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md text-white flex items-center justify-center shrink-0 border border-white/20 shadow-inner">
+                <mat-icon class="material-icons !text-[26px] !w-[26px] !h-[26px] !leading-none">school</mat-icon>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-[14px] font-black text-white leading-[1.25] mb-1 tracking-tight">
+                  Estude o Teórico e aumente suas chances de aprovação!
+                </h3>
+                <p class="text-[12px] font-medium text-blue-100 leading-snug">
+                  Aulas ao vivo, conteúdo atualizado e simulados focados na banca.
+                </p>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-white/20 group-hover:bg-white group-hover:text-blue-600 text-white flex items-center justify-center transition-all shrink-0 border border-white/20">
+                <mat-icon class="material-icons !text-[20px] !w-[20px] !h-[20px] !leading-none">chevron_right</mat-icon>
+              </div>
+            </div>
+          </a>
         } @else {
           <!-- PASSED STATE -->
           <!-- Results Card -->
@@ -449,19 +451,19 @@ interface FloatingPoint {
         }
 
         <!-- Buttons -->
-        <div class="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="mt-auto grid grid-cols-2 gap-3">
           <button
             (click)="resetSimulation()"
-            class="bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-brand-600/30 transition-all flex items-center justify-center gap-2"
+            class="border-2 border-slate-200 dark:border-slate-700 hover:border-brand-500 dark:hover:border-brand-500 text-slate-700 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 font-bold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-1.5 text-sm active:scale-[0.98]"
           >
-            <mat-icon class="material-icons">refresh</mat-icon>
+            <mat-icon class="material-icons !text-[18px] !w-[18px] !h-[18px] !leading-none">refresh</mat-icon>
             <span>Tentar Novamente</span>
           </button>
           <button
             (click)="goToHome()"
-            class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-2"
+            class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 font-semibold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-1.5 text-sm active:scale-[0.98]"
           >
-            <mat-icon class="material-icons">home</mat-icon>
+            <mat-icon class="material-icons !text-[18px] !w-[18px] !h-[18px] !leading-none">home</mat-icon>
             <span>Menu Inicial</span>
           </button>
         </div>
