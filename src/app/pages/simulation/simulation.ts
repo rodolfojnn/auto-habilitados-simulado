@@ -284,25 +284,26 @@ interface FloatingPoint {
 
         @if (score() < 20) {
           <!-- FAILED STATE -->
-          <div class="relative mb-4">
-
-            <div class="pr-32 pt-6">
-              <h2 class="text-[25px] font-black text-slate-900 dark:text-white leading-[1.15] tracking-tight mb-3">
+          <div class="flex flex-row items-center justify-between gap-4 mb-6 sm:mb-8">
+            <div class="flex-1">
+              <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-[1.1] tracking-tight mb-3">
                 Você foi<br/>
                 <span class="text-rose-500">reprovado!</span>
               </h2>
-              <p class="text-slate-500 dark:text-slate-400 font-medium text-[15px] leading-snug">
-                Estude mais e a<br/>aprovação virá!
+              <p class="text-slate-500 dark:text-slate-400 font-medium text-base sm:text-lg leading-snug">
+                Estude mais e a<br class="block sm:hidden"/> aprovação virá!
               </p>
             </div>
 
-            <img src="assets/sad-emoji-2.png" alt="Não aprovado" class="absolute -right-0 top-0 h-[140px] object-contain drop-shadow-xl" referrerpolicy="no-referrer" />
+            <div class="shrink-0 w-[38vw] max-w-[150px] flex items-center justify-end">
+              <img src="assets/sad-emoji-2.png" alt="Não aprovado" class="w-full h-auto object-contain drop-shadow-2xl" referrerpolicy="no-referrer" />
+            </div>
           </div>
 
-          <div class="bg-white dark:bg-slate-800 rounded-[28px] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-none border
-            border-slate-100 dark:border-white/5 flex items-center gap-6 mb-4 mt-4">
+          <div class="bg-white dark:bg-slate-800 rounded-[28px] p-4 sm:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-none border
+            border-slate-100 dark:border-white/5 flex items-center gap-4 sm:gap-6 mb-4">
             <!-- Left Side: Donut Chart -->
-            <div class="relative flex-shrink-0 w-[110px] h-[110px] flex items-center justify-center">
+            <div class="relative shrink-0 w-[90px] h-[90px] sm:w-[110px] sm:h-[110px] flex items-center justify-center">
               <svg viewBox="0 0 36 36" class="absolute inset-0 w-full h-full transform -rotate-90">
                 <path
                   class="text-slate-100 dark:text-slate-700/50"
@@ -322,36 +323,36 @@ interface FloatingPoint {
                 />
               </svg>
               <div class="text-center z-10 flex flex-col items-center justify-center pt-1">
-                <div class="text-[26px] font-black text-rose-500 leading-none tracking-tighter">{{ Math.round((score() / totalQuestions) * 100) }}%</div>
-                <div class="text-[9px] font-medium text-slate-500 dark:text-slate-400 mt-0.5">de acertos</div>
+                <div class="text-[22px] sm:text-[26px] font-black text-rose-500 leading-none tracking-tighter">{{ Math.round((score() / totalQuestions) * 100) }}%</div>
+                <div class="text-[8px] sm:text-[9px] font-medium text-slate-500 dark:text-slate-400 mt-0.5">de acertos</div>
               </div>
             </div>
 
             <!-- Vertical Divider -->
-            <div class="w-px h-[100px] bg-slate-100 dark:bg-slate-700/50"></div>
+            <div class="w-px h-[70px] sm:h-[100px] shrink-0 bg-slate-100 dark:bg-slate-700/50"></div>
 
             <!-- Right Side: Stats list -->
-            <div class="flex flex-col flex-1 gap-2 justify-center">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-7 h-7 rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0">
-                    <mat-icon class="material-icons !text-[16px] !w-[16px] !h-[16px] !leading-none">my_location</mat-icon>
+            <div class="flex flex-col flex-1 gap-2 min-w-0 justify-center">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0">
+                    <mat-icon class="material-icons !text-[14px] sm:!text-[16px] !w-[14px] sm:!w-[16px] !h-[14px] sm:!h-[16px] !leading-none">my_location</mat-icon>
                   </div>
-                  <span class="text-[13px] font-medium text-slate-500 dark:text-slate-400">Acertos</span>
+                  <span class="text-xs sm:text-[13px] font-medium text-slate-500 dark:text-slate-400 truncate">Acertos</span>
                 </div>
-                <span class="text-lg font-black text-slate-900 dark:text-white">{{ score() }}</span>
+                <span class="text-base sm:text-lg font-black text-slate-900 dark:text-white shrink-0">{{ score() }}</span>
               </div>
 
               <div class="h-px w-full bg-slate-100 dark:bg-slate-700/50"></div>
 
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-7 h-7 rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0">
-                    <mat-icon class="material-icons !text-[16px] !w-[16px] !h-[16px] !leading-none">close</mat-icon>
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0">
+                    <mat-icon class="material-icons !text-[14px] sm:!text-[16px] !w-[14px] sm:!w-[16px] !h-[14px] sm:!h-[16px] !leading-none">close</mat-icon>
                   </div>
-                  <span class="text-[13px] font-medium text-slate-500 dark:text-slate-400">Erros</span>
+                  <span class="text-xs sm:text-[13px] font-medium text-slate-500 dark:text-slate-400 truncate">Erros</span>
                 </div>
-                <span class="text-lg font-black text-slate-900 dark:text-white">{{ totalQuestions - score() }}</span>
+                <span class="text-base sm:text-lg font-black text-slate-900 dark:text-white shrink-0">{{ totalQuestions - score() }}</span>
               </div>
 
             </div>
@@ -362,7 +363,8 @@ interface FloatingPoint {
             href="https://teorico.dirigiragora.com.br/"
             target="_blank"
             rel="noopener noreferrer"
-            class="block relative bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 active:scale-[0.98] transition-all rounded-[24px] p-5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-none border-2 border-rose-500 mb-4 group no-underline"
+            class="block relative bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 active:scale-[0.98] transition-all rounded-[24px]
+            p-5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-none border-2 border-rose-500 mb-4 group no-underline"
           >
             <!-- Badge "Destaque" -->
             <div class="absolute top-0 right-6 bg-rose-500 text-white text-[8px] font-black uppercase tracking-wider px-3 py-1.5 rounded-b-xl">
@@ -448,7 +450,7 @@ interface FloatingPoint {
         }
 
         <!-- Buttons -->
-        <div class="mt-auto grid grid-cols-2 gap-3">
+        <div class="mt-3 grid grid-cols-2 gap-3">
           <button
             (click)="resetSimulation()"
             class="border-2 border-slate-200 dark:border-slate-700 hover:border-brand-500 dark:hover:border-brand-500 text-slate-700 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 font-bold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-1.5 text-sm active:scale-[0.98]"
