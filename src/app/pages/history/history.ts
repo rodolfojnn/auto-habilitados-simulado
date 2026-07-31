@@ -36,21 +36,25 @@ interface OnboardingAnswers {
       @if (totalSimulations() > 0) {
 
         <!-- Dashboard Stats -->
-        <div class="grid grid-cols-2 gap-4">
-          <div class="bg-blue-50 dark:bg-blue-500/10 p-4 rounded-3xl border border-blue-100 dark:border-blue-500/20 flex flex-col items-center text-center shadow-sm">
-            <div class="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-2 shrink-0">
-              <mat-icon class="!w-7 !h-7 !text-[28px] leading-none flex items-center justify-center !text-blue-600 dark:!text-blue-400">analytics</mat-icon>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-blue-50 dark:bg-blue-500/10 p-3 rounded-2xl border border-blue-100 dark:border-blue-500/20 flex items-center gap-3 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+              <mat-icon class="!w-6 !h-6 !text-[24px] leading-none flex items-center justify-center !text-blue-600 dark:!text-blue-400">analytics</mat-icon>
             </div>
-            <span class="text-3xl font-black text-gray-900 dark:text-white">{{ totalSimulations() }}</span>
-            <span class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mt-1">Simulados</span>
+            <div class="flex flex-col">
+              <span class="text-2xl font-black text-gray-900 dark:text-white leading-none">{{ totalSimulations() }}</span>
+              <span class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mt-0.5">Simulados</span>
+            </div>
           </div>
 
-          <div class="bg-emerald-50 dark:bg-emerald-500/10 p-4 rounded-3xl border border-emerald-100 dark:border-emerald-500/20 flex flex-col items-center text-center shadow-sm">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-2 shrink-0">
-              <mat-icon class="!w-7 !h-7 !text-[28px] leading-none flex items-center justify-center !text-emerald-600 dark:!text-emerald-400">emoji_events</mat-icon>
+          <div class="bg-emerald-50 dark:bg-emerald-500/10 p-3 rounded-2xl border border-emerald-100 dark:border-emerald-500/20 flex items-center gap-3 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+              <mat-icon class="!w-6 !h-6 !text-[24px] leading-none flex items-center justify-center !text-emerald-600 dark:!text-emerald-400">emoji_events</mat-icon>
             </div>
-            <span class="text-3xl font-black text-gray-900 dark:text-white">{{ approvalRate() }}%</span>
-            <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mt-1">Aprovação</span>
+            <div class="flex flex-col">
+              <span class="text-2xl font-black text-gray-900 dark:text-white leading-none">{{ approvalRate() }}%</span>
+              <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mt-0.5">Aprovação</span>
+            </div>
           </div>
         </div>
 
