@@ -304,7 +304,7 @@ interface FloatingPoint {
           </div>
 
           <div class="bg-white dark:bg-slate-800 rounded-[28px] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-none border
-            border-slate-100 dark:border-white/5 flex items-center gap-6 mb-10">
+            border-slate-100 dark:border-white/5 flex items-center gap-6 mb-4">
             <!-- Left Side: Donut Chart -->
             <div class="relative flex-shrink-0 w-[110px] h-[110px] flex items-center justify-center">
               <svg viewBox="0 0 36 36" class="absolute inset-0 w-full h-full transform -rotate-90">
@@ -371,6 +371,23 @@ interface FloatingPoint {
               </div>
             </div>
           </div>
+
+          <!-- Upsell CTA -->
+          <button class="w-full text-left bg-white dark:bg-slate-800 hover:bg-blue-50/30 dark:hover:bg-slate-700/40 active:scale-[0.99] transition-all rounded-[22px] p-4 shadow-[0_4px_20px_rgb(0,0,0,0.04)] dark:shadow-none border border-slate-100 dark:border-white/5 flex items-center gap-3.5 mb-4 group cursor-pointer">
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">
+              <mat-icon class="material-icons !text-[26px] !w-[26px] !h-[26px] !leading-none">school</mat-icon>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-[14px] font-black text-slate-900 dark:text-white leading-[1.25] mb-1 tracking-tight">
+                Estude o Teórico e aumente suas chances de aprovação!
+              </h3>
+              <p class="text-[12px] font-medium text-slate-500 dark:text-slate-400 leading-snug">
+                Aulas ao vivo, conteúdo atualizado e simulados focados na banca.
+              </p>
+            </div>
+            <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none text-slate-400 group-hover:text-blue-500 transition-colors shrink-0">chevron_right</mat-icon>
+          </button>
+
         } @else {
           <!-- PASSED STATE -->
           <!-- Results Card -->
