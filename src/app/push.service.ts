@@ -107,8 +107,14 @@ export class PushService {
     PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
       console.log('👉 Clique:', notification);
       const data = notification?.notification?.data;
-      if (data && data.pagina === 'iframe-container') {
-        this.router.navigate(['/iframe-container']);
+      if (data) {
+        if (data.url) {
+          import('@capacitor/browser').then(({ Browser }) => {
+            Browser.open({ url: data.url }).catch(err => console.error('Erro ao abrir URL:', err));
+          });
+        } else if (data.pagina) {
+          this.router.navigate(['/' + data.pagina]);
+        }
       }
     });
   }
