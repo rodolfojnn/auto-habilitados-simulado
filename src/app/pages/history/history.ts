@@ -38,13 +38,17 @@ interface OnboardingAnswers {
         <!-- Dashboard Stats -->
         <div class="grid grid-cols-2 gap-4">
           <div class="bg-blue-50 dark:bg-blue-500/10 p-4 rounded-3xl border border-blue-100 dark:border-blue-500/20 flex flex-col items-center text-center shadow-sm">
-            <mat-icon class="text-blue-500 dark:text-blue-400 !w-8 !h-6 leading-none text-[32px] mb-2 flex items-center justify-center">timeline</mat-icon>
+            <div class="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-2 shrink-0">
+              <mat-icon class="!w-7 !h-7 !text-[28px] leading-none flex items-center justify-center !text-blue-600 dark:!text-blue-400">analytics</mat-icon>
+            </div>
             <span class="text-3xl font-black text-gray-900 dark:text-white">{{ totalSimulations() }}</span>
             <span class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mt-1">Simulados</span>
           </div>
 
           <div class="bg-emerald-50 dark:bg-emerald-500/10 p-4 rounded-3xl border border-emerald-100 dark:border-emerald-500/20 flex flex-col items-center text-center shadow-sm">
-            <mat-icon class="text-emerald-500 dark:text-emerald-400 !w-8 !h-6 leading-none text-[32px] mb-2 flex items-center justify-center">emoji_events</mat-icon>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-2 shrink-0">
+              <mat-icon class="!w-7 !h-7 !text-[28px] leading-none flex items-center justify-center !text-emerald-600 dark:!text-emerald-400">emoji_events</mat-icon>
+            </div>
             <span class="text-3xl font-black text-gray-900 dark:text-white">{{ approvalRate() }}%</span>
             <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mt-1">Aprovação</span>
           </div>
@@ -53,8 +57,8 @@ interface OnboardingAnswers {
         @if (weakestModules().length > 0) {
           <div class="bg-amber-500/10 dark:bg-amber-500/10 p-5 rounded-3xl border border-amber-200/80 dark:border-amber-500/20 shadow-sm">
             <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 bg-amber-500/20 dark:bg-amber-400/20 rounded-2xl flex items-center justify-center shrink-0">
-                <mat-icon class="text-amber-700 dark:text-amber-300 !w-6 !h-6 leading-none text-[24px] flex items-center justify-center">tips_and_updates</mat-icon>
+              <div class="w-11 h-11 bg-amber-500/20 dark:bg-amber-400/20 rounded-2xl flex items-center justify-center shrink-0 border border-amber-500/30 dark:border-amber-400/30">
+                <mat-icon class="!w-6 !h-6 !text-[24px] leading-none flex items-center justify-center text-amber-700 dark:text-amber-300" style="color: #b45309;">lightbulb</mat-icon>
               </div>
               <div>
                 <h3 class="font-bold text-amber-950 dark:text-amber-200 text-base">Foque nestas matérias</h3>
@@ -88,12 +92,12 @@ interface OnboardingAnswers {
                 <div class="flex align-center justify-between">
                   <div class="flex items-center gap-4">
                     @if (sim.approved) {
-                      <div class="bg-emerald-50 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400 p-2.5 rounded-2xl">
-                        <mat-icon class="material-icons !leading-none !w-6 !h-6">check_circle</mat-icon>
+                      <div class="w-10 h-10 rounded-2xl bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                        <mat-icon class="!w-6 !h-6 !text-[24px] leading-none flex items-center justify-center !text-emerald-600 dark:!text-emerald-400">check_circle</mat-icon>
                       </div>
                     } @else {
-                      <div class="bg-rose-50 text-rose-500 dark:bg-rose-500/20 dark:text-rose-400 p-2.5 rounded-2xl">
-                        <mat-icon class="material-icons !leading-none !w-6 !h-6">cancel</mat-icon>
+                      <div class="w-10 h-10 rounded-2xl bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
+                        <mat-icon class="!w-6 !h-6 !text-[24px] leading-none flex items-center justify-center !text-rose-600 dark:!text-rose-400">cancel</mat-icon>
                       </div>
                     }
                     <div>
