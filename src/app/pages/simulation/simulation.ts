@@ -287,12 +287,12 @@ interface FloatingPoint {
           <div class="relative mb-4">
 
             <div class="pr-32 pt-6">
-              <h2 class="text-[22px] font-black text-slate-900 dark:text-white leading-[1.15] tracking-tight mb-3">
+              <h2 class="text-[25px] font-black text-slate-900 dark:text-white leading-[1.15] tracking-tight mb-3">
                 Você foi<br/>
                 <span class="text-rose-500">reprovado!</span>
               </h2>
               <p class="text-slate-500 dark:text-slate-400 font-medium text-[15px] leading-snug">
-                Mas com o estudo certo,<br/>a aprovação vem!
+                Estude mais e a<br/>aprovação virá!
               </p>
             </div>
 
@@ -300,7 +300,7 @@ interface FloatingPoint {
           </div>
 
           <div class="bg-white dark:bg-slate-800 rounded-[28px] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-none border
-            border-slate-100 dark:border-white/5 flex items-center gap-6 mb-4">
+            border-slate-100 dark:border-white/5 flex items-center gap-6 mb-4 mt-4">
             <!-- Left Side: Donut Chart -->
             <div class="relative flex-shrink-0 w-[110px] h-[110px] flex items-center justify-center">
               <svg viewBox="0 0 36 36" class="absolute inset-0 w-full h-full transform -rotate-90">
