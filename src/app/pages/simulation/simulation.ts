@@ -581,12 +581,12 @@ export class SimulationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    if (isDevMode()) {
+    if (isDevMode() && 1 > 1) {
       // Debug mode: mostra a tela de resultado final para editar o layout
       this.prepareQuestions();
       this.isStarted.set(true);
       this.isFinished.set(true);
-      this.score.set(19); // Altere para testar layout aprovado (>=20) ou reprovado (<20)
+      this.score.set(20); // Altere para testar layout aprovado (>=20) ou reprovado (<20)
       this.modulePerformance.set({
         'Legislação de Trânsito': { correct: 10, incorrect: 2 },
         'Sinalização': { correct: 8, incorrect: 1 },
