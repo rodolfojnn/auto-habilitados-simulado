@@ -285,15 +285,11 @@ interface FloatingPoint {
         @if (score() < 20) {
           <!-- FAILED STATE -->
           <div class="relative mb-4">
-            <div class="inline-flex items-center gap-2 bg-rose-50 dark:bg-rose-500/10 text-rose-500 font-bold px-4 py-2 rounded-full mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ff2056"><path d="M620-520q25 0 42.5-17.5T680-580q0-25-17.5-42.5T620-640q-25 0-42.5 17.5T560-580q0 25 17.5 42.5T620-520Zm-280 0q25 0 42.5-17.5T400-580q0-25-17.5-42.5T340-640q-25 0-42.5 17.5T280-580q0 25 17.5 42.5T340-520Zm16.5 138.5Q301-343 276-280h66q22-37 58.5-58.5T480-360q43 0 79.5 21.5T618-280h66q-25-63-80.5-101.5T480-420q-68 0-123.5 38.5Zm-32.5 270Q251-143 197-197t-85.5-127Q80-397 80-480t31.5-156Q143-709 197-763t127-85.5Q397-880 480-880t156 31.5Q709-817 763-763t85.5 127Q880-563 880-480t-31.5 156Q817-251 763-197t-127 85.5Q563-80 480-80t-156-31.5ZM480-480Zm227 227q93-93 93-227t-93-227q-93-93-227-93t-227 93q-93 93-93 227t93 227q93 93 227 93t227-93Z"/></svg>
-              <span class="text-sm">Não foi dessa vez</span>
-            </div>
 
-            <div class="pr-32">
+            <div class="pr-32 pt-6">
               <h2 class="text-[22px] font-black text-slate-900 dark:text-white leading-[1.15] tracking-tight mb-3">
-                Seu score foi<br/>
-                <span class="text-rose-500">insuficiente.</span>
+                Você foi<br/>
+                <span class="text-rose-500">reprovado!</span>
               </h2>
               <p class="text-slate-500 dark:text-slate-400 font-medium text-[15px] leading-snug">
                 Mas com o estudo certo,<br/>a aprovação vem!
@@ -358,8 +354,6 @@ interface FloatingPoint {
                 <span class="text-lg font-black text-slate-900 dark:text-white">{{ totalQuestions - score() }}</span>
               </div>
 
-              <div class="h-px w-full bg-slate-100 dark:bg-slate-700/50"></div>
-
             </div>
           </div>
 
@@ -368,28 +362,31 @@ interface FloatingPoint {
             href="https://teorico.dirigiragora.com.br/"
             target="_blank"
             rel="noopener noreferrer"
-            class="block text-left bg-gradient-to-r from-blue-600 via-blue-600 to-indigo-700 text-white hover:from-blue-500 hover:to-indigo-600 active:scale-[0.98] transition-all rounded-[24px] p-4 shadow-lg shadow-blue-500/20 border border-blue-400/30 relative overflow-hidden mb-4 group cursor-pointer no-underline"
+            class="block relative bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 active:scale-[0.98] transition-all rounded-[24px] p-5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-none border-2 border-rose-500 mb-4 group no-underline"
           >
-            <!-- Decorative background accent -->
-            <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+            <!-- Badge "Destaque" -->
+            <div class="absolute top-0 right-6 bg-rose-500 text-white text-[8px] font-black uppercase tracking-wider px-3 py-1.5 rounded-b-xl">
+              Destaque
+            </div>
 
-            <div class="flex items-center gap-3.5 relative z-10">
-              <div class="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md text-white flex items-center justify-center shrink-0 border border-white/20 shadow-inner">
-                <mat-icon class="material-icons !text-[26px] !w-[26px] !h-[26px] !leading-none">school</mat-icon>
+            <div class="flex items-center gap-4 mt-2">
+              <div class="w-[48px] h-[48px] rounded-[10px] bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-rose-500/20">
+                <mat-icon class="material-icons !text-[36px] !w-[36px] !h-[36px] !leading-none">school</mat-icon>
               </div>
-              <div class="flex-1 min-w-0">
-                <h3 class="text-[14px] font-black text-white leading-[1.25] mb-1 tracking-tight">
-                  Estude o Teórico e aumente suas chances de aprovação!
+              <div class="flex-1 min-w-0 pr-1">
+                <h3 class="text-[15px] font-black text-slate-900 dark:text-white leading-[1.2] mb-1.5 tracking-tight">
+                  Garanta sua aprovação!
                 </h3>
-                <p class="text-[12px] font-medium text-blue-100 leading-snug">
-                  Aulas ao vivo, conteúdo atualizado e simulados focados na banca.
+                <p class="text-[13px] font-medium text-slate-500 dark:text-slate-400 leading-snug">
+                  Aulas ao vivo com interação real entre alunos e instrutor. 98% de aprovação. Clique e conheça!
                 </p>
               </div>
-              <div class="w-8 h-8 rounded-full bg-white/20 group-hover:bg-white group-hover:text-blue-600 text-white flex items-center justify-center transition-all shrink-0 border border-white/20">
-                <mat-icon class="material-icons !text-[20px] !w-[20px] !h-[20px] !leading-none">chevron_right</mat-icon>
+              <div class="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-rose-500/20 group-hover:scale-105 transition-transform">
+                <mat-icon class="material-icons !text-[24px] !w-[24px] !h-[24px] !leading-none">chevron_right</mat-icon>
               </div>
             </div>
           </a>
+
         } @else {
           <!-- PASSED STATE -->
           <!-- Results Card -->
@@ -457,7 +454,7 @@ interface FloatingPoint {
             class="border-2 border-slate-200 dark:border-slate-700 hover:border-brand-500 dark:hover:border-brand-500 text-slate-700 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 font-bold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-1.5 text-sm active:scale-[0.98]"
           >
             <mat-icon class="material-icons !text-[18px] !w-[18px] !h-[18px] !leading-none">refresh</mat-icon>
-            <span>Tentar Novamente</span>
+            <span>Refazer</span>
           </button>
           <button
             (click)="goToHome()"
