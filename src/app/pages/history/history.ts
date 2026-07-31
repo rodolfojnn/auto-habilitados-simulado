@@ -26,7 +26,7 @@ interface OnboardingAnswers {
   imports: [MatIconModule, DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="px-6 py-6 max-w-lg mx-auto w-full flex flex-col gap-6 font-sans">
+    <div class="px-6 py-6 max-w-lg mx-auto w-full flex flex-col gap-2 font-sans">
 
       <header class="mb-4">
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Histórico</h1>
