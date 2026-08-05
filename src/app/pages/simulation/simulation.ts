@@ -360,7 +360,7 @@ interface FloatingPoint {
 
           <!-- Upsell CTA -->
           <a
-            href="https://teorico.dirigiragora.com.br/"
+            href="https://teorico.dirigiragora.com.br/promo-dg"
             target="_blank"
             rel="noopener noreferrer"
             class="block relative bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 active:scale-[0.98] transition-all rounded-[24px]
