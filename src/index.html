@@ -6,8 +6,19 @@
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <script>
+      (function() {
+        var isCapacitorNative = !!(window.Capacitor && (window.Capacitor.isNative || (window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) || (window.Capacitor.getPlatform && window.Capacitor.getPlatform() !== 'web')));
+        var isTargetDomain = window.location.hostname.indexOf('simuladocnhdobrasil.com.br') !== -1;
+        var isAndroid = /android/i.test(navigator.userAgent || '');
+        if (!isCapacitorNative && !isTargetDomain && isAndroid) {
+          window.location.replace('https://www.simuladocnhdobrasil.com.br');
+        }
+      })();
+    </script>
   </head>
   <body class="transition-colors duration-200">
     <app-root></app-root>
   </body>
 </html>
+
