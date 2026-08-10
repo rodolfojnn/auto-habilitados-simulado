@@ -159,7 +159,7 @@ const TIPS = [
         </a>
 
         <!-- Card de avaliação -->
-        @if (showReviewCard()) {
+        @if (showReviewCard() && 1>1) {
           <div class="relative flex flex-col gap-3 w-full rounded-2xl border border-blue-100 bg-[#eef1fb] p-4 shadow-sm">
             <!-- Botão fechar -->
             <button
