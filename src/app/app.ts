@@ -5,7 +5,7 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { Capacitor } from '@capacitor/core';
 import { AppStoreService } from './app-store.service';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal';
-import { EnablePushComponent } from './components/enable-push/enable-push.component';
+import { EnablePushComponent } from './components/enable-push/enable-push';
 import { LeadCaptureComponent } from './components/lead-capture/lead-capture';
 import { PushService } from './push.service';
 
@@ -39,10 +39,12 @@ import { PushService } from './push.service';
             </span> -->
           </div>
 
+          @if (!isWebPlatform) {
           <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-sm border border-amber-200 dark:border-amber-500/30 transition-all">
             <mat-icon class="material-icons !text-lg !leading-none !w-5 !h-5">stars</mat-icon>
             <span>{{ userPoints() }} pts</span>
           </div>
+          }
         </div>
       </header>
 
@@ -125,10 +127,12 @@ import { PushService } from './push.service';
               </div>
             </div>
 
+            @if (!isWebPlatform) {
             <div class="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-sm border border-amber-200 dark:border-amber-500/30 transition-all ml-auto">
               <mat-icon class="material-icons !text-lg !leading-none !w-5 !h-5">stars</mat-icon>
               <span>{{ userPoints() }} pts</span>
             </div>
+            }
           </div>
         </div>
 
@@ -166,6 +170,7 @@ export class App implements OnInit {
 
   userName = signal<string>('Aluno');
   userInitials = signal<string>('AL');
+  isWebPlatform = Capacitor.getPlatform() === 'web';
 
   needsPushPermission = computed(() => {
     if (Capacitor.getPlatform() === 'web') return false;

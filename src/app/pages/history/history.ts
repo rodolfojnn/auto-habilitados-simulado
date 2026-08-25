@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, signal, computed, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { DatePipe } from '@angular/common';
+import { Capacitor } from '@capacitor/core';
 
 interface ModulePerformance {
   correct: number;
@@ -113,7 +114,7 @@ interface OnboardingAnswers {
                     <span class="text-xl font-black" [class.text-emerald-500]="sim.approved" [class.text-rose-500]="!sim.approved" [class.dark:text-emerald-400]="sim.approved" [class.dark:text-rose-400]="!sim.approved">
                       {{ Math.round((sim.score / 30) * 100) }}%
                     </span>
-                    @if (sim.points_earned !== undefined) {
+                    @if (sim.points_earned !== undefined && !isWebPlatform()) {
                       <span class="text-[10px] font-bold text-brand-500 bg-brand-50 dark:bg-brand-500/20 px-2 py-0.5 rounded-full mt-1">+{{ sim.points_earned }} pts</span>
                     }
                   </div>
@@ -159,6 +160,7 @@ interface OnboardingAnswers {
   `
 })
 export class HistoryComponent implements OnInit {
+  isWebPlatform = signal(Capacitor.getPlatform() === 'web');
   simulations = signal<SimulationResult[]>([]);
   readonly Math = Math;
 
