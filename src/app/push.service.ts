@@ -63,6 +63,7 @@ export class PushService {
 
       let nome = '';
       let cep = '';
+      let pontuacao = 0;
 
       try {
         const answersStr = localStorage.getItem('onboarding_answers');
@@ -73,20 +74,23 @@ export class PushService {
             cep = answers.lead_data.cep || '';
           }
         }
+        pontuacao = parseInt(localStorage.getItem('user_points') || '0', 10);
       } catch (e) {
-        console.error('Error parsing onboarding_answers', e);
+        console.error('Error parsing onboarding_answers or user_points', e);
       }
 
       console.log('Push token received:', token.value);
       console.log('Platform:', platform);
       console.log('Nome:', nome);
       console.log('CEP:', cep);
+      console.log('Pontuação:', pontuacao);
 
       this.http.post('https://api.dirigiragora.com.br/v1/simulado/pushToken', {
         token: token.value,
         platform,
         nome,
-        cep
+        cep,
+        pontuacao
       }).subscribe({
         next: () => console.log('Push token registered with backend successfully'),
         error: (err) => console.error('Error registering push token with backend:', err)
