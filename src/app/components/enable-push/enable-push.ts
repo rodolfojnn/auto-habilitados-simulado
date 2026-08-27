@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { AppStoreService } from '../../app-store.service';
 import { PushService } from '../../push.service';
+import { Capacitor } from '@capacitor/core';
 import { MatIconModule } from '@angular/material/icon';
 import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-settings';
 
@@ -40,6 +41,15 @@ import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-s
             Permitir Notificações
             <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none">arrow_forward</mat-icon>
           </button>
+
+          @if (isIos) {
+            <button
+              (click)="declinePushIos()"
+              class="mt-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors"
+            >
+              Recusar
+            </button>
+          }
         } @else if (store.pushPermission() === 'denied') {
           <div class="w-full p-4 bg-orange-50 dark:bg-orange-900/20 rounded-xl mb-6 border border-orange-100 dark:border-orange-800/30 text-left flex gap-3 shadow-sm">
             <mat-icon class="material-icons !text-2xl !w-6 !h-6 !leading-none text-orange-500 shrink-0 mt-0.5">warning</mat-icon>
@@ -91,9 +101,15 @@ import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-s
 export class EnablePushComponent {
   store = inject(AppStoreService);
   pushS = inject(PushService);
+  isIos = Capacitor.getPlatform() === 'ios';
 
   requestPush() {
     this.pushS.requestPermissions();
+  }
+
+  declinePushIos() {
+    localStorage.setItem('pushDeclinedIos', 'true');
+    this.store.pushDeclinedIos.set(true);
   }
 
   recheck() {

@@ -94,7 +94,7 @@ import { PushService } from './push.service';
 
           <a routerLink="/ranking" routerLinkActive="bg-brand-50 text-brand-600 dark:bg-slate-800 dark:text-emerald-400" (click)="closeSidebar()" class="flex items-center gap-3 px-4 py-3 min-h-[52px] rounded-2xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800/50 transition-colors group font-medium">
             <mat-icon class="material-icons group-hover:text-brand-500 dark:group-hover:text-emerald-400 transition-colors">emoji_events</mat-icon>
-            <span>Ranking Semanal</span>
+            <span>Ranking Mensal</span>
           </a>
 
           <a routerLink="/duelo" routerLinkActive="bg-brand-50 text-brand-600 dark:bg-slate-800 dark:text-emerald-400" (click)="closeSidebar()" class="flex items-center gap-3 px-4 py-3 min-h-[52px] rounded-2xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800/50 transition-colors group font-medium">
@@ -174,6 +174,7 @@ export class App implements OnInit {
 
   needsPushPermission = computed(() => {
     if (Capacitor.getPlatform() === 'web') return false;
+    if (Capacitor.getPlatform() === 'ios' && this.store.pushDeclinedIos()) return false;
     const perm = this.store.pushPermission();
     return perm !== 'granted';
   });
