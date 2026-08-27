@@ -1,0 +1,46 @@
+PODS:
+  - Capacitor (7.6.8):
+    - CapacitorCordova
+  - CapacitorApp (7.1.2):
+    - Capacitor
+  - CapacitorBrowser (7.0.5):
+    - Capacitor
+  - CapacitorCordova (7.6.8)
+  - CapacitorNativeSettings (7.0.1):
+    - Capacitor
+  - CapacitorPushNotifications (7.0.6):
+    - Capacitor
+
+DEPENDENCIES:
+  - "Capacitor (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
+  - "CapacitorBrowser (from `../../node_modules/@capacitor/browser`)"
+  - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - CapacitorNativeSettings (from `../../node_modules/capacitor-native-settings`)
+  - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
+
+EXTERNAL SOURCES:
+  Capacitor:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorApp:
+    :path: "../../node_modules/@capacitor/app"
+  CapacitorBrowser:
+    :path: "../../node_modules/@capacitor/browser"
+  CapacitorCordova:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorNativeSettings:
+    :path: "../../node_modules/capacitor-native-settings"
+  CapacitorPushNotifications:
+    :path: "../../node_modules/@capacitor/push-notifications"
+
+SPEC CHECKSUMS:
+  Capacitor: ff6bf01336ac353098378828aff465095a89e459
+  CapacitorApp: f01a913211780e0718dae9750442c3e23f96e106
+  CapacitorBrowser: 6d09f59655e89aede71654ef08b98de55cf032b6
+  CapacitorCordova: e61ee8c40101b8cd011d0224261606a290c082cf
+  CapacitorNativeSettings: bef37b3c7e2184da7416a3f162c71de19fd27593
+  CapacitorPushNotifications: b8e30637549ce91468b8c4dddbef2657be831f4c
+
+PODFILE CHECKSUM: b2308c6e5c528d7c04fbd7d985e355820ff780c4
+
+COCOAPODS: 1.17.0
