@@ -5,6 +5,7 @@
     "ng": "ng",
     "dev": "nvm use 22.12 && npx ng serve --port 4256 --open",
     "build:android": "nvm use 22.12 && npx ng build && npx cap sync android && npx cap open android",
+    "build:ios": "npx ng build && npx cap sync ios && npx cap open ios",
     "dev:android": "nvm use 22.12 && ng serve --host=0.0.0.0 --port=4255",
     "adb:reverse": "adb reverse tcp:4255 tcp:4255",
     "assets": "npx capacitor-assets generate --android --assetPath src/assets"
