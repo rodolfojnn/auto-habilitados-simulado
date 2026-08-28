@@ -174,8 +174,12 @@ export class App implements OnInit {
 
   needsPushPermission = computed(() => {
     if (Capacitor.getPlatform() === 'web') return false;
-    if (Capacitor.getPlatform() === 'ios' && this.store.pushDeclinedIos()) return false;
     const perm = this.store.pushPermission();
+
+    if (Capacitor.getPlatform() === 'ios') {
+      if (this.store.pushDeclinedIos() || perm === 'denied') return false;
+    }
+
     return perm !== 'granted';
   });
 

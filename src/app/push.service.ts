@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications } from '@capacitor/push-notifications';
+import { App as CapacitorApp } from '@capacitor/app';
 import { Router } from '@angular/router';
 import { AppStoreService } from './app-store.service';
 
@@ -56,6 +57,16 @@ export class PushService {
   initListeners() {
     if (this.listenersInitialized) return;
     this.listenersInitialized = true;
+
+    CapacitorApp.addListener('appStateChange', async ({ isActive }) => {
+      if (isActive && Capacitor.getPlatform() === 'ios') {
+        const perm = await this.checkPermission();
+        this.store.pushPermission.set(perm);
+        if (perm === 'granted') {
+          PushNotifications.register();
+        }
+      }
+    });
 
     // 🔑 Token gerado / atualizado
     PushNotifications.addListener('registration', (token) => {

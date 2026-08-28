@@ -8,12 +8,7 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <script>
       (function() {
-        var isCapacitorNative = !!(window.Capacitor && (window.Capacitor.isNative || (window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) || (window.Capacitor.getPlatform && window.Capacitor.getPlatform() !== 'web')));
-        var isTargetDomain = window.location.hostname.indexOf('simuladocnhdobrasil.com.br') !== -1;
-        var isAndroid = /android/i.test(navigator.userAgent || '');
-        if (!isCapacitorNative && !isTargetDomain && isAndroid) {
-          window.location.replace('https://www.simuladocnhdobrasil.com.br');
-        }
+        // Redirection removed
       })();
     </script>
   </head>
