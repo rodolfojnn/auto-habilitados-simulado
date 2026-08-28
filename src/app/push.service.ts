@@ -50,7 +50,12 @@ export class PushService {
 
     // Apenas registra e envia o token pro backend se a permissão já estiver concedida
     if (permission === 'granted') {
-      PushNotifications.register();
+      console.log('✅ Permissão push concedida, chamando PushNotifications.register()...');
+      PushNotifications.register().catch(err => {
+        console.error('❌ Falha ao chamar PushNotifications.register():', err);
+      });
+    } else {
+      console.log('⚠️ Permissão push não concedida no registerOnStartup:', permission);
     }
   }
 
@@ -63,7 +68,8 @@ export class PushService {
         const perm = await this.checkPermission();
         this.store.pushPermission.set(perm);
         if (perm === 'granted') {
-          PushNotifications.register();
+          console.log('✅ Permissão push concedida no appStateChange, chamando PushNotifications.register()...');
+          PushNotifications.register().catch(err => console.error(err));
         }
       }
     });
@@ -138,14 +144,20 @@ export class PushService {
     const perm = await this.checkPermission();
     this.store.pushPermission.set(perm);
     if (perm === 'granted') {
-      PushNotifications.register();
+      console.log('✅ Permissão push concedida no checkAndRegister, chamando PushNotifications.register()...');
+      PushNotifications.register().catch(err => console.error(err));
     }
   }
 
   requestPermissions() {
+    console.log('Solicitando permissões de push...');
     PushNotifications.requestPermissions().then((result) => {
+      console.log('Resultado da permissão de push:', result.receive);
       this.store.pushPermission.set(result.receive);
-      if (result.receive === 'granted') PushNotifications.register();
+      if (result.receive === 'granted') {
+         console.log('✅ Permissão concedida no prompt, chamando PushNotifications.register()...');
+         PushNotifications.register().catch(err => console.error(err));
+      }
     });
   }
 
