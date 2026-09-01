@@ -34,8 +34,8 @@ import { MatIconModule } from '@angular/material/icon';
                 1º
               </div>
               <div class="flex flex-col relative z-10 w-full">
-                <span class="text-amber-700 dark:text-amber-400 font-bold text-sm">Aulas Práticas Grátis</span>
-                <span class="text-xs text-amber-600/80 dark:text-amber-400/70 font-medium">Pacote extra com instrutor</span>
+                <span class="text-amber-700 dark:text-amber-400 font-bold text-sm">10 Aulas Práticas - Cupom</span>
+                <span class="text-xs text-amber-600/80 dark:text-amber-400/70 font-medium">Desconto no app Dirigir Agora - 10%</span>
               </div>
             </div>
 
@@ -44,9 +44,10 @@ import { MatIconModule } from '@angular/material/icon';
               <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white flex flex-col items-center justify-center shrink-0 shadow-sm relative z-10 font-bold">
                 2º
               </div>
+
               <div class="flex flex-col relative z-10 w-full">
-                <span class="text-slate-700 dark:text-slate-300 font-bold text-sm">Curso Ao Vivo</span>
-                <span class="text-xs text-slate-500 font-medium">Revisão com instrutor expert</span>
+                <span class="text-slate-700 dark:text-slate-300 font-bold text-sm">Curso Teórico ao Vivo</span>
+                <span class="text-xs text-slate-500 font-medium">Revisão com instrutor expert - Grátis</span>
               </div>
             </div>
 
@@ -56,8 +57,8 @@ import { MatIconModule } from '@angular/material/icon';
                 3º
               </div>
               <div class="flex flex-col relative z-10 w-full">
-                <span class="text-orange-700 dark:text-orange-400 font-bold text-sm">Acesso VIP</span>
-                <span class="text-xs text-orange-600/80 dark:text-orange-400/70 font-medium">Material de estudo exclusivo</span>
+                <span class="text-orange-700 dark:text-orange-400 font-bold text-sm">4 Aulas Práticas - Cupom</span>
+                <span class="text-xs text-orange-600/80 dark:text-orange-400/70 font-medium">Desconto no app Dirigir Agora - 10%</span>
               </div>
             </div>
           </div>
@@ -75,11 +76,9 @@ import { MatIconModule } from '@angular/material/icon';
           <header class="mb-2 text-center relative">
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Ranking</h1>
             <p class="text-gray-600 dark:text-slate-400 text-sm mt-1">Dispute o topo com outros alunos</p>
-            @if (1>1) {
-              <button (click)="showPrizes.set(true)" class="absolute right-0 top-0 w-8 h-8 flex items-center justify-center text-slate-400 hover:text-brand-500 transition-colors bg-white dark:bg-slate-800 rounded-full shadow-sm">
-                <mat-icon class="!text-xl !w-5 !h-5 !leading-none">help_outline</mat-icon>
-              </button>
-            }
+            <button (click)="showPrizes.set(true)" class="absolute right-0 top-0 w-8 h-8 flex items-center justify-center text-slate-400 hover:text-brand-500 transition-colors bg-white dark:bg-slate-800 rounded-full shadow-sm">
+              <mat-icon class="!text-xl !w-5 !h-5 !leading-none">help_outline</mat-icon>
+            </button>
           </header>
 
             <!-- <div class="bg-white dark:bg-slate-800/40 border border-gray-100 dark:border-white/5 rounded-3xl p-8 flex flex-col items-center text-center shadow-sm">
@@ -93,7 +92,7 @@ import { MatIconModule } from '@angular/material/icon';
           </div> -->
 
           <div class="flex flex-col gap-4 mt-4 relative">
-            <h2 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest text-center mb-2">Primeiros colocados - Agosto / 2026</h2>
+            <h2 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest text-center mb-2">Vencedores - Setembro / 2026</h2>
 
             <!-- 1st Place -->
             <div class="flex items-center gap-4 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 p-4 rounded-2xl relative overflow-hidden shadow-sm">
@@ -104,11 +103,11 @@ import { MatIconModule } from '@angular/material/icon';
                 1
               </div>
               <div class="flex flex-col relative z-10 flex-1">
-                <span class="text-amber-900 dark:text-amber-400 font-bold text-base">Lucilene Santana</span>
-                <span class="text-xs text-amber-700/80 dark:text-amber-400/70 font-medium">Niterói - RJ</span>
+                <span class="text-amber-900 dark:text-amber-400 font-bold text-base">Cláudio Ribeiro</span>
+                <span class="text-xs text-amber-700/80 dark:text-amber-400/70 font-medium">Curitiba PR</span>
               </div>
               <div class="relative z-10 font-bold text-amber-600 dark:text-amber-500 pr-2">
-                2720 pts
+                5141 pts
               </div>
             </div>
 
@@ -118,11 +117,11 @@ import { MatIconModule } from '@angular/material/icon';
                 2
               </div>
               <div class="flex flex-col relative z-10 flex-1">
-                <span class="text-slate-800 dark:text-slate-200 font-bold text-base">Fernando Martins</span>
-                <span class="text-xs text-slate-500 font-medium">Curitiba - PR</span>
+                <span class="text-slate-800 dark:text-slate-200 font-bold text-base">Rodrigo</span>
+                <span class="text-xs text-slate-500 font-medium">São Paulo - SP</span>
               </div>
               <div class="relative z-10 font-bold text-slate-500 dark:text-slate-400 pr-2">
-                2212 pts
+                4510 pts
               </div>
             </div>
 
@@ -132,11 +131,11 @@ import { MatIconModule } from '@angular/material/icon';
                 3
               </div>
               <div class="flex flex-col relative z-10 flex-1">
-                <span class="text-orange-900 dark:text-orange-300 font-bold text-base">Mário Silva</span>
-                <span class="text-xs text-orange-700/80 dark:text-orange-400/70 font-medium">São Paulo - SP</span>
+                <span class="text-orange-900 dark:text-orange-300 font-bold text-base">Mauro Sérgio</span>
+                <span class="text-xs text-orange-700/80 dark:text-orange-400/70 font-medium">Espírito Santo do Pinhal - SP</span>
               </div>
               <div class="relative z-10 font-bold text-orange-600 dark:text-orange-500 pr-2">
-                1733 pts
+                4468 pts
               </div>
             </div>
 
