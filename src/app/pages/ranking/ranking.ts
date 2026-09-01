@@ -167,4 +167,3 @@ export class RankingComponent implements OnInit {
     this.showPrizes.set(false);
   }
 }
-
