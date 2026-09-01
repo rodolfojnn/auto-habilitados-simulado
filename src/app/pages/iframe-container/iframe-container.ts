@@ -24,7 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
           [src]="iframeUrl"
           class="absolute inset-0 w-full h-full border-none"
           title="Conteúdo Externo"
-          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads allow-modals"
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads allow-modals allow-top-navigation"
         ></iframe>
       </div>
     </div>
