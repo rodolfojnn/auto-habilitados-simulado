@@ -75,9 +75,11 @@ import { MatIconModule } from '@angular/material/icon';
           <header class="mb-2 text-center relative">
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Ranking</h1>
             <p class="text-gray-600 dark:text-slate-400 text-sm mt-1">Dispute o topo com outros alunos</p>
-            <button (click)="showPrizes.set(true)" class="absolute right-0 top-0 w-8 h-8 flex items-center justify-center text-slate-400 hover:text-brand-500 transition-colors bg-white dark:bg-slate-800 rounded-full shadow-sm">
-              <mat-icon class="!text-xl !w-5 !h-5 !leading-none">help_outline</mat-icon>
-            </button>
+            @if (1>1) {
+              <button (click)="showPrizes.set(true)" class="absolute right-0 top-0 w-8 h-8 flex items-center justify-center text-slate-400 hover:text-brand-500 transition-colors bg-white dark:bg-slate-800 rounded-full shadow-sm">
+                <mat-icon class="!text-xl !w-5 !h-5 !leading-none">help_outline</mat-icon>
+              </button>
+            }
           </header>
 
             <!-- <div class="bg-white dark:bg-slate-800/40 border border-gray-100 dark:border-white/5 rounded-3xl p-8 flex flex-col items-center text-center shadow-sm">
@@ -91,7 +93,7 @@ import { MatIconModule } from '@angular/material/icon';
           </div> -->
 
           <div class="flex flex-col gap-4 mt-4 relative">
-            <h2 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest text-center mb-2">Vencedores - Agosto / 2026</h2>
+            <h2 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest text-center mb-2">Primeiros colocados - Agosto / 2026</h2>
 
             <!-- 1st Place -->
             <div class="flex items-center gap-4 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 p-4 rounded-2xl relative overflow-hidden shadow-sm">
@@ -154,13 +156,10 @@ import { MatIconModule } from '@angular/material/icon';
   `]
 })
 export class RankingComponent implements OnInit {
-  showPrizes = signal<boolean>(true);
+  showPrizes = signal<boolean>(false);
 
   ngOnInit() {
-    const hasSeen = localStorage.getItem('ranking_prizes_seen');
-    if (hasSeen === 'true') {
-      this.showPrizes.set(false);
-    }
+    localStorage.setItem('ranking_prizes_seen', 'true');
   }
 
   enterRanking() {
