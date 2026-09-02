@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
             <p class="text-sm text-gray-500 dark:text-gray-400">
               Os melhores do simulado e duelo multiplayer podem ganhar prêmios!
               Dispute com outros alunos e alcance o topo da classificação nacional para ser um dos vencedores.
+              Obs: os pontos de meses anteriores não são cumulativos!
             </p>
           </header>
 
