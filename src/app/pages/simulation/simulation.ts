@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, computed, ElementRef, viewChild, isDevMode } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { interval, Subscription } from 'rxjs';
+import { Capacitor } from '@capacitor/core';
 import questionsData from '../../../assets/questions.json';
 
 interface Answer {
@@ -391,60 +392,146 @@ interface FloatingPoint {
 
         } @else {
           <!-- PASSED STATE -->
-          <!-- Results Card -->
-          <div class="bg-white dark:bg-slate-800 rounded-[3rem] p-10 shadow-2xl shadow-slate-200 dark:shadow-none border border-slate-100 dark:border-white/5 text-center relative overflow-hidden mb-8">
-            <!-- Background Effect -->
-            <div class="absolute inset-0 opacity-5 dark:opacity-10">
-              <mat-icon class="material-icons absolute -top-10 -left-10 !text-[200px] !w-[200px] !h-[200px]">emoji_events</mat-icon>
+          <div class="flex flex-row items-center justify-between gap-4 mb-6 sm:mb-8">
+            <div class="flex-1">
+              <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-[1.1] tracking-tight mb-3">
+                Parabéns, você foi<br/>
+                <span class="text-emerald-500">aprovado!</span>
+              </h2>
+              <p class="text-slate-500 dark:text-slate-400 font-medium text-base sm:text-lg leading-snug">
+                Continue assim e<br class="block sm:hidden"/> mantenha o foco
+              </p>
             </div>
 
-            <div class="relative z-10">
-              <div class="w-24 h-24 bg-emerald-500 text-white mx-auto rounded-[2rem] flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/30">
-                <mat-icon class="material-icons !text-5xl !w-12 !h-12 !leading-none">emoji_events</mat-icon>
-              </div>
-
-              <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-2">
-                Parabéns, Motorista!
-              </h2>
-              <p class="text-slate-500 dark:text-slate-400 font-medium mb-8">
-                Você foi aprovado no simulado!
-              </p>
-
-              <div class="grid grid-cols-3 gap-4 mb-2">
-                <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-white/5">
-                  <span class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Acertos</span>
-                  <span class="text-2xl font-black text-emerald-500">{{ score() }}</span>
-                </div>
-                <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-white/5">
-                  <span class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Erros</span>
-                  <span class="text-2xl font-black text-rose-500">{{ totalQuestions - score() }}</span>
-                </div>
-                <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-white/5">
-                  <span class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Score</span>
-                  <span class="text-2xl font-black text-emerald-600">{{ Math.round((score() / totalQuestions) * 100) }}%</span>
-                </div>
-              </div>
+            <div class="shrink-0 w-[38vw] max-w-[150px] flex items-center justify-end">
+              <img src="assets/happy-emoji-2.png" alt="Aprovado" class="w-full h-auto object-contain drop-shadow-2xl" referrerpolicy="no-referrer" />
             </div>
           </div>
 
-          <!-- Performance Details -->
-          <div class="space-y-4 mb-10">
-            <h3 class="text-xl font-black text-slate-900 dark:text-white px-2">Performance Geral</h3>
-            <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-100 dark:border-white/5 shadow-lg shadow-slate-100 dark:shadow-none">
-               <div class="flex items-center justify-between mb-4">
-                  <div class="flex items-center gap-3">
-                     <div class="w-10 h-10 bg-brand-50 dark:bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center">
-                        <mat-icon class="material-icons !text-xl">trending_up</mat-icon>
-                     </div>
-                     <span class="font-bold text-slate-700 dark:text-slate-200">Simulado Detran</span>
+          <div class="bg-white dark:bg-slate-800 rounded-[28px] p-4 sm:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-none border
+            border-slate-100 dark:border-white/5 flex items-center gap-4 sm:gap-6 mb-4">
+            <!-- Left Side: Donut Chart -->
+            <div class="relative shrink-0 w-[90px] h-[90px] sm:w-[110px] sm:h-[110px] flex items-center justify-center">
+              <svg viewBox="0 0 36 36" class="absolute inset-0 w-full h-full transform -rotate-90">
+                <path
+                  class="text-slate-100 dark:text-slate-700/50"
+                  stroke-width="3.5"
+                  stroke="currentColor"
+                  fill="none"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <path
+                  class="text-emerald-500 transition-all duration-1000 ease-out"
+                  [attr.stroke-dasharray]="Math.round((score() / totalQuestions) * 100) + ', 100'"
+                  stroke-linecap="round"
+                  stroke-width="3.5"
+                  stroke="currentColor"
+                  fill="none"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+              </svg>
+              <div class="text-center z-10 flex flex-col items-center justify-center pt-1">
+                <div class="text-[22px] sm:text-[26px] font-black text-emerald-500 leading-none tracking-tighter">{{ Math.round((score() / totalQuestions) * 100) }}%</div>
+                <div class="text-[8px] sm:text-[9px] font-medium text-slate-500 dark:text-slate-400 mt-0.5">de acertos</div>
+              </div>
+            </div>
+
+            <!-- Vertical Divider -->
+            <div class="w-px h-[70px] sm:h-[100px] shrink-0 bg-slate-100 dark:bg-slate-700/50"></div>
+
+            <!-- Right Side: Stats list -->
+            <div class="flex flex-col flex-1 gap-2 min-w-0 justify-center">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
+                    <mat-icon class="material-icons !text-[14px] sm:!text-[16px] !w-[14px] sm:!w-[16px] !h-[14px] sm:!h-[16px] !leading-none">my_location</mat-icon>
                   </div>
-                  <span class="px-3 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 rounded-full text-xs font-black uppercase">
-                     Aprovado
-                  </span>
-               </div>
-               <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Você acertou {{ score() }} de {{ totalQuestions }} questões. O mínimo necessário para aprovação na prova real é de 20 acertos (66%).
-               </p>
+                  <span class="text-xs sm:text-[13px] font-medium text-slate-500 dark:text-slate-400 truncate">Acertos</span>
+                </div>
+                <span class="text-base sm:text-lg font-black text-slate-900 dark:text-white shrink-0">{{ score() }}</span>
+              </div>
+
+              <div class="h-px w-full bg-slate-100 dark:bg-slate-700/50"></div>
+
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0">
+                    <mat-icon class="material-icons !text-[14px] sm:!text-[16px] !w-[14px] sm:!w-[16px] !h-[14px] sm:!h-[16px] !leading-none">close</mat-icon>
+                  </div>
+                  <span class="text-xs sm:text-[13px] font-medium text-slate-500 dark:text-slate-400 truncate">Erros</span>
+                </div>
+                <span class="text-base sm:text-lg font-black text-slate-900 dark:text-white shrink-0">{{ totalQuestions - score() }}</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Next Step & Instagram CTA Card -->
+          <div class="bg-emerald-50/30 dark:bg-slate-800/80 rounded-[28px] border-2 border-emerald-500/80 dark:border-emerald-500/60 p-4 sm:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-none relative overflow-hidden mb-4">
+            <!-- PRÓXIMO PASSO Badge -->
+            <div class="absolute top-0 right-0 bg-emerald-500 text-white text-[9px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-bl-2xl rounded-tr-[24px]">
+              PRÓXIMO PASSO
+            </div>
+
+            <!-- Main CTA (dirigiragora.com.br) -->
+            <a
+              [href]="aulasDirecaoUrl()"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-3 sm:gap-4 pt-3 pb-3 group no-underline"
+            >
+              <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/30">
+                <mat-icon class="material-icons !text-[28px] !w-[28px] !h-[28px] !leading-none">school</mat-icon>
+              </div>
+              <div class="flex-1 min-w-0 pr-1">
+                <h3 class="text-base font-black text-slate-900 dark:text-white leading-tight mb-1 tracking-tight">
+                  Aulas de Direção
+                </h3>
+                <p class="text-xs font-medium text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Você já está no caminho certo. Agora é hora de colocar o conhecimento em prática!
+                </p>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/30 group-hover:scale-105 transition-transform">
+                <mat-icon class="material-icons !text-[24px] !w-[24px] !h-[24px] !leading-none">chevron_right</mat-icon>
+              </div>
+            </a>
+
+            <!-- Divider Line -->
+            <div class="h-px w-full bg-emerald-200/60 dark:bg-emerald-900/40 my-2"></div>
+
+            <!-- Instagram CTA (https://www.instagram.com/dirigiragora/) -->
+            <div class="flex items-center justify-between gap-3 pt-2">
+              <div class="flex items-center gap-3 min-w-0 flex-1">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-400 via-rose-500 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <p class="text-[11px] sm:text-xs font-bold text-slate-800 dark:text-white leading-tight">
+                    Acompanhe dicas sorteios e conteúdos exclusivos no nosso Instagram!
+                  </p>
+                  <a
+                    href="https://www.instagram.com/dirigiragora/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline mt-0.5 truncate no-underline"
+                  >
+                    &#64;dirigiragora
+                  </a>
+                </div>
+              </div>
+
+              <a
+                href="https://www.instagram.com/dirigiragora/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="px-4 py-1.5 rounded-full border border-emerald-500 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white font-bold text-xs transition-colors shrink-0 no-underline flex items-center justify-center"
+              >
+                Seguir
+              </a>
             </div>
           </div>
         }
@@ -579,6 +666,16 @@ export class SimulationComponent implements OnInit, OnDestroy {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   });
 
+  aulasDirecaoUrl = computed(() => {
+    const platform = Capacitor.getPlatform();
+    if (platform === 'ios') {
+      return 'https://apps.apple.com/br/app/dirigir-agora-cnh-do-brasil/id6801734923';
+    } else if (platform === 'android') {
+      return 'https://play.google.com/store/apps/details?id=br.com.dirigiragora';
+    }
+    return 'https://www.dirigiragora.com.br';
+  });
+
   ngOnInit() {
 
     if (isDevMode() && 1 > 1) {
@@ -586,7 +683,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
       this.prepareQuestions();
       this.isStarted.set(true);
       this.isFinished.set(true);
-      this.score.set(20); // Altere para testar layout aprovado (>=20) ou reprovado (<20)
+      this.score.set(25); // Altere para testar layout aprovado (>=20) ou reprovado (<20)
       this.modulePerformance.set({
         'Legislação de Trânsito': { correct: 10, incorrect: 2 },
         'Sinalização': { correct: 8, incorrect: 1 },
