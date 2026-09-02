@@ -65,69 +65,75 @@ interface ChatMessage {
 
         <!-- Messages Area -->
         <main class="flex-1 overflow-y-auto p-4 bg-slate-50 dark:bg-slate-950 flex flex-col gap-4" #scrollContainer>
-          @if (messages().length === 0) {
-            <div class="text-center">
-              <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide bg-slate-200 dark:bg-slate-800 px-3 py-1 rounded-full">
-                Início da conversa
-              </span>
+          @if (isLoading() && messages().length === 0) {
+            <div class="flex-1 flex items-center justify-center">
+              <div class="w-8 h-8 border-2 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
-          }
-
-          @for (msg of messages(); track msg.id; let i = $index) {
-            @if (i === 0 || msg.dateGroup !== messages()[i - 1].dateGroup) {
-              <div class="text-center my-2">
+          } @else {
+            @if (messages().length === 0) {
+              <div class="text-center">
                 <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide bg-slate-200 dark:bg-slate-800 px-3 py-1 rounded-full">
-                  {{ msg.dateGroup }}
+                  Início da conversa
                 </span>
               </div>
             }
 
-            <div
-              class="flex gap-2 max-w-[85%] animate-fade-in"
-              [ngClass]="{
-                'self-end flex-row-reverse': msg.sender === 'user',
-                'self-start': msg.sender === 'support'
-              }"
-            >
+            @for (msg of messages(); track msg.id; let i = $index) {
+              @if (i === 0 || msg.dateGroup !== messages()[i - 1].dateGroup) {
+                <div class="text-center my-2">
+                  <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide bg-slate-200 dark:bg-slate-800 px-3 py-1 rounded-full">
+                    {{ msg.dateGroup }}
+                  </span>
+                </div>
+              }
+
               <div
-                class="p-3 shadow-sm relative rounded-2xl"
+                class="flex gap-2 max-w-[85%] animate-fade-in"
                 [ngClass]="{
-                  'rounded-br-none bg-brand-600 text-white': msg.sender === 'user',
-                  'rounded-bl-none bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-100 dark:border-slate-700': msg.sender === 'support'
+                  'self-end flex-row-reverse': msg.sender === 'user',
+                  'self-start': msg.sender === 'support'
                 }"
               >
-                @if (msg.sender === 'support') {
-                  <div class="flex items-center gap-1.5 mb-1 pb-1 border-b border-slate-100 dark:border-slate-700">
-                    <span class="text-[10px] font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wide">Suporte</span>
-                  </div>
-                }
-
-                <p class="text-sm leading-relaxed whitespace-pre-wrap">{{ msg.text }}</p>
-
-                <span
-                  class="text-[9px] block mt-1 flex items-center gap-1 opacity-80"
+                <div
+                  class="p-3 shadow-sm relative rounded-2xl"
                   [ngClass]="{
-                    'text-white/80 justify-end': msg.sender === 'user',
-                    'text-slate-400 justify-end': msg.sender === 'support'
+                    'rounded-br-none bg-brand-600 text-white': msg.sender === 'user',
+                    'rounded-bl-none bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-100 dark:border-slate-700': msg.sender === 'support'
                   }"
                 >
-                  {{ msg.time | date:'HH:mm' }}
-                  @if (msg.sender === 'user') {
-                    <mat-icon class="material-icons !text-[12px] !w-[12px] !h-[12px] !leading-none text-white/90">done_all</mat-icon>
+                  @if (msg.sender === 'support') {
+                    <div class="flex items-center gap-1.5 mb-1 pb-1 border-b border-slate-100 dark:border-slate-700">
+                      <span class="text-[10px] font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wide">Suporte</span>
+                    </div>
                   }
-                </span>
-              </div>
-            </div>
-          }
 
-          @if (isTyping()) {
-            <div class="flex gap-2 max-w-[85%] self-start animate-fade-in">
-              <div class="p-3 shadow-sm rounded-2xl rounded-bl-none bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center gap-1.5 h-[42px]">
-                <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div>
-                <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
-                <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+                  <p class="text-sm leading-relaxed whitespace-pre-wrap">{{ msg.text }}</p>
+
+                  <span
+                    class="text-[9px] block mt-1 flex items-center gap-1 opacity-80"
+                    [ngClass]="{
+                      'text-white/80 justify-end': msg.sender === 'user',
+                      'text-slate-400 justify-end': msg.sender === 'support'
+                    }"
+                  >
+                    {{ msg.time | date:'HH:mm' }}
+                    @if (msg.sender === 'user') {
+                      <mat-icon class="material-icons !text-[12px] !w-[12px] !h-[12px] !leading-none text-white/90">done_all</mat-icon>
+                    }
+                  </span>
+                </div>
               </div>
-            </div>
+            }
+
+            @if (isTyping()) {
+              <div class="flex gap-2 max-w-[85%] self-start animate-fade-in">
+                <div class="p-3 shadow-sm rounded-2xl rounded-bl-none bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center gap-1.5 h-[42px]">
+                  <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div>
+                  <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
+                  <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+                </div>
+              </div>
+            }
           }
         </main>
 
@@ -181,6 +187,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private http = inject(HttpClient);
 
   isOpen = signal(false);
+  isLoading = signal(false);
   currentMessage = '';
   isTyping = signal(false);
   hasUnread = signal(false);
@@ -190,11 +197,12 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private userName = '';
   private userCep = '';
   private timerId: any;
-  private endpoint = 'https://api.dirigiragora.com.br/v1/simulado/chat/chatMsgs';
+  private endpointList = 'https://api.dirigiragora.com.br/v1/simulado/chat/chatList';
+  private endpointMsgs = 'https://api.dirigiragora.com.br/v1/simulado/chat/chatMsgs';
 
   ngOnInit() {
     this.loadUserData();
-    this.fetchMessages();
+    this.fetchData();
     this.scheduleNextPoll();
   }
 
@@ -217,32 +225,57 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private scheduleNextPoll() {
     if (this.timerId) clearTimeout(this.timerId);
-    const interval = this.isOpen() ? 10000 : 120000; // 10s aberto, 2m fechado
+    const interval = this.isOpen() ? 10000 : 120000; // 10s aberto (Msgs), 2m fechado (List)
     this.timerId = setTimeout(() => {
-      this.fetchMessages();
+      this.fetchData();
       this.scheduleNextPoll();
     }, interval);
   }
 
-  private fetchMessages() {
+  private fetchData() {
     if (!this.userName || !this.userCep) {
       this.loadUserData();
     }
 
     if (!this.userName || !this.userCep) return;
 
-    this.http.post<{ success: boolean, messages: ApiMessage[] }>(this.endpoint, {
+    if (this.isOpen()) {
+      this.fetchMessages();
+    } else {
+      this.fetchList();
+    }
+  }
+
+  private fetchList() {
+    this.http.post<{ success: boolean, unreadAluno: number }>(this.endpointList, {
       nome: this.userName,
-      cep: this.userCep,
-      chatAberto: this.isOpen()
+      cep: this.userCep
     }).subscribe({
       next: (res) => {
+        if (res.success) {
+          this.hasUnread.set(res.unreadAluno > 0);
+        }
+      },
+      error: () => {
+        // Silencioso
+      }
+    });
+  }
+
+  private fetchMessages() {
+    this.http.post<{ success: boolean, messages: ApiMessage[] }>(this.endpointMsgs, {
+      nome: this.userName,
+      cep: this.userCep,
+      chatAberto: true
+    }).subscribe({
+      next: (res) => {
+        this.isLoading.set(false);
         if (res.success && res.messages) {
           this.processApiMessages(res.messages);
         }
       },
       error: () => {
-        // Silencioso
+        this.isLoading.set(false);
       }
     });
   }
@@ -295,6 +328,12 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isOpen.update(v => !v);
     if (this.isOpen()) {
       this.hasUnread.set(false);
+
+      // If messages array is empty, show loading state while fetching initial messages
+      if (this.messages().length === 0) {
+        this.isLoading.set(true);
+      }
+
       this.fetchMessages();
       this.scheduleNextPoll();
       setTimeout(() => this.scrollToBottom(), 100);
@@ -322,7 +361,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scrollToBottom();
 
     // Envia para API
-    this.http.post<{ success: boolean, messages: ApiMessage[] }>(this.endpoint, {
+    this.http.post<{ success: boolean, messages: ApiMessage[] }>(this.endpointMsgs, {
       nome: this.userName,
       cep: this.userCep,
       chatAberto: true,
