@@ -7,13 +7,14 @@ import { AppStoreService } from './app-store.service';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal';
 import { EnablePushComponent } from './components/enable-push/enable-push';
 import { LeadCaptureComponent } from './components/lead-capture/lead-capture';
+import { ChatComponent } from './components/chat/chat.component';
 import { PushService } from './push.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, ConfirmModalComponent, LeadCaptureComponent, EnablePushComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, ConfirmModalComponent, LeadCaptureComponent, EnablePushComponent, ChatComponent],
   template: `
     @if (!leadCaptured()) {
       <div class="fixed inset-0 z-[100] bg-gray-50 dark:bg-slate-900 overflow-y-auto">
@@ -144,6 +145,8 @@ import { PushService } from './push.service';
       </main>
 
       </div>
+
+      <app-chat></app-chat>
 
       <app-confirm-modal
         [isOpen]="showResetModal()"
