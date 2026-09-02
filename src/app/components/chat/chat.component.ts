@@ -268,7 +268,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  private fetchMessages() {
+  private fetchMessages(isInitialOpen = false) {
     this.http.post<{ success: boolean, messages: ApiMessage[] }>(this.endpointMsgs, {
       nome: this.userName,
       cep: this.userCep,
@@ -277,7 +277,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       next: (res) => {
         this.isLoading.set(false);
         if (res.success && res.messages) {
-          this.processApiMessages(res.messages);
+          this.processApiMessages(res.messages, isInitialOpen);
         }
       },
       error: () => {
@@ -301,7 +301,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
   }
 
-  private processApiMessages(apiMessages: ApiMessage[]) {
+  private processApiMessages(apiMessages: ApiMessage[], isInitialOpen = false) {
     let unread = false;
     const mapped: ChatMessage[] = apiMessages.map((m, i) => {
       if (m.lidoAluno === 0 && m.de !== 'Aluno') {
@@ -327,7 +327,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Só scrolla se houver mudanças reais (simplificado)
-    this.scrollToBottom();
+    this.scrollToBottom(isInitialOpen ? 'auto' : 'smooth');
   }
 
   toggleChat() {
@@ -340,9 +340,9 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isLoading.set(true);
       }
 
-      this.fetchMessages();
+      this.fetchMessages(true);
       this.scheduleNextPoll();
-      setTimeout(() => this.scrollToBottom(), 100);
+      this.scrollToBottom('auto');
     } else {
       this.scheduleNextPoll();
     }
@@ -354,6 +354,9 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     const msgText = this.currentMessage.trim();
     this.currentMessage = '';
     this.isSending.set(true);
+
+    // Otimização: Forçar o scroll imediatamente para a nova mensagem se ajustar
+    this.scrollToBottom('smooth');
 
     // Envia para API
     this.http.post<{ success: boolean, messages: ApiMessage[] }>(this.endpointSend, {
@@ -377,18 +380,23 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  scrollToBottom() {
+  scrollToBottom(behavior: ScrollBehavior = 'smooth') {
+    // Usamos setTimeout de 0ms e requestAnimationFrame para garantir que ocorra imediatamente
+    // após a renderização do Angular, mas antes do próximo frame ser desenhado na tela,
+    // eliminando o "flick" visual.
     setTimeout(() => {
-      if (this.scrollContainer?.nativeElement) {
-        const el = this.scrollContainer.nativeElement;
-        el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
-      }
-    }, 50);
+      requestAnimationFrame(() => {
+        if (this.scrollContainer?.nativeElement) {
+          const el = this.scrollContainer.nativeElement;
+          el.scrollTo({ top: el.scrollHeight, behavior });
+        }
+      });
+    }, 0);
   }
 
   ngAfterViewInit() {
     if (this.isOpen()) {
-      this.scrollToBottom();
+      this.scrollToBottom('auto');
     }
   }
 }
