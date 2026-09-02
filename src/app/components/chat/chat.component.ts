@@ -155,10 +155,14 @@ interface ChatMessage {
             </div>
             <button
               (click)="sendMessage()"
-              [disabled]="!currentMessage.trim()"
+              [disabled]="!currentMessage.trim() || isSending()"
               class="shrink-0 w-[48px] h-[48px] flex items-center justify-center bg-brand-600 text-white rounded-full hover:bg-brand-700 transition-all shadow-md shadow-brand-600/20 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none ml-0.5">send</mat-icon>
+              @if (isSending()) {
+                <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              } @else {
+                <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none ml-0.5">send</mat-icon>
+              }
             </button>
           </div>
         </footer>
@@ -191,6 +195,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   currentMessage = '';
   isTyping = signal(false);
   hasUnread = signal(false);
+  isSending = signal(false);
 
   messages = signal<ChatMessage[]>([]);
 
@@ -199,6 +204,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private timerId: any;
   private endpointList = 'https://api.dirigiragora.com.br/v1/simulado/chat/chatList';
   private endpointMsgs = 'https://api.dirigiragora.com.br/v1/simulado/chat/chatMsgs';
+  private endpointSend = 'https://api.dirigiragora.com.br/v1/simulado/chat/sendMsg';
 
   ngOnInit() {
     this.loadUserData();
@@ -343,37 +349,30 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   sendMessage() {
-    if (!this.currentMessage.trim() || !this.userName || !this.userCep) return;
+    if (!this.currentMessage.trim() || !this.userName || !this.userCep || this.isSending()) return;
 
     const msgText = this.currentMessage.trim();
     this.currentMessage = '';
-
-    // Otimista: adiciona à tela
-    const now = new Date();
-    const tempMsg: ChatMessage = {
-      id: `temp-${Date.now()}`,
-      text: msgText,
-      sender: 'user',
-      time: now,
-      dateGroup: this.formatDateGroup(now)
-    };
-    this.messages.update(m => [...m, tempMsg]);
-    this.scrollToBottom();
+    this.isSending.set(true);
 
     // Envia para API
-    this.http.post<{ success: boolean, messages: ApiMessage[] }>(this.endpointMsgs, {
+    this.http.post<{ success: boolean, messages: ApiMessage[] }>(this.endpointSend, {
       nome: this.userName,
       cep: this.userCep,
-      chatAberto: true,
       conteudo: msgText
     }).subscribe({
       next: (res) => {
+        this.isSending.set(false);
         if (res.success && res.messages) {
           this.processApiMessages(res.messages);
+          // Reinicia o timer do polling para pular a próxima chamada do chatMsgs
+          this.scheduleNextPoll();
         }
       },
       error: () => {
-        // Falha no envio, pode tratar aqui
+        this.isSending.set(false);
+        // Restaura a mensagem em caso de erro para o aluno tentar novamente
+        this.currentMessage = msgText;
       }
     });
   }
