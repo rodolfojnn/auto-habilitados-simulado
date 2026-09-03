@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClient } from '@angular/common/http';
+import { AppStoreService } from '../../app-store.service';
 
 interface ApiMessage {
   created_at: string;
@@ -27,7 +28,7 @@ interface ChatMessage {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!-- Floating Button -->
-    @if (!isOpen()) {
+    @if (!isOpen() && visibility.showChat()) {
       <button
         (click)="toggleChat()"
         class="fixed z-50 w-14 h-14 bg-brand-600 hover:bg-brand-700 text-white rounded-full shadow-lg shadow-brand-600/30 flex items-center justify-center transition-all hover:scale-105 active:scale-95"
@@ -189,6 +190,7 @@ interface ChatMessage {
 export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef<HTMLElement>;
   private http = inject(HttpClient);
+  public visibility = inject(AppStoreService);
 
   isOpen = signal(false);
   isLoading = signal(false);

@@ -1,8 +1,9 @@
-import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, computed, ElementRef, viewChild, isDevMode } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, computed, ElementRef, viewChild, isDevMode, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { interval, Subscription } from 'rxjs';
 import { Capacitor } from '@capacitor/core';
 import questionsData from '../../../assets/questions.json';
+import { AppStoreService } from '../../app-store.service';
 
 interface Answer {
   text: string;
@@ -627,6 +628,8 @@ export class SimulationComponent implements OnInit, OnDestroy {
   readonly totalQuestions = 30;
   readonly Math = Math;
 
+  private chatVisibility = inject(AppStoreService);
+
   questionCard = viewChild<ElementRef>('questionCard');
 
   isStarted = signal<boolean>(false);
@@ -699,6 +702,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.timerSubscription?.unsubscribe();
+    this.chatVisibility.showChat.set(true);
   }
 
   prepareQuestions() {
@@ -758,6 +762,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
   startSimulation() {
     this.isStarted.set(true);
     this.startTimer();
+    this.chatVisibility.showChat.set(false);
   }
 
   handleImageError(event: Event) {
@@ -842,6 +847,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
     this.timerSubscription?.unsubscribe();
     this.isFinished.set(true);
     this.saveSimulationResult();
+    this.chatVisibility.showChat.set(true);
 
     // Final points animation
     const pointsEarned = this.score();
@@ -889,6 +895,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
     this.selectedAnswer.set(null);
     this.modulePerformance.set({});
     this.prepareQuestions();
+    this.chatVisibility.showChat.set(true);
 
     const currentGlobalPoints = parseInt(localStorage.getItem('user_points') || '0', 10);
     this.simulationPoints.set(currentGlobalPoints);

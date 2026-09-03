@@ -1,9 +1,10 @@
-import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, computed, ViewChild, ElementRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, computed, ViewChild, ElementRef, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { DecimalPipe } from '@angular/common';
 import { LeadCaptureComponent } from '../../components/lead-capture/lead-capture';
 import questionsData from '../../../assets/questions.json';
 import { interval, Subscription } from 'rxjs';
+import { AppStoreService } from '../../app-store.service';
 
 interface RawAnswer {
   text: string;
@@ -564,6 +565,8 @@ export class DuelComponent implements OnInit, OnDestroy {
   @ViewChild('myAvatarModal') myAvatarModalRef?: ElementRef<HTMLElement>;
   @ViewChild('rivalAvatarModal') rivalAvatarModalRef?: ElementRef<HTMLElement>;
 
+  private chatVisibility = inject(AppStoreService);
+
   isStarted = signal<boolean>(false);
   isSearching = signal<boolean>(false);
   isFound = signal<boolean>(false);
@@ -653,6 +656,7 @@ export class DuelComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.timerSubscription?.unsubscribe();
     this.rivalSubscription?.unsubscribe();
+    this.chatVisibility.showChat.set(true);
   }
 
   toggleStats() {
@@ -882,6 +886,7 @@ export class DuelComponent implements OnInit, OnDestroy {
         } else {
           clearInterval(this.countdownIntervalRef);
           this.isSearching.set(false);
+          this.chatVisibility.showChat.set(false);
           this.startTimer();
           this.simulateRival();
         }
@@ -1001,6 +1006,7 @@ export class DuelComponent implements OnInit, OnDestroy {
   finishDuel() {
       if (this.isFinished()) return;
       this.isFinished.set(true);
+      this.chatVisibility.showChat.set(true);
       this.timerSubscription?.unsubscribe();
       this.rivalSubscription?.unsubscribe();
 
@@ -1031,6 +1037,7 @@ export class DuelComponent implements OnInit, OnDestroy {
     this.showWinCelebration.set(false);
     this.showStats.set(false);
     this.isFinished.set(false);
+    this.chatVisibility.showChat.set(true);
     this.timerSubscription?.unsubscribe();
     this.rivalSubscription?.unsubscribe();
     clearTimeout(this.findTimeoutRef);
