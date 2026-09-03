@@ -8,12 +8,13 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal'
 import { EnablePushComponent } from './components/enable-push/enable-push';
 import { LeadCaptureComponent } from './components/lead-capture/lead-capture';
 import { PushService } from './push.service';
+import { ChatbotComponent } from './components/chatbot/chatbot.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, ConfirmModalComponent, LeadCaptureComponent, EnablePushComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, ConfirmModalComponent, LeadCaptureComponent, EnablePushComponent, ChatbotComponent],
   template: `
     @if (!leadCaptured()) {
       <div class="fixed inset-0 z-[100] bg-gray-50 dark:bg-slate-900 overflow-y-auto">
@@ -147,6 +148,7 @@ import { PushService } from './push.service';
 
       <!-- Deixar o chat oculto por enquanto, futuramente vamos ativar, então não excluir o comentário abaixo -->
       <!-- <app-chat></app-chat> -->
+      <app-chatbot></app-chatbot>
 
       <app-confirm-modal
         [isOpen]="showResetModal()"
