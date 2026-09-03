@@ -31,7 +31,7 @@ interface ChatMessage {
     @if (!isOpen() && visibility.showChat()) {
       <button
         (click)="toggleChat()"
-        class="fixed z-50 w-14 h-14 bg-brand-600 hover:bg-brand-700 text-white rounded-full shadow-lg shadow-brand-600/30 flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+        class="fixed z-50 w-14 h-14 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg shadow-red-600/30 flex items-center justify-center transition-all hover:scale-105 active:scale-95"
         style="bottom: max(1.25rem, calc(1rem + env(safe-area-inset-bottom, 0px))); right: max(1.25rem, calc(1rem + env(safe-area-inset-right, 0px)));"
       >
         <mat-icon class="material-icons">chat</mat-icon>
@@ -47,7 +47,7 @@ interface ChatMessage {
 
         <!-- Header -->
         <header
-          class="bg-brand-600 text-white px-4 pb-4 flex items-center justify-between shrink-0 shadow-md z-10"
+          class="bg-red-600 text-white px-4 pb-4 flex items-center justify-between shrink-0 shadow-md z-10"
           style="padding-top: max(1rem, calc(0.875rem + env(safe-area-inset-top, 0px)));"
         >
           <div class="flex items-center gap-3">
@@ -68,7 +68,7 @@ interface ChatMessage {
         <main class="flex-1 overflow-y-auto p-4 bg-slate-50 dark:bg-slate-950 flex flex-col gap-4" #scrollContainer>
           @if (isLoading() && messages().length === 0) {
             <div class="flex-1 flex items-center justify-center">
-              <div class="w-8 h-8 border-2 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+              <div class="w-8 h-8 border-2 border-red-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
           } @else {
             @if (messages().length === 0) {
@@ -98,13 +98,13 @@ interface ChatMessage {
                 <div
                   class="p-3 shadow-sm relative rounded-2xl"
                   [ngClass]="{
-                    'rounded-br-none bg-brand-600 text-white': msg.sender === 'user',
+                    'rounded-br-none bg-red-600 text-white': msg.sender === 'user',
                     'rounded-bl-none bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-100 dark:border-slate-700': msg.sender === 'support'
                   }"
                 >
                   @if (msg.sender === 'support') {
                     <div class="flex items-center gap-1.5 mb-1 pb-1 border-b border-slate-100 dark:border-slate-700">
-                      <span class="text-[10px] font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wide">Suporte</span>
+                      <span class="text-[10px] font-bold text-red-600 dark:text-red-400 uppercase tracking-wide">Suporte</span>
                     </div>
                   }
 
@@ -144,7 +144,7 @@ interface ChatMessage {
           style="padding-bottom: max(1.25rem, calc(0.875rem + env(safe-area-inset-bottom, 0px)));"
         >
           <div class="flex items-end gap-2">
-            <div class="flex-1 bg-slate-100 dark:bg-slate-800 rounded-3xl flex items-center min-h-[48px] border border-transparent focus-within:border-brand-500/50 focus-within:bg-white dark:focus-within:bg-slate-800/90 transition-all shadow-inner">
+            <div class="flex-1 bg-slate-100 dark:bg-slate-800 rounded-3xl flex items-center min-h-[48px] border border-transparent focus-within:border-red-500/50 focus-within:bg-white dark:focus-within:bg-slate-800/90 transition-all shadow-inner">
               <input
                 #msgInput
                 type="text"
@@ -157,7 +157,7 @@ interface ChatMessage {
             <button
               (click)="sendMessage()"
               [disabled]="!currentMessage.trim() || isSending()"
-              class="shrink-0 w-[48px] h-[48px] flex items-center justify-center bg-brand-600 text-white rounded-full hover:bg-brand-700 transition-all shadow-md shadow-brand-600/20 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
+              class="shrink-0 w-[48px] h-[48px] flex items-center justify-center bg-red-600 text-white rounded-full hover:bg-red-700 transition-all shadow-md shadow-red-600/20 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               @if (isSending()) {
                 <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
