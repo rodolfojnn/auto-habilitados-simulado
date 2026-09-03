@@ -14,7 +14,7 @@ import { PushService } from './push.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, ConfirmModalComponent, LeadCaptureComponent, EnablePushComponent, ChatComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, ConfirmModalComponent, LeadCaptureComponent, EnablePushComponent],
   template: `
     @if (!leadCaptured()) {
       <div class="fixed inset-0 z-[100] bg-gray-50 dark:bg-slate-900 overflow-y-auto">
