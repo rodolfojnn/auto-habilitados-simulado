@@ -195,13 +195,13 @@ const TIPS = [
             </div>
 
             <!-- Botão -->
-            <a
-              href="https://play.google.com/store/apps/details?id=br.com.simulado.cnh.brasil"
-              target="_blank"
+            <button
+              type="button"
+              (click)="openReview()"
               class="mt-1 flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
             >
               Avaliar agora
-            </a>
+            </button>
           </div>
         }
 
@@ -276,6 +276,28 @@ export class HomeComponent implements OnInit {
       url = 'https://apps.apple.com/br/app/dirigir-agora-cnh-do-brasil/id6801734923';
     } else if (platform === 'android') {
       url = 'https://play.google.com/store/apps/details?id=br.com.dirigiragora&hl=pt_BR';
+    }
+
+    if (Capacitor.isNativePlatform()) {
+      try {
+        await Browser.open({ url });
+      } catch (err) {
+        console.log(err);
+        window.open(url, '_blank');
+      }
+    } else {
+      window.open(url, '_blank');
+    }
+  }
+
+  async openReview() {
+    const platform = Capacitor.getPlatform();
+    let url = 'https://play.google.com/store/apps/details?id=br.com.simulado.cnh.brasil';
+
+    if (platform === 'ios') {
+      url = 'https://apps.apple.com/us/app/simulado-cnh-do-brasil/id6805708435';
+    } else if (platform === 'android') {
+      url = 'https://play.google.com/store/apps/details?id=br.com.simulado.cnh.brasil';
     }
 
     if (Capacitor.isNativePlatform()) {
