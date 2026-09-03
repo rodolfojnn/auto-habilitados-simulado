@@ -146,7 +146,8 @@ import { PushService } from './push.service';
 
       </div>
 
-      <app-chat></app-chat>
+      <!-- Deixar o chat oculto por enquanto, futuramente vamos ativar, então não excluir o comentário abaixo -->
+      <!-- <app-chat></app-chat> -->
 
       <app-confirm-modal
         [isOpen]="showResetModal()"
