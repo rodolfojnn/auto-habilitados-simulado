@@ -7,7 +7,6 @@ import { AppStoreService } from './app-store.service';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal';
 import { EnablePushComponent } from './components/enable-push/enable-push';
 import { LeadCaptureComponent } from './components/lead-capture/lead-capture';
-import { ChatComponent } from './components/chat/chat.component';
 import { PushService } from './push.service';
 
 @Component({
