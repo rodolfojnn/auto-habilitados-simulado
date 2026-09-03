@@ -252,6 +252,11 @@ export class ChatbotComponent implements OnInit, AfterViewInit {
   private loadState() {
     const savedMessages = localStorage.getItem(this.STORAGE_KEY);
     const savedStep = localStorage.getItem(this.STEP_KEY);
+    const hasRead = localStorage.getItem('chatbot_has_read');
+
+    if (!hasRead) {
+      this.hasUnread.set(true);
+    }
 
     if (savedMessages) {
       try {
@@ -263,8 +268,7 @@ export class ChatbotComponent implements OnInit, AfterViewInit {
         this.initChat();
       }
     } else {
-      // First time loading, set unread badge to draw attention
-      this.hasUnread.set(true);
+      // First time loading
       this.initChat();
     }
 
@@ -299,6 +303,7 @@ export class ChatbotComponent implements OnInit, AfterViewInit {
     this.isOpen.update(v => !v);
     if (this.isOpen()) {
       this.hasUnread.set(false);
+      localStorage.setItem('chatbot_has_read', 'true');
       this.scrollToBottom('auto');
     }
   }
