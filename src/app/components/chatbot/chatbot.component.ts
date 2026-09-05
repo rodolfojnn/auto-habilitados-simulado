@@ -32,7 +32,7 @@ const CHAT_FLOW: Record<string, ChatStep> = {
     botMessage: 'Precisa de ajuda para agendar a Prova Teórica no DETRAN?',
     options: [
       { label: 'Como faço para agendar?', nextStep: 'passo_agendamento' },
-      { label: 'Já agendei! Estou revisando', nextStep: 'pos_agendamento' }
+      { label: 'Já agendei! Estou revisando.', nextStep: 'pos_agendamento' }
     ]
   },
 
@@ -51,10 +51,9 @@ const CHAT_FLOW: Record<string, ChatStep> = {
   // DUVIDA AGENDAMENTO
   passo_agendamento: {
     id: 'passo_agendamento',
-    botMessage: 'Agende pelo site do DETRAN pagando a taxa. Após passar, a próxima etapa são as Aulas Práticas!',
+    botMessage: 'Agende pelo site do DETRAN do seu estado ou unidades físicas de atendimento DETRAN. Após passar, a próxima etapa são as Aulas Práticas!',
     options: [
-      { label: 'Ver App de Aulas Práticas', nextStep: 'aulas_praticas' },
-      { label: 'Ir para o Simulado', nextStep: 'inicio_simulado', action: 'navigate_simulado' },
+      { label: 'Aulas Práticas', nextStep: 'aulas_praticas' },
       { label: 'Voltar ao início', nextStep: 'welcome' }
     ]
   },
@@ -62,10 +61,9 @@ const CHAT_FLOW: Record<string, ChatStep> = {
   // JÁ AGENDOU
   pos_agendamento: {
     id: 'pos_agendamento',
-    botMessage: 'Boa sorte! Você já pode ir escolhendo seu instrutor para não perder tempo após ser aprovado.',
+    botMessage: 'Bons estudos! Você já pode ir escolhendo seu instrutor para não perder tempo após ser aprovado. Mantendo aula já agendadas, você agiliza a finalizaçâo do seu processo!',
     options: [
       { label: 'Ver Instrutores', nextStep: 'aulas_praticas', action: 'navigate_app_aulas' },
-      { label: 'Fazer Simulado', nextStep: 'inicio_simulado', action: 'navigate_simulado' },
       { label: 'Voltar ao início', nextStep: 'welcome' }
     ]
   },
@@ -73,10 +71,9 @@ const CHAT_FLOW: Record<string, ChatStep> = {
   // ESTUDANDO
   preparando_prova: {
     id: 'preparando_prova',
-    botMessage: 'Bons estudos! No nosso app você já pode comparar preços de instrutores e ver fotos dos carros.',
+    botMessage: 'Bons estudos! No app Dirigir Agora, você compara preços e escolhe os melhores instrutores da sua região. O melhor: você conta com suporte humano, aulas onde preferir e apoio para agendar sua prova prática no DETRAN.',
     options: [
       { label: 'Ver Instrutores e Preços', nextStep: 'aulas_praticas' },
-      { label: 'Fazer Simulado', nextStep: 'inicio_simulado', action: 'navigate_simulado' },
       { label: 'Voltar ao início', nextStep: 'welcome' }
     ]
   },
@@ -84,9 +81,9 @@ const CHAT_FLOW: Record<string, ChatStep> = {
   // CONVERSÃO (APP DE AULAS)
   aulas_praticas: {
     id: 'aulas_praticas',
-    botMessage: 'No app de Aulas Práticas você compara valores, avaliações dos instrutores e opções com busca em casa!',
+    botMessage: 'No app Dirigir Agora, você compara preços e escolhe os melhores instrutores da sua região. O melhor: você conta com suporte humano, aulas onde preferir e apoio para agendar sua prova prática no DETRAN.',
     options: [
-      { label: 'Abrir App de Aulas', nextStep: 'direciona_app_aulas', action: 'navigate_app_aulas' },
+      { label: 'Aulas Práticas', nextStep: 'direciona_app_aulas', action: 'navigate_app_aulas' },
       { label: 'Voltar ao início', nextStep: 'welcome' }
     ]
   },
