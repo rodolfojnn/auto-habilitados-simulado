@@ -46,22 +46,22 @@ interface ChatMessage {
       <div class="fixed inset-0 sm:inset-auto sm:bottom-24 sm:right-6 z-50 flex flex-col bg-white dark:bg-slate-900 sm:w-[400px] sm:h-[600px] sm:rounded-3xl sm:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-fade-in-up">
 
         <!-- Header -->
-        <header
-          class="bg-blue-600 text-white px-4 pb-4 flex items-center justify-between shrink-0 shadow-md z-10"
-          style="padding-top: max(1rem, calc(0.875rem + env(safe-area-inset-top, 0px)));"
-        >
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center shrink-0">
-              <mat-icon class="material-icons">support_agent</mat-icon>
+        <header class="bg-blue-600 text-white shrink-0 shadow-md z-20 relative">
+          <div style="height: env(safe-area-inset-top, 0px);"></div>
+          <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center shrink-0">
+                <mat-icon class="material-icons">support_agent</mat-icon>
+              </div>
+              <div>
+                <h2 class="font-bold text-sm leading-tight">Suporte Simulado</h2>
+                <p class="text-white/80 text-xs">Responderemos em breve</p>
+              </div>
             </div>
-            <div>
-              <h2 class="font-bold text-sm leading-tight">Suporte Simulado</h2>
-              <p class="text-white/80 text-xs">Responderemos em breve</p>
-            </div>
+            <button (click)="toggleChat()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors">
+              <mat-icon class="material-icons">close</mat-icon>
+            </button>
           </div>
-          <button (click)="toggleChat()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors">
-            <mat-icon class="material-icons">close</mat-icon>
-          </button>
         </header>
 
         <!-- Messages Area -->
@@ -139,33 +139,33 @@ interface ChatMessage {
         </main>
 
         <!-- Input Area -->
-        <footer
-          class="bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 px-3.5 pt-3 shrink-0 z-10"
-          style="padding-bottom: max(1.25rem, calc(0.875rem + env(safe-area-inset-bottom, 0px)));"
-        >
-          <div class="flex items-end gap-2">
-            <div class="flex-1 bg-slate-100 dark:bg-slate-800 rounded-3xl flex items-center min-h-[48px] border border-transparent focus-within:border-blue-500/50 focus-within:bg-white dark:focus-within:bg-slate-800/90 transition-all shadow-inner">
-              <input
-                #msgInput
-                type="text"
-                [(ngModel)]="currentMessage"
-                (keyup.enter)="sendMessage()"
-                placeholder="Digite sua mensagem..."
-                class="w-full bg-transparent text-slate-900 dark:text-white border-0 focus:ring-0 rounded-3xl px-4 py-3 text-sm placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none"
+        <footer class="bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 shrink-0 z-10">
+          <div class="px-3.5 pt-3 pb-3">
+            <div class="flex items-end gap-2">
+              <div class="flex-1 bg-slate-100 dark:bg-slate-800 rounded-3xl flex items-center min-h-[48px] border border-transparent focus-within:border-blue-500/50 focus-within:bg-white dark:focus-within:bg-slate-800/90 transition-all shadow-inner">
+                <input
+                  #msgInput
+                  type="text"
+                  [(ngModel)]="currentMessage"
+                  (keyup.enter)="sendMessage()"
+                  placeholder="Digite sua mensagem..."
+                  class="w-full bg-transparent text-slate-900 dark:text-white border-0 focus:ring-0 rounded-3xl px-4 py-3 text-sm placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none"
+                >
+              </div>
+              <button
+                (click)="sendMessage()"
+                [disabled]="!currentMessage.trim() || isSending()"
+                class="shrink-0 w-[48px] h-[48px] flex items-center justify-center bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all shadow-md shadow-blue-600/20 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
               >
+                @if (isSending()) {
+                  <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                } @else {
+                  <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none ml-0.5">send</mat-icon>
+                }
+              </button>
             </div>
-            <button
-              (click)="sendMessage()"
-              [disabled]="!currentMessage.trim() || isSending()"
-              class="shrink-0 w-[48px] h-[48px] flex items-center justify-center bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all shadow-md shadow-blue-600/20 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              @if (isSending()) {
-                <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-              } @else {
-                <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none ml-0.5">send</mat-icon>
-              }
-            </button>
           </div>
+          <div style="height: env(safe-area-inset-bottom, 0px);"></div>
         </footer>
       </div>
     }

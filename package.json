@@ -1,6 +1,6 @@
 {
   "name": "simulado-cnh-do-brasil",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "scripts": {
     "ng": "ng",
     "dev": "nvm use 22.12 && npx ng serve --port 4256 --open",

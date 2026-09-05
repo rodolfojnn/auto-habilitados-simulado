@@ -131,26 +131,26 @@ const CHAT_FLOW: Record<string, ChatStep> = {
       <div class="fixed inset-0 sm:inset-auto sm:bottom-24 sm:right-6 z-50 flex flex-col bg-white dark:bg-slate-900 sm:w-[400px] sm:h-[600px] sm:rounded-3xl sm:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-fade-in-up">
 
         <!-- Header -->
-        <header
-          class="bg-blue-600 text-white px-4 pb-4 flex items-center justify-between shrink-0 shadow-md z-10"
-          style="padding-top: max(1rem, calc(0.875rem + env(safe-area-inset-top, 0px)));"
-        >
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center shrink-0">
-              <mat-icon class="material-icons">support_agent</mat-icon>
+        <header class="bg-blue-600 text-white shrink-0 shadow-md z-20 relative">
+          <div style="height: env(safe-area-inset-top, 0px);"></div>
+          <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center shrink-0">
+                <mat-icon class="material-icons">support_agent</mat-icon>
+              </div>
+              <div>
+                <h2 class="font-bold text-sm leading-tight">Assistente Virtual</h2>
+                <p class="text-white/80 text-xs">Sempre online</p>
+              </div>
             </div>
-            <div>
-              <h2 class="font-bold text-sm leading-tight">Assistente Virtual</h2>
-              <p class="text-white/80 text-xs">Sempre online</p>
-            </div>
+            <button (click)="toggleChat()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors">
+              <mat-icon class="material-icons">close</mat-icon>
+            </button>
           </div>
-          <button (click)="toggleChat()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors">
-            <mat-icon class="material-icons">close</mat-icon>
-          </button>
         </header>
 
         <!-- Messages Area -->
-        <main class="flex-1 overflow-y-auto p-4 bg-slate-50 dark:bg-slate-950 flex flex-col gap-4 pb-32" #scrollContainer>
+        <main class="flex-1 overflow-y-auto p-4 bg-slate-50 dark:bg-slate-950 flex flex-col gap-4" #scrollContainer>
           @for (msg of messages(); track msg.id) {
             <div
               class="flex gap-2 max-w-[85%] animate-fade-in"
@@ -202,24 +202,24 @@ const CHAT_FLOW: Record<string, ChatStep> = {
         </main>
 
         <!-- Options Area -->
-        <footer
-          class="absolute bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-100 dark:border-slate-800 px-3.5 pt-3 pb-4 shrink-0 z-10"
-          style="padding-bottom: max(1rem, calc(1rem + env(safe-area-inset-bottom, 0px)));"
-        >
-          <div class="flex flex-col gap-2">
-            @if (currentStep() && !isTyping()) {
-              <div class="flex flex-wrap gap-2 justify-end">
-                @for (option of currentStep()?.options; track option.label) {
-                  <button
-                    (click)="selectOption(option)"
-                    class="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-medium rounded-full transition-colors border border-slate-200 dark:border-slate-700 shadow-sm active:scale-95"
-                  >
-                    {{ option.label }}
-                  </button>
-                }
-              </div>
-            }
+        <footer class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-100 dark:border-slate-800 shrink-0 z-10">
+          <div class="px-3.5 pt-3 pb-4">
+            <div class="flex flex-col gap-2">
+              @if (currentStep() && !isTyping()) {
+                <div class="flex flex-wrap gap-2 justify-end">
+                  @for (option of currentStep()?.options; track option.label) {
+                    <button
+                      (click)="selectOption(option)"
+                      class="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-medium rounded-full transition-colors border border-slate-200 dark:border-slate-700 shadow-sm active:scale-95"
+                    >
+                      {{ option.label }}
+                    </button>
+                  }
+                </div>
+              }
+            </div>
           </div>
+          <div style="height: env(safe-area-inset-bottom, 0px);"></div>
         </footer>
       </div>
     }
