@@ -54,22 +54,11 @@ interface FloatingPoint {
   template: `
     @if (!isStarted() && !isFinished()) {
       <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto min-h-full flex flex-col">
-        <!-- Top Card -->
-        <div class="bg-brand-600 dark:bg-brand-700 rounded-[2rem] p-6 text-white mb-8 shadow-lg shadow-brand-600/20 relative overflow-hidden">
-          <!-- Decoration -->
-          <div class="absolute -right-6 -top-6 w-32 h-32 bg-white flex rounded-full opacity-10"></div>
-          <div class="absolute right-12 -bottom-10 w-24 h-24 bg-white flex rounded-full opacity-10"></div>
 
-          <div class="flex items-center gap-5 relative z-10">
-            <div class="bg-white/20 p-4 rounded-2xl backdrop-blur-sm">
-              <mat-icon class="material-icons text-white w-8 h-8 text-[32px] leading-[32px]">assignment</mat-icon>
-            </div>
-            <div>
-              <h2 class="text-2xl font-black tracking-tight mb-1">Simulado da Prova</h2>
-              <p class="text-white/90 text-sm font-medium">30 questões aleatórias</p>
-            </div>
-          </div>
-        </div>
+        <header class="mb-6 text-center relative">
+          <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Simulado da Prova</h1>
+          <p class="text-gray-600 dark:text-slate-400 text-sm mt-1">30 questões aleatórias</p>
+        </header>
 
         <!-- Instructions -->
         <div class="flex-grow">
