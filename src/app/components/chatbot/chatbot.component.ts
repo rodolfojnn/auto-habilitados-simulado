@@ -132,7 +132,6 @@ const CHAT_FLOW: Record<string, ChatStep> = {
 
         <!-- Header -->
         <header class="bg-blue-600 text-white shrink-0 shadow-md z-20 relative">
-          <div style="height: env(safe-area-inset-top, 0px);"></div>
           <div class="px-4 py-3 flex items-center justify-between">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center shrink-0">
@@ -150,7 +149,7 @@ const CHAT_FLOW: Record<string, ChatStep> = {
         </header>
 
         <!-- Messages Area -->
-        <main class="flex-1 overflow-y-auto p-4 bg-slate-50 dark:bg-slate-950 flex flex-col gap-4" #scrollContainer>
+        <main class="flex-1 overflow-y-auto p-4 bg-white dark:bg-slate-900 flex flex-col gap-4" #scrollContainer>
           @for (msg of messages(); track msg.id) {
             <div
               class="flex gap-2 max-w-[85%] animate-fade-in"
@@ -202,7 +201,7 @@ const CHAT_FLOW: Record<string, ChatStep> = {
         </main>
 
         <!-- Options Area -->
-        <footer class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-100 dark:border-slate-800 shrink-0 z-10">
+        <footer class="bg-white dark:bg-slate-900 shrink-0 z-10">
           <div class="px-3.5 pt-3 pb-4">
             <div class="flex flex-col gap-2">
               @if (currentStep() && !isTyping()) {
