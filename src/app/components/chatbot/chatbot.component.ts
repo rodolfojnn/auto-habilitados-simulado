@@ -116,7 +116,7 @@ const CHAT_FLOW: Record<string, ChatStep> = {
     @if (!isOpen() && visibility.showChat()) {
       <button
         (click)="toggleChat()"
-        class="fixed z-50 w-14 h-14 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg shadow-red-600/30 flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+        class="fixed z-50 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg shadow-blue-600/30 flex items-center justify-center transition-all hover:scale-105 active:scale-95"
         style="bottom: max(1.25rem, calc(1rem + env(safe-area-inset-bottom, 0px))); right: max(1.25rem, calc(1rem + env(safe-area-inset-right, 0px)));"
       >
         <mat-icon class="material-icons">support_agent</mat-icon>
@@ -132,7 +132,7 @@ const CHAT_FLOW: Record<string, ChatStep> = {
 
         <!-- Header -->
         <header
-          class="bg-red-600 text-white px-4 pb-4 flex items-center justify-between shrink-0 shadow-md z-10"
+          class="bg-blue-600 text-white px-4 pb-4 flex items-center justify-between shrink-0 shadow-md z-10"
           style="padding-top: max(1rem, calc(0.875rem + env(safe-area-inset-top, 0px)));"
         >
           <div class="flex items-center gap-3">
@@ -162,13 +162,13 @@ const CHAT_FLOW: Record<string, ChatStep> = {
               <div
                 class="p-3 shadow-sm relative rounded-2xl"
                 [ngClass]="{
-                  'rounded-br-none bg-red-600 text-white': msg.sender === 'user',
+                  'rounded-br-none bg-blue-600 text-white': msg.sender === 'user',
                   'rounded-bl-none bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-100 dark:border-slate-700': msg.sender === 'support'
                 }"
               >
                 @if (msg.sender === 'support') {
                   <div class="flex items-center gap-1.5 mb-1 pb-1 border-b border-slate-100 dark:border-slate-700">
-                    <span class="text-[10px] font-bold text-red-600 dark:text-red-400 uppercase tracking-wide">Assistente</span>
+                    <span class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide">Assistente</span>
                   </div>
                 }
 
