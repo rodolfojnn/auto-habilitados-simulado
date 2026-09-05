@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { AppStoreService } from '../../app-store.service';
 import { Router } from '@angular/router';
+import { Capacitor } from '@capacitor/core';
+import { Browser } from '@capacitor/browser';
 
 interface ChatMessage {
   id: string;
@@ -14,7 +16,7 @@ interface ChatMessage {
 interface ChatOption {
   label: string;
   nextStep: string;
-  action?: 'navigate_simulado' | 'navigate_duelo';
+  action?: 'navigate_simulado' | 'navigate_app_aulas' | 'navigate_duelo' | string;
 }
 
 interface ChatStep {
@@ -24,64 +26,83 @@ interface ChatStep {
 }
 
 const CHAT_FLOW: Record<string, ChatStep> = {
+  // 1º ACESSO
   welcome: {
     id: 'welcome',
-    botMessage: 'Olá! Sou o assistente virtual do Simulado CNH. Como posso te ajudar hoje?',
+    botMessage: 'Precisa de ajuda para agendar a Prova Teórica no DETRAN?',
     options: [
-      { label: 'Preciso de dicas para a prova', nextStep: 'dicas' },
-      { label: 'Tenho dúvidas sobre o app', nextStep: 'duvidas_app' },
-      { label: 'Só queria dar um oi', nextStep: 'oi' }
+      { label: 'Como faço para agendar?', nextStep: 'passo_agendamento' },
+      { label: 'Já agendei! Estou revisando', nextStep: 'pos_agendamento' }
     ]
   },
-  dicas: {
-    id: 'dicas',
-    botMessage: 'Claro! Para a prova, recomendamos estudar bastante as placas de sinalização e direção defensiva. Quer testar seus conhecimentos agora?',
+
+  // RETORNO (Se já tinha informado que agendou)
+  welcome_retorno: {
+    id: 'welcome_retorno',
+    botMessage: 'Como está o andamento da sua Prova Teórica?',
     options: [
-      { label: 'Sim, vamos lá!', nextStep: 'inicio_simulado', action: 'navigate_simulado' },
-      { label: 'Não, obrigado', nextStep: 'tudo_bem' }
-    ]
-  },
-  duvidas_app: {
-    id: 'duvidas_app',
-    botMessage: 'O app oferece simulados reais, histórico de pontuação, um ranking mensal para você competir e até um modo de Duelo. O que mais quer saber?',
-    options: [
-      { label: 'Como funciona o Duelo?', nextStep: 'duelo_info' },
+      { label: 'Passei na prova!', nextStep: 'aulas_praticas' },
+      { label: 'Ainda vou fazer, estou estudando', nextStep: 'preparando_prova' },
+      { label: 'Preciso de ajuda no agendamento', nextStep: 'passo_agendamento' },
       { label: 'Voltar ao início', nextStep: 'welcome' }
     ]
   },
-  oi: {
-    id: 'oi',
-    botMessage: 'Oi! Que bom ter você por aqui. Boa sorte nos seus estudos e contagem de pontos!',
+
+  // DUVIDA AGENDAMENTO
+  passo_agendamento: {
+    id: 'passo_agendamento',
+    botMessage: 'Agende pelo site do DETRAN pagando a taxa. Após passar, a próxima etapa são as Aulas Práticas!',
     options: [
-      { label: 'Obrigado!', nextStep: 'tudo_bem' },
-      { label: 'Voltar', nextStep: 'welcome' }
-    ]
-  },
-  duelo_info: {
-    id: 'duelo_info',
-    botMessage: 'No modo Duelo você joga contra outras pessoas online, e quem responder as perguntas corretamente mais rápido ganha mais pontos! Quer experimentar?',
-    options: [
-      { label: 'Jogar agora', nextStep: 'inicio_duelo', action: 'navigate_duelo' },
-      { label: 'Depois eu vejo', nextStep: 'tudo_bem' }
-    ]
-  },
-  tudo_bem: {
-    id: 'tudo_bem',
-    botMessage: 'Sem problemas! Se precisar de mais alguma ajuda, é só me chamar aqui.',
-    options: [
+      { label: 'Ver App de Aulas Práticas', nextStep: 'aulas_praticas' },
+      { label: 'Ir para o Simulado', nextStep: 'inicio_simulado', action: 'navigate_simulado' },
       { label: 'Voltar ao início', nextStep: 'welcome' }
     ]
   },
+
+  // JÁ AGENDOU
+  pos_agendamento: {
+    id: 'pos_agendamento',
+    botMessage: 'Boa sorte! Você já pode ir escolhendo seu instrutor para não perder tempo após ser aprovado.',
+    options: [
+      { label: 'Ver Instrutores', nextStep: 'aulas_praticas', action: 'navigate_app_aulas' },
+      { label: 'Fazer Simulado', nextStep: 'inicio_simulado', action: 'navigate_simulado' },
+      { label: 'Voltar ao início', nextStep: 'welcome' }
+    ]
+  },
+
+  // ESTUDANDO
+  preparando_prova: {
+    id: 'preparando_prova',
+    botMessage: 'Bons estudos! No nosso app você já pode comparar preços de instrutores e ver fotos dos carros.',
+    options: [
+      { label: 'Ver Instrutores e Preços', nextStep: 'aulas_praticas' },
+      { label: 'Fazer Simulado', nextStep: 'inicio_simulado', action: 'navigate_simulado' },
+      { label: 'Voltar ao início', nextStep: 'welcome' }
+    ]
+  },
+
+  // CONVERSÃO (APP DE AULAS)
+  aulas_praticas: {
+    id: 'aulas_praticas',
+    botMessage: 'No app de Aulas Práticas você compara valores, avaliações dos instrutores e opções com busca em casa!',
+    options: [
+      { label: 'Abrir App de Aulas', nextStep: 'direciona_app_aulas', action: 'navigate_app_aulas' },
+      { label: 'Voltar ao início', nextStep: 'welcome' }
+    ]
+  },
+
+  // AÇÕES
   inicio_simulado: {
     id: 'inicio_simulado',
-    botMessage: 'Ótimo! Te levei para a tela do simulado. Boa sorte!',
+    botMessage: 'Abrindo simulados...',
     options: [
       { label: 'Voltar ao início', nextStep: 'welcome' }
     ]
   },
-  inicio_duelo: {
-    id: 'inicio_duelo',
-    botMessage: 'Prepare-se! Te redirecionei para a tela de duelos.',
+
+  direciona_app_aulas: {
+    id: 'direciona_app_aulas',
+    botMessage: 'Redirecionando para o App de Aulas Práticas...',
     options: [
       { label: 'Voltar ao início', nextStep: 'welcome' }
     ]
@@ -351,9 +372,37 @@ export class ChatbotComponent implements OnInit, AfterViewInit {
         } else if (option.action === 'navigate_duelo') {
           this.toggleChat();
           this.router.navigate(['/duelo']);
+        } else if (option.action === 'navigate_app_aulas') {
+          this.toggleChat();
+          this.navigateToAppAulas();
         }
       }
     }, 800 + Math.random() * 700); // Random delay between 800ms and 1500ms
+  }
+
+  async navigateToAppAulas() {
+    const platform = Capacitor.getPlatform();
+    let url = 'https://play.google.com/store/apps/details?id=br.com.dirigiragora&hl=pt_BR'; // fallback/android
+
+    if (platform === 'ios') {
+      url = 'https://apps.apple.com/br/app/dirigir-agora-cnh-do-brasil/id6801734923';
+    } else if (platform === 'web') {
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      if (isIOS) {
+        url = 'https://apps.apple.com/br/app/dirigir-agora-cnh-do-brasil/id6801734923';
+      }
+    }
+
+    try {
+      if (platform === 'web') {
+        window.open(url, '_blank');
+      } else {
+        await Browser.open({ url });
+      }
+    } catch (e) {
+      console.log(e);
+      window.open(url, '_blank');
+    }
   }
 
   scrollToBottom(behavior: ScrollBehavior = 'smooth') {
