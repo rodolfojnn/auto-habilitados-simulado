@@ -44,7 +44,7 @@ interface GameFloatingPoint {
     <div class="min-h-full bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-white font-sans selection:bg-indigo-500/30 overflow-hidden relative">
       @if (!isStarted()) {
         <!-- Home State within Duel -->
-        <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto min-h-full flex flex-col pt-10">
+        <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto min-h-full flex flex-col">
 
           <header class="mb-6 text-center relative">
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Duelo Ao Vivo</h1>
@@ -441,7 +441,7 @@ interface GameFloatingPoint {
     </div>
   `,
   styles: [`
-    :host { display: block; }
+    :host { display: block; height: 100%; }
 
     @keyframes radar-ping {
       0% { transform: scale(0.8); opacity: 0.8; }
