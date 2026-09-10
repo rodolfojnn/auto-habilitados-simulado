@@ -327,7 +327,7 @@ export class HomeComponent implements OnInit {
 
   openDonation() {
     // Ação de doação a ser implementada posteriormente
-    alert('Em breve!');
+    // alert('Em breve!');
   }
 
   dismissSupportCard() {
