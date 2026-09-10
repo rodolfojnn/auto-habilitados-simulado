@@ -1,6 +1,6 @@
 {
   "name": "simulado-cnh-do-brasil",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "scripts": {
     "ng": "ng",
     "dev": "nvm use 22.12 && npx ng serve --port 4256 --open",
@@ -25,6 +25,7 @@
     "@capacitor/core": "^7.6.5",
     "@capacitor/ios": "^7.6.8",
     "@capacitor/push-notifications": "^7.0.6",
+    "@revenuecat/purchases-capacitor": "^13.5.1",
     "capacitor-native-settings": "^7.0.1",
     "ngx-mask": "^21.0.1",
     "rxjs": "~7.8.0",
