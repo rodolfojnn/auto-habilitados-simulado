@@ -160,15 +160,15 @@ const TIPS = [
           </div>
         </a>
 
-        <!-- Card de apoio -->
-        @if (showSupportCard()) {
-          <div class="relative flex flex-col gap-4 w-full rounded-3xl border border-indigo-100/50 bg-gradient-to-br from-indigo-50 to-blue-50/50 dark:from-indigo-900/20 dark:to-blue-900/10 p-5 shadow-sm">
+        <!-- Card de avaliação -->
+        @if (showReviewCard()) {
+          <div class="relative flex flex-col gap-3 w-full rounded-2xl border border-blue-100 bg-[#eef1fb] p-4 shadow-sm">
             <!-- Botão fechar -->
             <button
               type="button"
               aria-label="Fechar"
-              (click)="dismissSupportCard()"
-              class="absolute right-4 top-4 text-indigo-400/70 transition-colors hover:text-indigo-600 dark:hover:text-indigo-300"
+              (click)="dismissReviewCard()"
+              class="absolute right-3 top-3 text-slate-400 transition-colors hover:text-slate-600"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -176,44 +176,32 @@ const TIPS = [
               </svg>
             </button>
 
-            <div class="flex items-start gap-4">
-              <!-- Ícone -->
-              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-600 shadow-inner">
-                <mat-icon class="material-icons !text-white !text-2xl !w-6 !h-6 !leading-none flex items-center justify-center shrink-0" style="color: white;">favorite</mat-icon>
+            <div class="flex items-start gap-3">
+              <!-- Ícone estrela -->
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
               </div>
               <!-- Texto -->
               <div class="min-w-0 flex-1 pr-5">
-                <h2 class="text-base font-bold leading-tight text-slate-900 dark:text-white text-balance">
-                  Apoie nosso projeto!
+                <h2 class="text-sm font-bold leading-tight text-slate-900 text-balance">
+                  Ajude-nos a continuar gratuitos!
                 </h2>
-                <p class="mt-1 text-[13px] leading-snug text-slate-600 dark:text-slate-400 text-pretty">
-                  Sua avaliação ou doação nos ajuda a manter o app 100% gratuito.
+                <p class="mt-1 text-xs leading-snug text-slate-500 text-pretty">
+                  Sua avaliação nos motiva a melhorar e manter o app 100% gratuito para todos.
                 </p>
               </div>
             </div>
 
-            <!-- Botões -->
-            <div class="grid gap-3 mt-1" [class.grid-cols-2]="isAndroidOrWeb" [class.grid-cols-1]="!isAndroidOrWeb">
-              <button
-                type="button"
-                (click)="openReview()"
-                class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-indigo-100 dark:border-white/10 px-3 py-2.5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 transition-all hover:bg-indigo-50 dark:hover:bg-slate-700 shadow-sm active:scale-[0.98]"
-              >
-                <mat-icon class="material-icons !text-lg !w-5 !h-5 !leading-none flex items-center justify-center shrink-0">star</mat-icon>
-                <span>Avaliar</span>
-              </button>
-
-              @if (isAndroidOrWeb) {
-                <button
-                  type="button"
-                  (click)="openDonation()"
-                  class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white transition-all hover:bg-indigo-700 shadow-sm active:scale-[0.98]"
-                >
-                  <mat-icon class="material-icons !text-lg !w-5 !h-5 !leading-none flex items-center justify-center shrink-0">volunteer_activism</mat-icon>
-                  <span>Doar</span>
-                </button>
-              }
-            </div>
+            <!-- Botão -->
+            <button
+              type="button"
+              (click)="openReview()"
+              class="mt-1 flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+            >
+              Avaliar agora
+            </button>
           </div>
         }
 
@@ -266,17 +254,16 @@ const TIPS = [
 })
 export class HomeComponent implements OnInit {
   currentTip = signal<string>('');
-  showSupportCard = signal<boolean>(true);
-  isAndroidOrWeb = Capacitor.getPlatform() !== 'ios';
+  showReviewCard = signal<boolean>(true);
 
   ngOnInit() {
     const randomIndex = Math.floor(Math.random() * TIPS.length);
     this.currentTip.set(TIPS[randomIndex]);
 
     if (typeof window !== 'undefined' && window.localStorage) {
-      const isDismissed = localStorage.getItem('support_card_dismissed') === 'true';
+      const isDismissed = localStorage.getItem('review_card_dismissed') === 'true';
       if (isDismissed) {
-        this.showSupportCard.set(false);
+        this.showReviewCard.set(false);
       }
     }
   }
@@ -325,16 +312,11 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  openDonation() {
-    // Ação de doação a ser implementada posteriormente
-    // alert('Em breve!');
-  }
-
-  dismissSupportCard() {
-    this.showSupportCard.set(false);
+  dismissReviewCard() {
+    this.showReviewCard.set(false);
     if (typeof window !== 'undefined' && window.localStorage) {
       try {
-        localStorage.setItem('support_card_dismissed', 'true');
+        localStorage.setItem('review_card_dismissed', 'true');
       } catch (e) {
         console.error('Erro ao salvar estado do card no localStorage:', e);
       }
