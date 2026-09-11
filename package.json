@@ -26,6 +26,7 @@
     "@capacitor/ios": "^7.6.8",
     "@capacitor/push-notifications": "^7.0.6",
     "capacitor-native-settings": "^7.0.1",
+    "cordova-plugin-purchase": "^13.18.0",
     "ngx-mask": "^21.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
