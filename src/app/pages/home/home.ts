@@ -1,8 +1,10 @@
-import { Component, ChangeDetectionStrategy, signal, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
+import { PurchaseService } from '../../purchase.service';
 
 const TIPS = [
   "Ajuste o banco, os retrovisores e coloque o cinto de segurança antes de ligar o veículo.",
@@ -269,6 +271,9 @@ export class HomeComponent implements OnInit {
   showSupportCard = signal<boolean>(true);
   isAndroidOrWeb = Capacitor.getPlatform() !== 'ios';
 
+  private purchaseService = inject(PurchaseService);
+  private snackBar = inject(MatSnackBar);
+
   ngOnInit() {
     const randomIndex = Math.floor(Math.random() * TIPS.length);
     this.currentTip.set(TIPS[randomIndex]);
@@ -326,8 +331,14 @@ export class HomeComponent implements OnInit {
   }
 
   openDonation() {
-    // Ação de doação a ser implementada posteriormente
-    // alert('Em breve!');
+    if (Capacitor.getPlatform() === 'android') {
+      this.purchaseService.donate();
+    } else {
+      this.snackBar.open('A doação está disponível apenas no aplicativo para Android.', 'Fechar', {
+        duration: 4000,
+        panelClass: ['error-snackbar']
+      });
+    }
   }
 
   dismissSupportCard() {

@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, computed, inject, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Capacitor } from '@capacitor/core';
@@ -9,6 +9,7 @@ import { EnablePushComponent } from './components/enable-push/enable-push';
 import { LeadCaptureComponent } from './components/lead-capture/lead-capture';
 import { PushService } from './push.service';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
+import { PurchaseService } from './purchase.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -192,8 +193,11 @@ export class App implements OnInit {
   private router = inject(Router);
   private pushService = inject(PushService);
   private store = inject(AppStoreService);
+  private purchaseService = inject(PurchaseService);
 
   constructor() {
+    this.purchaseService.initialize();
+
     // Check if lead is captured
     try {
       const data = localStorage.getItem('onboarding_answers');

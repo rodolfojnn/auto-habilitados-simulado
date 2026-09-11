@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap');
+@import '@angular/material/prebuilt-themes/azure-blue.css';
 @import "tailwindcss";
 
 @theme {
@@ -22,17 +23,6 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-}
-
-* {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  user-select: none;
-}
-/* Permita seleção apenas onde necessário (como inputs) */
-input, textarea {
-  -webkit-user-select: auto;
-  user-select: auto;
 }
 
 html, body {
@@ -66,6 +56,13 @@ app-root {
   @apply bg-white dark:bg-slate-900;
 }
 
+mat-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle;
+}
+
 .ripple-effect {
   position: absolute;
   border-radius: 50%;
@@ -81,4 +78,19 @@ app-root {
     transform: scale(4);
     opacity: 0;
   }
+}
+
+/* Custom SnackBar Styling */
+.brand-snackbar {
+  --mdc-snackbar-container-color: var(--color-brand-600, #03c95a);
+  --mat-snack-bar-button-color: #ffffff;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+  --mdc-snackbar-container-shape: 12px;
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: #ef4444; /* Tailwind red-500 */
+  --mat-snack-bar-button-color: #ffffff;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+  --mdc-snackbar-container-shape: 12px;
 }
