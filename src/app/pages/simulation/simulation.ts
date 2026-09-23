@@ -1,9 +1,11 @@
 import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, computed, ElementRef, viewChild, isDevMode, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { interval, Subscription } from 'rxjs';
 import { Capacitor } from '@capacitor/core';
 import questionsData from '../../../assets/questions.json';
 import { AppStoreService } from '../../app-store.service';
+import { PurchaseService } from '../../purchase.service';
 
 interface Answer {
   text: string;
@@ -559,6 +561,97 @@ interface FloatingPoint {
         {{ fp.value }}
       </div>
     }
+
+    <!-- Action Sheet / Modal de Doação (a cada 3 simulados aprovados) -->
+    @if (showDonationModal()) {
+      <div class="fixed inset-0 z-[110] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fade-in">
+        <!-- Backdrop com blur -->
+        <div
+          class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity cursor-pointer"
+          (click)="closeDonationModal()"
+          (keydown.enter)="closeDonationModal()"
+          tabindex="0"
+          aria-label="Fechar modal"
+        ></div>
+
+        <!-- Action Sheet / Modal Card -->
+        <div
+          class="bg-white dark:bg-slate-800 w-full max-w-md rounded-t-[32px] sm:rounded-[32px] shadow-2xl relative z-10 border-t sm:border border-slate-100 dark:border-white/10 overflow-hidden animate-sheet-up flex flex-col max-h-[92vh]"
+          style="padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));"
+        >
+          <!-- Pull Handle para UX Mobile -->
+          <div class="w-12 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mt-3 mb-1 sm:hidden shrink-0"></div>
+
+          <!-- Botão Fechar (X) -->
+          <button
+            type="button"
+            (click)="closeDonationModal()"
+            aria-label="Fechar"
+            class="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-700/60 text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center transition-colors z-20 cursor-pointer"
+          >
+            <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none">close</mat-icon>
+          </button>
+
+          <div class="p-6 pt-6 sm:pt-6 flex flex-col items-center text-center overflow-y-auto">
+
+            <!-- Hero Icon -->
+            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-gradient-to-tr from-rose-500 via-pink-500 to-indigo-600 text-white flex items-center justify-center shadow-lg shadow-rose-500/30 mb-4 shrink-0">
+              <mat-icon class="material-icons !text-3xl sm:!text-4xl !w-8 sm:!w-10 !h-8 sm:!h-10 !leading-none">volunteer_activism</mat-icon>
+            </div>
+
+            <!-- Title & Description -->
+            <h3 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-tight mb-2">
+              Ajude a manter o app gratuito!
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4 max-w-sm">
+              O <strong>Simulado CNH do Brasil</strong> é mantido com muita dedicação para ajudar você e milhares de alunos a conquistarem a carteira sem pagar nada.
+            </p>
+
+            <!-- Project Impact Highlights -->
+            <div class="w-full bg-slate-50 dark:bg-slate-900/50 rounded-2xl p-3.5 border border-slate-100 dark:border-white/5 space-y-2.5 mb-5 text-left">
+              <div class="flex items-center gap-2.5">
+                <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                  <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">check</mat-icon>
+                </div>
+                <span class="text-xs font-medium text-slate-700 dark:text-slate-300">Questões e normas do Senatran sempre atualizadas</span>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                  <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">check</mat-icon>
+                </div>
+                <span class="text-xs font-medium text-slate-700 dark:text-slate-300">Aplicativo 100% gratuito e livre de mensalidades</span>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                  <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">check</mat-icon>
+                </div>
+                <span class="text-xs font-medium text-slate-700 dark:text-slate-300">Contribuição voluntária e segura via Google Play</span>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col gap-2.5 w-full">
+              <button
+                type="button"
+                (click)="handleDonation()"
+                class="w-full bg-gradient-to-r from-indigo-600 to-rose-600 hover:from-indigo-700 hover:to-rose-700 active:scale-[0.98] text-white font-bold py-3.5 px-6 rounded-2xl shadow-xl shadow-indigo-600/25 transition-all flex items-center justify-center gap-2 group cursor-pointer"
+              >
+                <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none group-hover:scale-110 transition-transform">volunteer_activism</mat-icon>
+                <span class="text-sm sm:text-base">Fazer uma Doação</span>
+              </button>
+
+              <button
+                type="button"
+                (click)="closeDonationModal()"
+                class="w-full py-2.5 text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors text-center cursor-pointer"
+              >
+                Agora não, continuar estudando
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
   `,
   styles: [`
     .animate-fade-in { animation: fadeIn 0.4s ease-out; }
@@ -570,6 +663,21 @@ interface FloatingPoint {
     .animate-flash-success { animation: flashSuccess 0.5s ease-out; }
     .animate-error-pop { animation: errorPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     .animate-success-pop { animation: successPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    .animate-sheet-up { animation: sheetUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    @keyframes sheetUp {
+      from { opacity: 0; transform: translateY(100%); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (min-width: 640px) {
+      .animate-sheet-up {
+        animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      @keyframes modalPop {
+        from { opacity: 0; transform: scale(0.95) translateY(12px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+      }
+    }
 
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -618,6 +726,10 @@ export class SimulationComponent implements OnInit, OnDestroy {
   readonly Math = Math;
 
   private chatVisibility = inject(AppStoreService);
+  private purchaseService = inject(PurchaseService);
+  private snackBar = inject(MatSnackBar);
+
+  showDonationModal = signal<boolean>(false);
 
   questionCard = viewChild<ElementRef>('questionCard');
 
@@ -671,17 +783,20 @@ export class SimulationComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     if (isDevMode() && 1 > 1) {
-      // Debug mode: mostra a tela de resultado final para editar o layout
-      this.prepareQuestions();
-      this.isStarted.set(true);
-      this.isFinished.set(true);
-      this.score.set(25); // Altere para testar layout aprovado (>=20) ou reprovado (<20)
-      this.modulePerformance.set({
-        'Legislação de Trânsito': { correct: 10, incorrect: 2 },
-        'Sinalização': { correct: 8, incorrect: 1 },
-        'Direção Defensiva': { correct: 7, incorrect: 2 },
-      });
-      return;
+
+      // this.showDonationModal.set(true);
+
+      // // Debug mode: mostra a tela de resultado final para editar o layout
+      // this.prepareQuestions();
+      // this.isStarted.set(true);
+      // this.isFinished.set(true);
+      // this.score.set(25); // Altere para testar layout aprovado (>=20) ou reprovado (<20)
+      // this.modulePerformance.set({
+      //   'Legislação de Trânsito': { correct: 10, incorrect: 2 },
+      //   'Sinalização': { correct: 8, incorrect: 1 },
+      //   'Direção Defensiva': { correct: 7, incorrect: 2 },
+      // });
+      // return;
     }
 
     this.prepareQuestions();
@@ -869,6 +984,32 @@ export class SimulationComponent implements OnInit, OnDestroy {
 
       localStorage.setItem('onboarding_answers', JSON.stringify(answers));
       window.dispatchEvent(new CustomEvent('pointsUpdated', { detail: newPoints }));
+
+      // Se aprovado no simulado (>= 20 acertos), contabiliza para o modal de doação
+      if (this.score() >= 20) {
+        let approvedCount = 0;
+        try {
+          approvedCount = parseInt(localStorage.getItem('approved_simulations_count') || '0', 10);
+          if (isNaN(approvedCount)) approvedCount = 0;
+        } catch {
+          approvedCount = 0;
+        }
+
+        approvedCount += 1;
+        try {
+          localStorage.setItem('approved_simulations_count', approvedCount.toString());
+        } catch (e) {
+          console.error('Erro ao salvar approved_simulations_count no localStorage:', e);
+        }
+
+        // Quando o usuário atinge 3 simulados aprovados, exibe o modal de doação apenas se for android ou web (não no iOS)
+        const platform = Capacitor.getPlatform();
+        if (approvedCount >= 3 && platform !== 'ios') {
+          setTimeout(() => {
+            this.showDonationModal.set(true);
+          }, 1000);
+        }
+      }
     } catch (e) {
       console.error('Error saving simulation result', e);
     }
@@ -939,5 +1080,30 @@ export class SimulationComponent implements OnInit, OnDestroy {
     if (answer.is_correct) return 'text-emerald-800 dark:text-emerald-300';
     if (this.selectedAnswer() === answer && !answer.is_correct) return 'text-rose-800 dark:text-rose-300';
     return 'text-slate-400 dark:text-slate-600';
+  }
+
+  closeDonationModal() {
+    this.showDonationModal.set(false);
+    try {
+      localStorage.setItem('approved_simulations_count', '0');
+    } catch (e) {
+      console.error('Erro ao resetar approved_simulations_count no localStorage:', e);
+    }
+  }
+
+  handleDonation() {
+    this.closeDonationModal();
+    this.openDonation();
+  }
+
+  openDonation() {
+    if (Capacitor.getPlatform() === 'android') {
+      this.purchaseService.donate();
+    } else {
+      this.snackBar.open('A doação está disponível apenas no aplicativo para Android.', 'Fechar', {
+        duration: 4000,
+        panelClass: ['error-snackbar']
+      });
+    }
   }
 }
