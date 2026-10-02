@@ -104,11 +104,11 @@ import { MatIconModule } from '@angular/material/icon';
                 1
               </div>
               <div class="flex flex-col relative z-10 flex-1">
-                <span class="text-amber-900 dark:text-amber-400 font-bold text-base">Cláudio Ribeiro</span>
-                <span class="text-xs text-amber-700/80 dark:text-amber-400/70 font-medium">Curitiba PR</span>
+                <span class="text-amber-900 dark:text-amber-400 font-bold text-base">Elizeu</span>
+                <span class="text-xs text-amber-700/80 dark:text-amber-400/70 font-medium">Paulínia - SP</span>
               </div>
               <div class="relative z-10 font-bold text-amber-600 dark:text-amber-500 pr-2">
-                5141 pts
+                15858 pts
               </div>
             </div>
 
@@ -118,11 +118,11 @@ import { MatIconModule } from '@angular/material/icon';
                 2
               </div>
               <div class="flex flex-col relative z-10 flex-1">
-                <span class="text-slate-800 dark:text-slate-200 font-bold text-base">Rodrigo</span>
-                <span class="text-xs text-slate-500 font-medium">São Paulo - SP</span>
+                <span class="text-slate-800 dark:text-slate-200 font-bold text-base">Mauro</span>
+                <span class="text-xs text-slate-500 font-medium">Espírito Santo do Pinhal - SP</span>
               </div>
               <div class="relative z-10 font-bold text-slate-500 dark:text-slate-400 pr-2">
-                4510 pts
+                9285 pts
               </div>
             </div>
 
@@ -132,11 +132,11 @@ import { MatIconModule } from '@angular/material/icon';
                 3
               </div>
               <div class="flex flex-col relative z-10 flex-1">
-                <span class="text-orange-900 dark:text-orange-300 font-bold text-base">Mauro Sérgio</span>
-                <span class="text-xs text-orange-700/80 dark:text-orange-400/70 font-medium">Espírito Santo do Pinhal - SP</span>
+                <span class="text-orange-900 dark:text-orange-300 font-bold text-base">Maria</span>
+                <span class="text-xs text-orange-700/80 dark:text-orange-400/70 font-medium">Tibau - RN</span>
               </div>
               <div class="relative z-10 font-bold text-orange-600 dark:text-orange-500 pr-2">
-                4468 pts
+                7151 pts
               </div>
             </div>
 

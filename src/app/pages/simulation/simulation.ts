@@ -619,7 +619,7 @@ interface FloatingPoint {
                 <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
                   <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">check</mat-icon>
                 </div>
-                <span class="text-xs font-medium text-slate-700 dark:text-slate-300">Aplicativo 100% gratuito e livre de mensalidades</span>
+                <span class="text-xs font-medium text-slate-700 dark:text-slate-300">Aplicativo gratuito e livre de mensalidades</span>
               </div>
               <div class="flex items-center gap-2.5">
                 <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">

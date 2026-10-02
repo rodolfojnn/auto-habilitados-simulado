@@ -189,7 +189,7 @@ const TIPS = [
                   Apoie nosso projeto!
                 </h2>
                 <p class="mt-1 text-[13px] leading-snug text-slate-600 dark:text-slate-400 text-pretty">
-                  Sua contribuição ajuda a manter o app 100% gratuito.
+                  Sua contribuição ajuda a manter o app gratuito.
                 </p>
               </div>
             </div>
