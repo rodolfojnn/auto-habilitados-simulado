@@ -1,5 +1,9 @@
-import { Component, ChangeDetectionStrategy, signal, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, inject, OnInit, computed } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { Capacitor } from '@capacitor/core';
+import { PushService } from '../../push.service';
+import { AppStoreService } from '../../app-store.service';
+import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-settings';
 
 @Component({
   selector: 'app-ranking',
@@ -65,12 +69,12 @@ import { MatIconModule } from '@angular/material/icon';
           <div class="w-full max-w-sm rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 p-4 text-left">
             <div class="flex items-start gap-3">
               <div class="w-9 h-9 rounded-xl bg-white dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/30 flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
-                <mat-icon class="!text-xl !w-5 !h-5 !leading-none">mail_outline</mat-icon>
+                <mat-icon class="!text-xl !w-5 !h-5 !leading-none">notifications_active</mat-icon>
               </div>
               <div class="flex-1 min-w-0">
                 <p class="text-xs font-bold text-emerald-900 dark:text-emerald-300">Como receber o prêmio?</p>
                 <p class="text-xs text-emerald-800 dark:text-emerald-200/80 mt-1 leading-relaxed">
-                  Se você for um dos ganhadores, entre em contato pelo e-mail <span class="font-bold">comercial&#64;dirigiragora.com.br</span> com seu <span class="font-semibold">nome completo, CEP e telefone para contato</span>.
+                  A notificação para os ganhadores será feita diretamente via <span class="font-bold">push notification</span> no seu celular. Mantenha as notificações ativas no app para receber o aviso e garantir seu prêmio!
                 </p>
               </div>
             </div>
@@ -151,61 +155,52 @@ import { MatIconModule } from '@angular/material/icon';
             </div>
           </div>
 
-          <!-- Card de Instruções para os Ganhadores (Light & Dark) -->
+          <!-- Card de Notificação via Push aos Ganhadores -->
           <section class="rounded-2xl bg-white dark:bg-slate-800/60 border border-gray-200 dark:border-slate-700 p-5 shadow-xs flex flex-col gap-4 relative overflow-hidden">
             <div class="flex items-start gap-3.5">
               <div class="w-11 h-11 rounded-2xl bg-emerald-50 dark:bg-emerald-500/20 border border-emerald-100 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-                <mat-icon class="!text-2xl !w-6 !h-6 !leading-none">workspace_premium</mat-icon>
+                <mat-icon class="!text-2xl !w-6 !h-6 !leading-none">notifications_active</mat-icon>
               </div>
               <div class="flex-1 min-w-0">
                 <h3 class="text-base font-bold text-gray-900 dark:text-white leading-snug">
-                  Você é um dos ganhadores?
+                  Aviso aos Ganhadores
                 </h3>
                 <p class="text-xs text-gray-600 dark:text-slate-400 mt-1 leading-relaxed">
-                  Entre em contato conosco por e-mail enviando os dados abaixo para receber o seu prêmio:
+                  A notificação para os ganhadores é enviada via <strong class="text-gray-900 dark:text-white">notificação push</strong> no seu celular.
                 </p>
               </div>
             </div>
 
-            <!-- Lista de dados necessários -->
-            <div class="bg-gray-50 dark:bg-slate-900/50 rounded-xl p-3.5 border border-gray-100 dark:border-slate-700/60 flex flex-col gap-2">
-              <div class="flex items-center gap-2.5 text-xs text-gray-700 dark:text-slate-200">
-                <mat-icon class="!text-base !w-4 !h-4 !leading-none text-emerald-600 dark:text-emerald-400 shrink-0">check_circle</mat-icon>
-                <span class="font-semibold">Nome completo</span>
-              </div>
-              <div class="flex items-center gap-2.5 text-xs text-gray-700 dark:text-slate-200">
-                <mat-icon class="!text-base !w-4 !h-4 !leading-none text-emerald-600 dark:text-emerald-400 shrink-0">check_circle</mat-icon>
-                <span class="font-semibold">CEP</span>
-              </div>
-              <div class="flex items-center gap-2.5 text-xs text-gray-700 dark:text-slate-200">
-                <mat-icon class="!text-base !w-4 !h-4 !leading-none text-emerald-600 dark:text-emerald-400 shrink-0">check_circle</mat-icon>
-                <span class="font-semibold">Telefone para contato</span>
+            <!-- Destaque Informativo -->
+            <div class="bg-emerald-50/70 dark:bg-slate-900/60 rounded-xl p-3.5 border border-emerald-100 dark:border-slate-700 flex flex-col gap-2.5">
+              <div class="flex items-start gap-2.5 text-xs text-emerald-950 dark:text-emerald-300">
+                <mat-icon class="!text-base !w-4 !h-4 !leading-none text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5">check_circle</mat-icon>
+                <span class="leading-relaxed">
+                  Fique atento: você precisa estar com as <strong class="font-bold">notificações ativas</strong> no aparelho para receber o comunicado e as orientações de resgate do seu prêmio.
+                </span>
               </div>
             </div>
 
-            <!-- E-mail para contato com botão de copiar -->
-            <div class="flex flex-col gap-1.5">
-              <span class="text-[11px] font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">
-                E-mail para envio dos dados:
-              </span>
-              <div class="flex items-center justify-between gap-2 bg-emerald-50/70 dark:bg-slate-900/70 border border-emerald-200 dark:border-slate-700 rounded-xl pl-3.5 pr-1.5 py-1.5">
-                <div class="flex items-center gap-2 min-w-0">
-                  <mat-icon class="!text-base !w-4 !h-4 !leading-none text-emerald-600 dark:text-emerald-400 shrink-0">mail_outline</mat-icon>
-                  <span class="text-xs font-bold text-emerald-900 dark:text-emerald-300 truncate select-all">
-                    comercial&#64;dirigiragora.com.br
-                  </span>
-                </div>
+            <!-- Status do Push ou Ação de Ativação -->
+            @if (isPushGranted()) {
+              <div class="flex items-center gap-2 px-3 py-2.5 bg-gray-50 dark:bg-slate-900/40 border border-gray-200/80 dark:border-slate-700 rounded-xl text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                <mat-icon class="!text-base !w-4 !h-4 !leading-none text-emerald-600 dark:text-emerald-400">verified</mat-icon>
+                <span>Suas notificações estão ativas neste dispositivo</span>
+              </div>
+            } @else if (!isWebPlatform) {
+              <div class="flex flex-col gap-2 pt-1">
                 <button
                   type="button"
-                  (click)="copyEmail()"
-                  [class]="emailCopied()
-                    ? 'min-h-[38px] px-3 rounded-lg text-xs font-bold flex items-center gap-1.5 shrink-0 transition-all active:scale-95 bg-emerald-600 text-white'
-                    : 'min-h-[38px] px-3 rounded-lg text-xs font-bold flex items-center gap-1.5 shrink-0 transition-all active:scale-95 bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-slate-600 shadow-2xs'">
-                  <mat-icon class="!text-base !w-4 !h-4 !leading-none">{{ emailCopied() ? 'check' : 'content_copy' }}</mat-icon>
-                  <span class="whitespace-nowrap">{{ emailCopied() ? 'Copiado!' : 'Copiar' }}</span>
+                  (click)="enablePush()"
+                  class="w-full min-h-[44px] py-2.5 px-4 rounded-xl font-bold text-xs text-slate-950 bg-brand-500 hover:bg-brand-400 transition-colors shadow-sm shadow-brand-500/20 active:scale-[0.98] flex items-center justify-center gap-2 uppercase tracking-wide">
+                  <mat-icon class="!text-lg !w-5 !h-5 !leading-none">notifications_active</mat-icon>
+                  <span>Ativar Notificações</span>
                 </button>
+                <p class="text-[11px] text-gray-500 dark:text-slate-400 text-center">
+                  Toque para autorizar e garantir o recebimento dos avisos do ranking.
+                </p>
               </div>
-            </div>
+            }
           </section>
         </div>
       }
@@ -222,13 +217,21 @@ import { MatIconModule } from '@angular/material/icon';
   `]
 })
 export class RankingComponent implements OnInit {
-  readonly contactEmail = 'comercial@dirigiragora.com.br';
+  private pushService = inject(PushService);
+  private store = inject(AppStoreService);
 
   showPrizes = signal<boolean>(false);
-  emailCopied = signal<boolean>(false);
+  isWebPlatform = Capacitor.getPlatform() === 'web';
+
+  isPushGranted = computed(() => {
+    return this.store.pushPermission() === 'granted';
+  });
 
   ngOnInit() {
     localStorage.setItem('ranking_prizes_seen', 'true');
+    if (!this.isWebPlatform) {
+      this.pushService.checkAndRegister();
+    }
   }
 
   enterRanking() {
@@ -236,33 +239,17 @@ export class RankingComponent implements OnInit {
     this.showPrizes.set(false);
   }
 
-  async copyEmail() {
-    try {
-      if (navigator?.clipboard?.writeText) {
-        await navigator.clipboard.writeText(this.contactEmail);
-        this.showCopiedFeedback();
-        return;
-      }
-    } catch {
-      // Fallback below
-    }
-    const textarea = document.createElement('textarea');
-    textarea.value = this.contactEmail;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
-    document.body.appendChild(textarea);
-    textarea.select();
-    try {
-      document.execCommand('copy');
-    } catch {
-      // Ignore fallback error
-    }
-    document.body.removeChild(textarea);
-    this.showCopiedFeedback();
-  }
+  enablePush() {
+    if (this.isWebPlatform) return;
 
-  private showCopiedFeedback() {
-    this.emailCopied.set(true);
-    setTimeout(() => this.emailCopied.set(false), 2500);
+    const perm = this.store.pushPermission();
+    if (perm === 'denied') {
+      NativeSettings.open({
+        optionAndroid: AndroidSettings.ApplicationDetails,
+        optionIOS: IOSSettings.App
+      });
+    } else {
+      this.pushService.requestPermissions();
+    }
   }
 }

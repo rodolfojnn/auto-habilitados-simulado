@@ -132,7 +132,8 @@ const TIPS = [
           </div>
         </a>
 
-        <!-- Ranking -->
+        <!-- Deixar o ranking oculto por enquanto, futuramente vamos reativar, então não excluir o código comentado abaixo -->
+        <!--
         <a routerLink="/ranking"
           class="w-full bg-white dark:bg-slate-800 px-4 py-2 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
           <div class="w-14 h-14 flex-shrink-0 bg-amber-50 dark:bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-500/30">
@@ -146,6 +147,7 @@ const TIPS = [
             <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
           </div>
         </a>
+        -->
 
         <!-- Duelo -->
         <a routerLink="/duelo"
