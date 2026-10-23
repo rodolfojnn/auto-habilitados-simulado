@@ -119,7 +119,7 @@ interface FloatingPoint {
 
           <div class="w-px bg-white/30 shrink-0"></div>
 
-          <div class="w-[100px] shrink-0 flex flex-col items-center justify-center gap-1.5 text-center">
+          <div class="w-[120px] shrink-0 flex flex-col items-center justify-center gap-1.5 text-center">
             <mat-icon class="material-icons !text-[28px] !w-7 !h-7 !leading-none">shield</mat-icon>
             <p class="text-[11px] leading-snug font-medium">Compra segura e sem complicação</p>
           </div>
