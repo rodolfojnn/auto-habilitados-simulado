@@ -1,5 +1,6 @@
-import { Component, ChangeDetectionStrategy, signal, output, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, output, computed, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { AppStoreService } from '../../app-store.service';
 
 interface Option {
   value: string;
@@ -174,6 +175,8 @@ export class OnboardingComponent {
     this.answers.update(ans => ({ ...ans, [q.id]: value }));
   }
 
+  private store = inject(AppStoreService);
+
   nextStep() {
     if (!this.hasAnswerForCurrent()) return;
 
@@ -193,15 +196,17 @@ export class OnboardingComponent {
           }
         }
 
+        delete data['onboarding'];
+
         data = {
           ...data,
           ...finalAnswers,
           onboard: finalAnswers,
-          onboarding: finalAnswers,
           onboarding_completed: true
         };
 
         localStorage.setItem('onboarding_answers', JSON.stringify(data));
+        this.store.loadOnboardingData();
       } catch (e) {
         console.error('Erro ao salvar onboarding no localStorage:', e);
       }

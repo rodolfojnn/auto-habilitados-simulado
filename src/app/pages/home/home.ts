@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
 import { PurchaseService } from '../../purchase.service';
+import { AppStoreService } from '../../app-store.service';
 
 const TIPS = [
   "Ajuste o banco, os retrovisores e coloque o cinto de segurança antes de ligar o veículo.",
@@ -103,19 +104,21 @@ const TIPS = [
         </a>
 
         <!-- Aulas Práticas -->
-        <button type="button" (click)="openAulasPraticas()"
-          class="w-full bg-white dark:bg-slate-800 px-4 py-2 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px] text-left">
-          <div class="w-14 h-14 flex-shrink-0 bg-emerald-50 dark:bg-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/30">
-             <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">directions_car</mat-icon>
-          </div>
-          <div class="flex flex-col flex-1">
-            <h3 class="font-bold text-gray-900 dark:text-white text-lg">Aulas Práticas</h3>
-            <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">Sua autoescola digital</p>
-          </div>
-          <div class="w-10 h-10 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-500">
-            <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
-          </div>
-        </button>
+        @if (!isAutoescola()) {
+          <button type="button" (click)="openAulasPraticas()"
+            class="w-full bg-white dark:bg-slate-800 px-4 py-2 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px] text-left">
+            <div class="w-14 h-14 flex-shrink-0 bg-emerald-50 dark:bg-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/30">
+               <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">directions_car</mat-icon>
+            </div>
+            <div class="flex flex-col flex-1">
+              <h3 class="font-bold text-gray-900 dark:text-white text-lg">Aulas Práticas</h3>
+              <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">Sua autoescola digital</p>
+            </div>
+            <div class="w-10 h-10 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-500">
+              <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
+            </div>
+          </button>
+        }
 
         <!-- Historico -->
         <a routerLink="/historico"
@@ -150,22 +153,24 @@ const TIPS = [
         -->
 
         <!-- Duelo -->
-        <a routerLink="/duelo"
-          class="w-full bg-white dark:bg-slate-800 px-4 py-2 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
-          <div class="w-14 h-14 flex-shrink-0 bg-indigo-50 dark:bg-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-500/30">
-             <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">sports_esports</mat-icon>
-          </div>
-          <div class="flex flex-col flex-1">
-            <h3 class="font-bold text-gray-900 dark:text-white text-lg">Multiplayer</h3>
-            <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">Desafie outro jogador</p>
-          </div>
-          <div class="w-10 h-10 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-500">
-            <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
-          </div>
-        </a>
+        @if (!isAutoescola()) {
+          <a routerLink="/duelo"
+            class="w-full bg-white dark:bg-slate-800 px-4 py-2 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
+            <div class="w-14 h-14 flex-shrink-0 bg-indigo-50 dark:bg-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-500/30">
+               <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">sports_esports</mat-icon>
+            </div>
+            <div class="flex flex-col flex-1">
+              <h3 class="font-bold text-gray-900 dark:text-white text-lg">Multiplayer</h3>
+              <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">Desafie outro jogador</p>
+            </div>
+            <div class="w-10 h-10 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-500">
+              <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
+            </div>
+          </a>
+        }
 
         <!-- Card de apoio -->
-        @if (showSupportCard()) {
+        @if (showSupportCard() && !isAutoescola()) {
           <div class="relative flex flex-col gap-4 w-full rounded-3xl border border-indigo-100/50 bg-gradient-to-br from-indigo-50 to-blue-50/50 dark:from-indigo-900/20 dark:to-blue-900/10 p-5 shadow-sm">
             <!-- Botão fechar -->
             <button
@@ -275,6 +280,8 @@ export class HomeComponent implements OnInit {
 
   private purchaseService = inject(PurchaseService);
   private snackBar = inject(MatSnackBar);
+  private store = inject(AppStoreService);
+  isAutoescola = this.store.isAutoescola;
 
   ngOnInit() {
     const randomIndex = Math.floor(Math.random() * TIPS.length);

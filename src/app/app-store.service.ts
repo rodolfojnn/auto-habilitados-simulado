@@ -1,5 +1,5 @@
 
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 
 export interface OnboardingData {
   processo_iniciado?: string;
@@ -18,6 +18,15 @@ export class AppStoreService {
   public pushDeclinedIos = signal<boolean>(localStorage.getItem('pushDeclinedIos') === 'true');
   public onboardingData = signal<OnboardingData | null>(null);
 
+  public isAutoescola = computed(() => {
+    const data = this.onboardingData();
+    if (data?.metodo_estudo === 'autoescola') return true;
+    if (typeof window !== 'undefined' && window.localStorage) {
+      if (localStorage.getItem('metodo_estudo') === 'autoescola') return true;
+    }
+    return false;
+  });
+
   constructor() {
     this.loadOnboardingData();
   }
@@ -25,23 +34,24 @@ export class AppStoreService {
   public loadOnboardingData() {
     try {
       const data = localStorage.getItem('onboarding_answers');
+      const proc = (typeof window !== 'undefined' && window.localStorage) ? localStorage.getItem('processo_iniciado') || undefined : undefined;
+      const met = (typeof window !== 'undefined' && window.localStorage) ? localStorage.getItem('metodo_estudo') || undefined : undefined;
+
       if (data) {
         const parsed = JSON.parse(data);
+        const onboardObj = parsed.onboard || {};
         this.onboardingData.set({
-          processo_iniciado: parsed.processo_iniciado || parsed.onboard?.processo_iniciado || parsed.onboarding?.processo_iniciado || localStorage.getItem('processo_iniciado') || undefined,
-          metodo_estudo: parsed.metodo_estudo || parsed.onboard?.metodo_estudo || parsed.onboarding?.metodo_estudo || localStorage.getItem('metodo_estudo') || undefined,
-          ...parsed.onboard,
-          ...parsed.onboarding
+          processo_iniciado: parsed.processo_iniciado || onboardObj.processo_iniciado || proc,
+          metodo_estudo: parsed.metodo_estudo || onboardObj.metodo_estudo || met,
+          ...onboardObj
+        });
+      } else if (proc || met) {
+        this.onboardingData.set({
+          processo_iniciado: proc,
+          metodo_estudo: met
         });
       } else {
-        const proc = localStorage.getItem('processo_iniciado');
-        const met = localStorage.getItem('metodo_estudo');
-        if (proc || met) {
-          this.onboardingData.set({
-            processo_iniciado: proc || undefined,
-            metodo_estudo: met || undefined
-          });
-        }
+        this.onboardingData.set(null);
       }
     } catch {
       // ignore
@@ -49,3 +59,4 @@ export class AppStoreService {
   }
 
 }
+

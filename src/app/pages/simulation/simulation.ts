@@ -563,7 +563,7 @@ interface FloatingPoint {
     }
 
     <!-- Action Sheet / Modal de Doação (a cada 3 simulados aprovados) -->
-    @if (showDonationModal()) {
+    @if (showDonationModal() && !isAutoescola()) {
       <div class="fixed inset-0 z-[110] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fade-in">
         <!-- Backdrop com blur -->
         <div
@@ -726,6 +726,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
   readonly Math = Math;
 
   private chatVisibility = inject(AppStoreService);
+  isAutoescola = this.chatVisibility.isAutoescola;
   private purchaseService = inject(PurchaseService);
   private snackBar = inject(MatSnackBar);
 
@@ -1002,9 +1003,9 @@ export class SimulationComponent implements OnInit, OnDestroy {
           console.error('Erro ao salvar approved_simulations_count no localStorage:', e);
         }
 
-        // Quando o usuário atinge 3 simulados aprovados, exibe o modal de doação apenas se for android ou web (não no iOS)
+        // Quando o usuário atinge 3 simulados aprovados, exibe o modal de doação apenas se for android ou web (não no iOS) e não for autoescola
         const platform = Capacitor.getPlatform();
-        if (approvedCount >= 3 && platform !== 'ios') {
+        if (approvedCount >= 3 && platform !== 'ios' && !this.chatVisibility.isAutoescola()) {
           setTimeout(() => {
             this.showDonationModal.set(true);
           }, 1000);

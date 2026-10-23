@@ -157,7 +157,9 @@ import { PurchaseService } from './purchase.service';
 
       <!-- Deixar o chat oculto por enquanto, futuramente vamos ativar, então não excluir o comentário abaixo -->
       <!-- <app-chat></app-chat> -->
-      <app-chatbot></app-chatbot>
+      @if (!isAutoescola()) {
+        <app-chatbot></app-chatbot>
+      }
 
       <app-confirm-modal
         [isOpen]="showResetModal()"
@@ -202,6 +204,7 @@ export class App implements OnInit {
   private router = inject(Router);
   private pushService = inject(PushService);
   private store = inject(AppStoreService);
+  isAutoescola = this.store.isAutoescola;
   private purchaseService = inject(PurchaseService);
 
   constructor() {
@@ -332,11 +335,11 @@ export class App implements OnInit {
           // ignore
         }
       }
+      delete data['onboarding'];
       data = {
         ...data,
         ...answers,
         onboard: answers,
-        onboarding: answers,
         onboarding_completed: true
       };
       localStorage.setItem('onboarding_answers', JSON.stringify(data));

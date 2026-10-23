@@ -113,7 +113,7 @@ const CHAT_FLOW: Record<string, ChatStep> = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!-- Floating Button -->
-    @if (!isOpen() && visibility.showChat()) {
+    @if (!isOpen() && visibility.showChat() && !visibility.isAutoescola()) {
       <button
         (click)="toggleChat()"
         class="fixed z-50 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg shadow-blue-600/30 flex items-center justify-center transition-all hover:scale-105 active:scale-95"
@@ -127,7 +127,7 @@ const CHAT_FLOW: Record<string, ChatStep> = {
     }
 
     <!-- Chat Window Overlay (Mobile full screen, Desktop floating panel) -->
-    @if (isOpen()) {
+    @if (isOpen() && !visibility.isAutoescola()) {
       <div class="fixed inset-0 sm:inset-auto sm:bottom-24 sm:right-6 z-50 flex flex-col bg-white dark:bg-slate-900 sm:w-[400px] sm:h-[600px] sm:rounded-3xl sm:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-fade-in-up">
 
         <!-- Header -->

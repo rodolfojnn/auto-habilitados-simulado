@@ -216,21 +216,19 @@ export class LeadCaptureComponent {
         const onboardData: Record<string, unknown> = {
           processo_iniciado: processoIniciado,
           metodo_estudo: metodoEstudo,
-          ...(typeof answers['onboard'] === 'object' && answers['onboard'] ? (answers['onboard'] as Record<string, unknown>) : {}),
-          ...(typeof answers['onboarding'] === 'object' && answers['onboarding'] ? (answers['onboarding'] as Record<string, unknown>) : {})
+          ...(typeof answers['onboard'] === 'object' && answers['onboard'] ? (answers['onboard'] as Record<string, unknown>) : {})
         };
 
         answers['processo_iniciado'] = processoIniciado;
         answers['metodo_estudo'] = metodoEstudo;
         answers['onboard'] = onboardData;
-        answers['onboarding'] = onboardData;
+        delete answers['onboarding'];
 
         answers['lead_data'] = {
           ...formVal,
           processo_iniciado: processoIniciado,
           metodo_estudo: metodoEstudo,
-          onboard: onboardData,
-          onboarding: onboardData
+          onboard: onboardData
         };
 
         answers['nome'] = formVal.nome;
