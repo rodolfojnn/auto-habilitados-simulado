@@ -1,5 +1,6 @@
 
 import { Injectable, signal, computed } from '@angular/core';
+import { Capacitor } from '@capacitor/core';
 
 export interface OnboardingData {
   processo_iniciado?: string;
@@ -33,6 +34,9 @@ export class AppStoreService {
   }
 
   public isAutoescola = computed(() => {
+    // Bypass para usuários iOS: sempre retorna false no iOS para não bloquear nenhuma funcionalidade
+    if (Capacitor.getPlatform() === 'ios') return false;
+
     const data = this.onboardingData();
     if (data?.metodo_estudo === 'autoescola') return true;
     if (typeof window !== 'undefined' && window.localStorage) {
