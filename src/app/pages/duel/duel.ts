@@ -1,9 +1,12 @@
 import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, computed, ViewChild, ElementRef, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { DecimalPipe } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Capacitor } from '@capacitor/core';
 import questionsData from '../../../assets/questions.json';
 import { interval, Subscription } from 'rxjs';
 import { AppStoreService } from '../../app-store.service';
+import { PurchaseService } from '../../purchase.service';
 
 interface RawAnswer {
   text: string;
@@ -41,11 +44,122 @@ interface GameFloatingPoint {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="min-h-full bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-white font-sans selection:bg-indigo-500/30 overflow-hidden relative">
-      @if (!isStarted()) {
+      @if (shouldShowPaywall()) {
+        <!-- TELA DE PAGAMENTO / VENDA EXCLUSIVA PARA ALUNOS DE AUTOESCOLA -->
+        <div class="w-full mx-auto min-h-full flex flex-col font-sans animate-fade-in bg-[#f3f9f5] dark:bg-slate-950 px-5 pt-8 pb-10 box-border">
+
+          <!-- Cabeçalho: título, descrição e imagem do alvo -->
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex-1 min-w-0">
+              <h1 class="text-[23px] leading-[1.1] font-black tracking-tight text-[#0d3b2e] dark:text-white">
+                Reprovar custa mais caro que <span class="text-[#2f9e4f] dark:text-emerald-400 whitespace-nowrap">R$ 9,90</span>
+              </h1>
+              <p class="mt-3 text-[14px] leading-relaxed text-slate-600 dark:text-slate-300">
+                O simulado completo te prepara para a prova do Detran. E agora você pode continuar estudando com acesso total.
+              </p>
+            </div>
+            <img src="assets/paywall-target-light.png" alt="" aria-hidden="true" class="w-[110px] h-[110px] shrink-0 object-contain drop-shadow-md dark:hidden" />
+            <img src="assets/paywall-target-dark.png" alt="" aria-hidden="true" class="hidden dark:block w-[110px] h-[110px] shrink-0 object-contain drop-shadow-md" />
+          </div>
+
+          <!-- Lista de benefícios -->
+          <div class="mt-6 bg-white dark:bg-slate-900 rounded-[24px] px-5 py-2 border border-slate-100 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.05)] dark:shadow-none">
+            <div class="flex items-center gap-4 py-4">
+              <div class="w-12 h-12 rounded-2xl bg-[#e6f5ea] dark:bg-emerald-500/15 text-[#2f9e4f] dark:text-emerald-400 flex items-center justify-center shrink-0">
+                <mat-icon class="material-icons !text-[28px] !w-7 !h-7 !leading-none">assignment_turned_in</mat-icon>
+              </div>
+              <div class="min-w-0">
+                <h3 class="text-[15px] font-bold text-[#0d1f1a] dark:text-white leading-snug">Simulados completos</h3>
+                <p class="text-[13px] text-slate-500 dark:text-slate-400 leading-snug mt-0.5">Questões oficiais de prova.</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 py-4 border-t border-slate-100 dark:border-white/5">
+              <div class="w-12 h-12 rounded-2xl bg-[#e6f5ea] dark:bg-emerald-500/15 text-[#2f9e4f] dark:text-emerald-400 flex items-center justify-center shrink-0">
+                <mat-icon class="material-icons !text-[28px] !w-7 !h-7 !leading-none">bar_chart</mat-icon>
+              </div>
+              <div class="min-w-0">
+                <h3 class="text-[15px] font-bold text-[#0d1f1a] dark:text-white leading-snug">Seu desempenho por assunto</h3>
+                <p class="text-[13px] text-slate-500 dark:text-slate-400 leading-snug mt-0.5">Saiba onde precisa melhorar.</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 py-4 border-t border-slate-100 dark:border-white/5">
+              <div class="w-12 h-12 rounded-2xl bg-[#e6f5ea] dark:bg-emerald-500/15 text-[#2f9e4f] dark:text-emerald-400 flex items-center justify-center shrink-0">
+                <mat-icon class="material-icons !text-[28px] !w-7 !h-7 !leading-none">track_changes</mat-icon>
+              </div>
+              <div class="min-w-0">
+                <h3 class="text-[15px] font-bold text-[#0d1f1a] dark:text-white leading-snug">Evolução no seu ritmo</h3>
+                <p class="text-[13px] text-slate-500 dark:text-slate-400 leading-snug mt-0.5">Acompanhe seu histórico e progresso.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card de preço -->
+          <div class="mt-5 rounded-[24px] bg-gradient-to-r from-[#3aa95a] to-[#2b9448] dark:from-emerald-600 dark:to-emerald-700 text-white px-5 py-5 shadow-lg shadow-emerald-600/20 flex items-stretch gap-3">
+            <div class="flex-1 min-w-0 flex flex-col justify-center">
+              <span class="self-start px-3 py-1 rounded-full bg-[#1d6b37]/60 text-[10px] font-bold uppercase tracking-wider">Acesso completo</span>
+              <div class="mt-2 flex items-baseline gap-1 whitespace-nowrap">
+                <span class="text-base font-semibold">R$</span>
+                <span class="text-[38px] leading-none font-black tracking-tight">9,90</span>
+              </div>
+              <p class="text-xs opacity-90 mt-1">Pagamento único</p>
+            </div>
+
+            <div class="w-px bg-white/30 shrink-0"></div>
+
+            <div class="w-[120px] shrink-0 flex flex-col items-center justify-center gap-1.5 text-center">
+              <mat-icon class="material-icons !text-[28px] !w-7 !h-7 !leading-none">shield</mat-icon>
+              <p class="text-[11px] leading-snug font-medium">Compra segura e sem complicação</p>
+            </div>
+          </div>
+
+          <!-- Botão principal -->
+          <button
+            type="button"
+            (click)="liberarAcesso()"
+            class="mt-4 w-full flex items-center justify-center gap-3 bg-[#0b5d3b] hover:bg-[#094d31] dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-bold text-[16px] py-4 px-6 rounded-2xl shadow-lg active:scale-[0.98] transition-all cursor-pointer"
+          >
+            <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">credit_card</mat-icon>
+            <span>Quero continuar agora</span>
+            <mat-icon class="material-icons !text-[20px] !w-5 !h-5 !leading-none">arrow_forward</mat-icon>
+          </button>
+
+          <!-- Rodapé de segurança -->
+          <div class="mt-4 flex items-center justify-center gap-2 text-center text-[11px] leading-snug text-slate-500 dark:text-slate-400">
+            <mat-icon class="material-icons !text-[16px] !w-4 !h-4 !leading-none shrink-0">lock</mat-icon>
+            <p>
+              Você será direcionado para o pagamento seguro.<br />
+              Após a confirmação, o acesso será liberado imediatamente.
+            </p>
+          </div>
+
+          <!-- Opção de teste em desenvolvimento / homologação para simular pagamento -->
+          <!-- Não excluir código abaixo, quando eu precisar vou descomentar -->
+          <!-- <div class="mt-4 text-center">
+            <button
+              type="button"
+              (click)="simularPagamentoTeste()"
+              class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline cursor-pointer opacity-75 hover:opacity-100"
+            >
+              [Ambiente de Teste: Simular Pagamento Aprovado]
+            </button>
+          </div> -->
+
+        </div>
+      } @else if (!isStarted()) {
         <!-- Home State within Duel -->
         <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto min-h-full flex flex-col">
 
           <header class="mb-6 text-center relative">
+            @if (isAutoescola() && isPaid()) {
+              <div class="mb-3 inline-flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold">
+                <mat-icon class="material-icons !text-sm">verified</mat-icon>
+                <span>Acesso Ilimitado Ativo</span>
+                <!-- Não excluir código abaixo, quando eu precisar vou descomentar -->
+                <!-- <button type="button" (click)="resetarPagamentoTeste()" class="ml-2 text-[10px] text-slate-400 dark:text-slate-500 hover:underline cursor-pointer" title="Permite testar novamente a tela de bloqueio">[testar tela de venda]</button> -->
+              </div>
+            }
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Duelo Ao Vivo</h1>
             <p class="text-gray-600 dark:text-slate-400 text-sm mt-1">Batalha de conhecimento</p>
           </header>
@@ -555,6 +669,18 @@ export class DuelComponent implements OnInit, OnDestroy {
   @ViewChild('rivalAvatarModal') rivalAvatarModalRef?: ElementRef<HTMLElement>;
 
   private chatVisibility = inject(AppStoreService);
+  private purchaseService = inject(PurchaseService);
+  private snackBar = inject(MatSnackBar);
+
+  isAutoescola = this.chatVisibility.isAutoescola;
+  isPaid = this.chatVisibility.isPaid;
+  isAndroid = computed(() => {
+    const platform = Capacitor.getPlatform();
+    // Condicionado para Android (no iOS ainda não há pagamento, portanto não exibe).
+    // Na web (preview de desenvolvimento), mantém habilitado para visualização/testes.
+    return platform === 'android' || platform === 'web';
+  });
+  shouldShowPaywall = computed(() => this.isAutoescola() && this.isAndroid() && !this.isPaid());
 
   isStarted = signal<boolean>(false);
   isSearching = signal<boolean>(false);
@@ -804,6 +930,9 @@ export class DuelComponent implements OnInit, OnDestroy {
   }
 
   startDuel() {
+    if (this.shouldShowPaywall()) {
+      return;
+    }
     this.isStarted.set(true);
     this.isSearching.set(true);
     this.isFound.set(false);
@@ -1041,6 +1170,46 @@ export class DuelComponent implements OnInit, OnDestroy {
     this.currentIndex.set(0);
     this.timeElapsed.set(0);
   }
+
+  liberarAcesso() {
+    // Aciona a compra do Google Play ("valor_simulado") no Android
+    if (Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android') {
+      this.purchaseService.buySimulado();
+    } else {
+      this.processarPagamento();
+    }
+  }
+
+  processarPagamento() {
+    if (Capacitor.getPlatform() === 'android') {
+      this.purchaseService.buySimulado();
+    } else {
+      this.snackBar.open('Iniciando compra de "valor_simulado" no Google Play...', 'OK', {
+        duration: 3500,
+        panelClass: ['brand-snackbar']
+      });
+    }
+  }
+
+  // Não excluir código abaixo, quando eu precisar vou descomentar
+  // simularPagamentoTeste() {
+  //   // Marca como pago no localStorage (chave 'app_paid') de forma definitiva
+  //   this.chatVisibility.setAppPaid(true);
+  //   this.snackBar.open('Pagamento aprovado! Acesso ilimitado liberado com sucesso.', 'OK', {
+  //     duration: 4000,
+  //     panelClass: ['brand-snackbar']
+  //   });
+  // }
+
+  // Não excluir código abaixo, quando eu precisar vou descomentar
+  // resetarPagamentoTeste() {
+  //   // Utilidade para desenvolvimento / homologação para voltar a ver a tela de pagamento
+  //   this.chatVisibility.setAppPaid(false);
+  //   this.snackBar.open('Status de pagamento desmarcado para testes.', 'Fechar', {
+  //     duration: 3000,
+  //     panelClass: ['error-snackbar']
+  //   });
+  // }
 
   handleImageError(event: Event) {
     const target = event.target as HTMLElement;
