@@ -7,6 +7,7 @@ import { AppStoreService } from './app-store.service';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal';
 import { EnablePushComponent } from './components/enable-push/enable-push';
 import { LeadCaptureComponent } from './components/lead-capture/lead-capture';
+import { OnboardingComponent } from './pages/onboarding/onboarding';
 import { PushService } from './push.service';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { PurchaseService } from './purchase.service';
@@ -15,9 +16,13 @@ import { PurchaseService } from './purchase.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, ConfirmModalComponent, LeadCaptureComponent, EnablePushComponent, ChatbotComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatIconModule, ConfirmModalComponent, LeadCaptureComponent, OnboardingComponent, EnablePushComponent, ChatbotComponent],
   template: `
-    @if (!leadCaptured()) {
+    @if (!onboardingCompleted()) {
+      <div class="fixed inset-0 z-[100] bg-gray-50 dark:bg-slate-900 overflow-y-auto">
+        <app-onboarding (completed)="onOnboardingCompleted($event)"></app-onboarding>
+      </div>
+    } @else if (!leadCaptured()) {
       <div class="fixed inset-0 z-[100] bg-gray-50 dark:bg-slate-900 overflow-y-auto">
         <app-lead-capture (captured)="onLeadCaptured()"
             title="Completar Cadastro"
@@ -173,6 +178,7 @@ import { PurchaseService } from './purchase.service';
 export class App implements OnInit {
   sidebarOpen = signal(false);
   isDark = signal(false);
+  onboardingCompleted = signal(true);
   leadCaptured = signal(true);
   userPoints = signal<number>(0);
   showResetModal = signal(false);
@@ -201,16 +207,23 @@ export class App implements OnInit {
   constructor() {
     this.purchaseService.initialize();
 
-    // Check if lead is captured
+    // Check if onboarding and lead are captured
     try {
       const data = localStorage.getItem('onboarding_answers');
+      const onboardFlag = localStorage.getItem('onboarding_completed') === 'true';
       if (data) {
         const answers = JSON.parse(data);
-        this.leadCaptured.set(answers['lead_captured'] === true);
+        const isLead = answers['lead_captured'] === true;
+        const isOnboard = onboardFlag || answers['onboarding_completed'] === true || (!!answers['processo_iniciado'] && !!answers['metodo_estudo']);
+
+        this.onboardingCompleted.set(isOnboard);
+        this.leadCaptured.set(isLead);
       } else {
+        this.onboardingCompleted.set(onboardFlag);
         this.leadCaptured.set(false);
       }
     } catch {
+      this.onboardingCompleted.set(false);
       this.leadCaptured.set(false);
     }
 
@@ -305,6 +318,35 @@ export class App implements OnInit {
     });
   }
 
+  onOnboardingCompleted(answers: Record<string, string>) {
+    try {
+      localStorage.setItem('onboarding_completed', 'true');
+      for (const [key, val] of Object.entries(answers)) {
+        localStorage.setItem(key, String(val));
+      }
+
+      const existingStr = localStorage.getItem('onboarding_answers');
+      let data: Record<string, unknown> = {};
+      if (existingStr) {
+        try { data = JSON.parse(existingStr); } catch {
+          // ignore
+        }
+      }
+      data = {
+        ...data,
+        ...answers,
+        onboard: answers,
+        onboarding: answers,
+        onboarding_completed: true
+      };
+      localStorage.setItem('onboarding_answers', JSON.stringify(data));
+      this.store.loadOnboardingData();
+    } catch (e) {
+      console.error('Erro ao salvar onboarding no app:', e);
+    }
+    this.onboardingCompleted.set(true);
+  }
+
   onLeadCaptured() {
     this.leadCaptured.set(true);
     this.checkLeadData();
@@ -331,8 +373,12 @@ export class App implements OnInit {
   confirmResetApp() {
     localStorage.removeItem('onboarding_completed');
     localStorage.removeItem('onboarding_answers');
+    localStorage.removeItem('processo_iniciado');
+    localStorage.removeItem('metodo_estudo');
     localStorage.removeItem('user_points');
     this.userPoints.set(0);
+    this.store.onboardingData.set(null);
+    this.onboardingCompleted.set(false);
     this.leadCaptured.set(false);
     this.showResetModal.set(false);
     this.closeSidebar();

@@ -209,10 +209,40 @@ export class LeadCaptureComponent {
           }
         }
 
-        answers['lead_data'] = this.leadForm.value;
+        const formVal = this.leadForm.value;
+        const processoIniciado = answers['processo_iniciado'] || localStorage.getItem('processo_iniciado') || null;
+        const metodoEstudo = answers['metodo_estudo'] || localStorage.getItem('metodo_estudo') || null;
+
+        const onboardData: Record<string, unknown> = {
+          processo_iniciado: processoIniciado,
+          metodo_estudo: metodoEstudo,
+          ...(typeof answers['onboard'] === 'object' && answers['onboard'] ? (answers['onboard'] as Record<string, unknown>) : {}),
+          ...(typeof answers['onboarding'] === 'object' && answers['onboarding'] ? (answers['onboarding'] as Record<string, unknown>) : {})
+        };
+
+        answers['processo_iniciado'] = processoIniciado;
+        answers['metodo_estudo'] = metodoEstudo;
+        answers['onboard'] = onboardData;
+        answers['onboarding'] = onboardData;
+
+        answers['lead_data'] = {
+          ...formVal,
+          processo_iniciado: processoIniciado,
+          metodo_estudo: metodoEstudo,
+          onboard: onboardData,
+          onboarding: onboardData
+        };
+
+        answers['nome'] = formVal.nome;
+        answers['cep'] = formVal.cep;
+        answers['municipio'] = formVal.municipio;
+        answers['uf'] = formVal.uf;
+        answers['fone1'] = formVal.fone1;
+        answers['email'] = formVal.email;
         answers['lead_captured'] = true;
 
         localStorage.setItem('onboarding_answers', JSON.stringify(answers));
+        this.store.loadOnboardingData();
 
         // Espera enviar o lead
         console.log('Sending newLead com dados:', answers);
