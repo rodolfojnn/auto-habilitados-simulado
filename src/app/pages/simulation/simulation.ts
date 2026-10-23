@@ -146,7 +146,8 @@ interface FloatingPoint {
         </div>
 
         <!-- Opção de teste em desenvolvimento / homologação para simular pagamento -->
-        <div class="mt-4 text-center">
+        <!-- Não excluir código abaixo, quando eu precisar vou descomentar -->
+        <!-- <div class="mt-4 text-center">
           <button
             type="button"
             (click)="simularPagamentoTeste()"
@@ -154,7 +155,7 @@ interface FloatingPoint {
           >
             [Ambiente de Teste: Simular Pagamento Aprovado]
           </button>
-        </div>
+        </div> -->
 
       </div>
     } @else if (!isStarted() && !isFinished()) {
@@ -165,7 +166,8 @@ interface FloatingPoint {
             <div class="mb-3 inline-flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold">
               <mat-icon class="material-icons !text-sm">verified</mat-icon>
               <span>Acesso Ilimitado Ativo</span>
-              <button type="button" (click)="resetarPagamentoTeste()" class="ml-2 text-[10px] text-slate-400 dark:text-slate-500 hover:underline cursor-pointer" title="Permite testar novamente a tela de bloqueio">[testar tela de venda]</button>
+              <!-- Não excluir código abaixo, quando eu precisar vou descomentar -->
+              <!-- <button type="button" (click)="resetarPagamentoTeste()" class="ml-2 text-[10px] text-slate-400 dark:text-slate-500 hover:underline cursor-pointer" title="Permite testar novamente a tela de bloqueio">[testar tela de venda]</button> -->
             </div>
           }
           <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Simulado da Prova</h1>
@@ -904,6 +906,12 @@ export class SimulationComponent implements OnInit, OnDestroy {
 
     if (isDevMode() && 1 > 1) {
 
+      // this.chatVisibility.setAppPaid(true);
+      // this.snackBar.open('Pagamento aprovado! Acesso ilimitado liberado com sucesso.', 'OK', {
+      //   duration: 4000,
+      //   panelClass: ['brand-snackbar']
+      // });
+
       // this.showDonationModal.set(true);
 
       // // Debug mode: mostra a tela de resultado final para editar o layout
@@ -1175,23 +1183,25 @@ export class SimulationComponent implements OnInit, OnDestroy {
     }
   }
 
-  simularPagamentoTeste() {
-    // Marca como pago no localStorage (chave 'app_paid') de forma definitiva
-    this.chatVisibility.setAppPaid(true);
-    this.snackBar.open('Pagamento aprovado! Acesso ilimitado liberado com sucesso.', 'OK', {
-      duration: 4000,
-      panelClass: ['brand-snackbar']
-    });
-  }
+  // Não excluir código abaixo, quando eu precisar vou descomentar
+  // simularPagamentoTeste() {
+  //   // Marca como pago no localStorage (chave 'app_paid') de forma definitiva
+  //   this.chatVisibility.setAppPaid(true);
+  //   this.snackBar.open('Pagamento aprovado! Acesso ilimitado liberado com sucesso.', 'OK', {
+  //     duration: 4000,
+  //     panelClass: ['brand-snackbar']
+  //   });
+  // }
 
-  resetarPagamentoTeste() {
-    // Utilidade para desenvolvimento / homologação para voltar a ver a tela de pagamento
-    this.chatVisibility.setAppPaid(false);
-    this.snackBar.open('Status de pagamento desmarcado para testes.', 'Fechar', {
-      duration: 3000,
-      panelClass: ['error-snackbar']
-    });
-  }
+  // Não excluir código abaixo, quando eu precisar vou descomentar
+  // resetarPagamentoTeste() {
+  //   // Utilidade para desenvolvimento / homologação para voltar a ver a tela de pagamento
+  //   this.chatVisibility.setAppPaid(false);
+  //   this.snackBar.open('Status de pagamento desmarcado para testes.', 'Fechar', {
+  //     duration: 3000,
+  //     panelClass: ['error-snackbar']
+  //   });
+  // }
 
   isLastQuestion() {
     return this.currentIndex() === this.totalQuestions - 1;

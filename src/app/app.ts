@@ -121,10 +121,12 @@ import { PurchaseService } from './purchase.service';
             <span>Tema {{ isDark() ? 'Claro' : 'Escuro' }}</span>
           </button>
 
-          <button (click)="resetApp()" class="flex items-center w-full gap-3 px-4 py-3 min-h-[52px] rounded-2xl text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors group font-medium text-left mt-2">
-            <mat-icon class="material-icons group-hover:text-rose-700 dark:group-hover:text-rose-300 transition-colors">refresh</mat-icon>
-            <span>Refazer Questionário</span>
-          </button>
+          @if (!isAutoescola()) {
+            <button (click)="resetApp()" class="flex items-center w-full gap-3 px-4 py-3 min-h-[52px] rounded-2xl text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors group font-medium text-left mt-2">
+              <mat-icon class="material-icons group-hover:text-rose-700 dark:group-hover:text-rose-300 transition-colors">refresh</mat-icon>
+              <span>Refazer Questionário</span>
+            </button>
+          }
 
         </nav>
 
