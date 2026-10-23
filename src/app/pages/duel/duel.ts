@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, computed, ViewChild, ElementRef, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { DecimalPipe } from '@angular/common';
-import { LeadCaptureComponent } from '../../components/lead-capture/lead-capture';
 import questionsData from '../../../assets/questions.json';
 import { interval, Subscription } from 'rxjs';
 import { AppStoreService } from '../../app-store.service';
@@ -240,7 +239,7 @@ interface GameFloatingPoint {
             <div class="space-y-3 flex-grow overflow-y-auto pr-1 pb-32">
               @for (answer of answers(); track answer.label) {
                 <button
-                  (click)="selectAnswer(answer, $event)"
+                  (click)="selectAnswer(answer)"
                   [disabled]="hasAnswered()"
                   class="w-full p-4 rounded-3xl border-2 text-left transition-all flex items-start gap-4 group relative overflow-hidden"
                   [class]="getAnswerClasses(answer)"
@@ -736,7 +735,7 @@ export class DuelComponent implements OnInit, OnDestroy {
     }
   }
 
-  selectAnswer(answer: DuelAnswer, event: MouseEvent) {
+  selectAnswer(answer: DuelAnswer) {
     if (this.hasAnswered() || this.isFinished()) return;
 
     const mapped = this.answers().map(a => {

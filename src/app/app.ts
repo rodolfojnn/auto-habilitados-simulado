@@ -112,12 +112,10 @@ import { PurchaseService } from './purchase.service';
           </a>
           -->
 
-          @if (!isAutoescola()) {
-            <a routerLink="/duelo" routerLinkActive="bg-brand-50 text-brand-600 dark:bg-slate-800 dark:text-emerald-400" (click)="closeSidebar()" class="flex items-center gap-3 px-4 py-3 min-h-[52px] rounded-2xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800/50 transition-colors group font-medium">
-              <mat-icon class="material-icons group-hover:text-brand-500 dark:group-hover:text-emerald-400 transition-colors">sports_esports</mat-icon>
-              <span>Duelo</span>
-            </a>
-          }
+          <a routerLink="/duelo" routerLinkActive="bg-brand-50 text-brand-600 dark:bg-slate-800 dark:text-emerald-400" (click)="closeSidebar()" class="flex items-center gap-3 px-4 py-3 min-h-[52px] rounded-2xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800/50 transition-colors group font-medium">
+            <mat-icon class="material-icons group-hover:text-brand-500 dark:group-hover:text-emerald-400 transition-colors">sports_esports</mat-icon>
+            <span>Duelo</span>
+          </a>
 
           <p class="px-2 text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider mb-2 mt-4">Configurações</p>
 
