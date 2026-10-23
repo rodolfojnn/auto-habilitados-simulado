@@ -69,9 +69,14 @@ import { PurchaseService } from './purchase.service';
         <div class="h-max min-h-[80px] lg:min-h-[100px] flex items-center px-6 border-b border-gray-100 dark:border-white/5 shrink-0 lg:border-none py-4">
           <div class="flex-1 flex items-center h-16 lg:h-20">
             <img
-              src="assets/logo-simulado.png"
+              src="assets/logo-simulado-light.png"
               alt="Simulado CNH do Brasil"
-              class="max-h-full max-w-full object-contain drop-shadow-md object-left"
+              class="max-h-full max-w-full object-contain drop-shadow-md object-left dark:hidden"
+            />
+            <img
+              src="assets/logo-simulado-dark.png"
+              alt="Simulado CNH do Brasil"
+              class="hidden dark:block max-h-full max-w-full object-contain drop-shadow-md object-left"
             />
           </div>
           <button (click)="closeSidebar()" class="lg:hidden ml-auto p-2 text-gray-500 hover:text-gray-800 dark:hover:text-white">
