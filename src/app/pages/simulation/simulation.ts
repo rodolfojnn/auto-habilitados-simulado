@@ -1112,7 +1112,13 @@ export class SimulationComponent implements OnInit, OnDestroy {
   private chatVisibility = inject(AppStoreService);
   isAutoescola = this.chatVisibility.isAutoescola;
   isPaid = this.chatVisibility.isPaid;
-  shouldShowPaywall = computed(() => this.isAutoescola() && !this.isPaid());
+  isAndroid = computed(() => {
+    const platform = Capacitor.getPlatform();
+    // Condicionado para Android (no iOS ainda não há pagamento, portanto não exibe).
+    // Na web (preview de desenvolvimento), mantém habilitado para visualização/testes.
+    return platform === 'android' || platform === 'web';
+  });
+  shouldShowPaywall = computed(() => this.isAutoescola() && this.isAndroid() && !this.isPaid());
   private purchaseService = inject(PurchaseService);
   private snackBar = inject(MatSnackBar);
 
@@ -1423,22 +1429,23 @@ export class SimulationComponent implements OnInit, OnDestroy {
   }
 
   liberarAcesso() {
-    // Função chamada ao clicar no botão "Liberar acesso ilimitado".
-    // O desenvolvedor irá implementar aqui a integração com a sua plataforma/gateway de pagamento (ex: In-App Purchase, Pix, Stripe, etc).
-    // Ao confirmar o pagamento com sucesso, execute:
-    // this.chatVisibility.setAppPaid(true); // Persiste 'app_paid' no localStorage e atualiza o estado
-    this.processarPagamento();
+    // Aciona a compra do Google Play ("valor_simulado") no Android
+    if (Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android') {
+      this.purchaseService.buySimulado();
+    } else {
+      this.processarPagamento();
+    }
   }
 
   processarPagamento() {
-    // Ponto de integração do pagamento.
-    this.snackBar.open('Iniciando pagamento seguro para liberar o simulado...', 'OK', {
-      duration: 3500,
-      panelClass: ['brand-snackbar']
-    });
-
-    // Se houver lógica de compra nativa no Android:
-    // this.purchaseService.donate();
+    if (Capacitor.getPlatform() === 'android') {
+      this.purchaseService.buySimulado();
+    } else {
+      this.snackBar.open('Iniciando compra de "valor_simulado" no Google Play...', 'OK', {
+        duration: 3500,
+        panelClass: ['brand-snackbar']
+      });
+    }
   }
 
   simularPagamentoTeste() {
