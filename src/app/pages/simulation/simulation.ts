@@ -137,7 +137,7 @@ interface FloatingPoint {
         </button>
 
         <!-- Rodapé de segurança -->
-        <div class="mt-4 flex items-start justify-center gap-2 text-center text-[11px] leading-snug text-slate-500 dark:text-slate-400">
+        <div class="mt-4 flex items-center justify-center gap-2 text-center text-[11px] leading-snug text-slate-500 dark:text-slate-400">
           <mat-icon class="material-icons !text-[16px] !w-4 !h-4 !leading-none shrink-0">lock</mat-icon>
           <p>
             Você será direcionado para o pagamento seguro.<br />
