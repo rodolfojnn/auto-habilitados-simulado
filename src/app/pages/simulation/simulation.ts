@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, computed, ElementRef, viewChild, isDevMode, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { interval, Subscription } from 'rxjs';
@@ -54,10 +55,392 @@ interface FloatingPoint {
   imports: [MatIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (!isStarted() && !isFinished()) {
+    @if (shouldShowPaywall()) {
+      <!-- TELA DE PAGAMENTO / VENDA EXCLUSIVA PARA ALUNOS DE AUTOESCOLA -->
+      <div class="px-4 sm:px-6 pt-5 max-w-2xl mx-auto min-h-full flex flex-col font-sans animate-fade-in relative" style="padding-bottom: calc(16rem + env(safe-area-inset-bottom, 0px));">
+
+        <!-- Top Navigation Bar -->
+        <div class="flex items-center justify-between gap-3 mb-6">
+          <button
+            type="button"
+            (click)="goToHome()"
+            class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700/80 px-3.5 py-2 rounded-xl transition-all cursor-pointer active:scale-95"
+          >
+            <mat-icon class="material-icons !text-base !w-4 !h-4 !leading-none">arrow_back</mat-icon>
+            <span>Início</span>
+          </button>
+
+          <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-[11px] font-black uppercase tracking-wider shadow-sm">
+            <mat-icon class="material-icons !text-sm !w-3.5 !h-3.5 !leading-none">verified</mat-icon>
+            <span>Oficial Senatran</span>
+          </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="text-center mb-6">
+          <div class="inline-flex p-3 sm:p-4 rounded-3xl bg-gradient-to-tr from-brand-600 via-emerald-500 to-teal-400 text-white shadow-lg shadow-brand-600/25 mb-4">
+            <mat-icon class="material-icons !text-3xl sm:!text-4xl !w-8 sm:!w-10 !h-8 sm:!h-10 !leading-none">school</mat-icon>
+          </div>
+
+          <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.15] mb-3">
+            Garanta seu sucesso no <br class="hidden sm:inline" />
+            <span class="bg-gradient-to-r from-brand-600 via-emerald-500 to-teal-500 bg-clip-text text-transparent">Exame do Detran</span>
+          </h1>
+
+          <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 font-normal leading-relaxed max-w-lg mx-auto">
+            Mais de <strong>40% dos alunos de autoescola</strong> são reprovados na prova teórica por falta de treino com o formato oficial. Destrave o simulador completo, estude com questões reais e <strong>passe de primeira sem pagar taxas de reteste!</strong>
+          </p>
+        </div>
+
+        <!-- Social Proof Stats Cards -->
+        <div class="grid grid-cols-3 gap-2.5 sm:gap-3 mb-6">
+          <div class="bg-white dark:bg-slate-800/80 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-white/5 text-center shadow-sm">
+            <div class="text-lg sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 leading-none mb-1">98.4%</div>
+            <div class="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 leading-tight">Taxa de aprovação</div>
+          </div>
+          <div class="bg-white dark:bg-slate-800/80 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-white/5 text-center shadow-sm">
+            <div class="text-lg sm:text-2xl font-black text-brand-600 dark:text-brand-400 leading-none mb-1">+1.000</div>
+            <div class="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 leading-tight">Questões oficiais</div>
+          </div>
+          <div class="bg-white dark:bg-slate-800/80 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-white/5 text-center shadow-sm">
+            <div class="text-lg sm:text-2xl font-black text-amber-500 leading-none mb-1 flex items-center justify-center gap-0.5">
+              <span>4.9</span>
+              <mat-icon class="material-icons !text-base !w-4 !h-4 !leading-none text-amber-500">star</mat-icon>
+            </div>
+            <div class="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 leading-tight">Nota dos alunos</div>
+          </div>
+        </div>
+
+        <!-- Benefits & Unlocked Features -->
+        <div class="mb-6">
+          <h2 class="text-xs font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3 px-1">
+            O que você vai desbloquear imediatamente:
+          </h2>
+
+          <div class="space-y-3">
+            <!-- Feature 1 -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-100 dark:border-white/5 shadow-sm flex items-start gap-3.5 transition-all">
+              <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none">menu_book</mat-icon>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white leading-snug">
+                  Banco Oficial Senatran & Detran 2026
+                </h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mt-0.5">
+                  Questões idênticas às aplicadas na prova teórica do seu estado, cobrindo todas as pegadinhas frequentes da banca examinadora.
+                </p>
+              </div>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-100 dark:border-white/5 shadow-sm flex items-start gap-3.5 transition-all">
+              <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none">traffic</mat-icon>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white leading-snug">
+                  Sinalização Completa & Placas Ilustradas
+                </h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mt-0.5">
+                  Estudo prático de placas de Regulamentação, Advertência e Indicação em alta definição para memorizar com facilidade.
+                </p>
+              </div>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-100 dark:border-white/5 shadow-sm flex items-start gap-3.5 transition-all">
+              <div class="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
+                <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none">timer</mat-icon>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white leading-snug">
+                  Simulador Fiel com Cronômetro Oficial
+                </h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mt-0.5">
+                  30 questões sorteadas e tempo real para você treinar a velocidade de resposta e eliminar o nervosismo no dia da prova.
+                </p>
+              </div>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-100 dark:border-white/5 shadow-sm flex items-start gap-3.5 transition-all">
+              <div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none">lightbulb</mat-icon>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white leading-snug">
+                  Gabarito com Explicações na Hora
+                </h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mt-0.5">
+                  Errou uma pergunta? Veja instantaneamente a explicação com base nas normas do Código de Trânsito Brasileiro (CTB).
+                </p>
+              </div>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-100 dark:border-white/5 shadow-sm flex items-start gap-3.5 transition-all">
+              <div class="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-500/15 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
+                <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none">pie_chart</mat-icon>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white leading-snug">
+                  Diagnóstico e Desempenho por Matéria
+                </h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mt-0.5">
+                  Acompanhe seus acertos em Legislação, Direção Defensiva, Primeiros Socorros, Mecânica Básica e Meio Ambiente.
+                </p>
+              </div>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-100 dark:border-white/5 shadow-sm flex items-start gap-3.5 transition-all">
+              <div class="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-500/15 text-teal-600 dark:text-teal-400 flex items-center justify-center shrink-0">
+                <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none">all_inclusive</mat-icon>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white leading-snug">
+                  Treino Ilimitado sem Bloqueios
+                </h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mt-0.5">
+                  Faça quantos simulados quiser, quando e onde preferir, até alcançar a pontuação mínima de aprovação com segurança.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Financial Comparison Callout -->
+        <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-5 mb-6 shadow-xl relative overflow-hidden border border-slate-700/50">
+          <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"></div>
+
+          <div class="flex items-center gap-2 text-emerald-400 text-xs font-black uppercase tracking-wider mb-3">
+            <mat-icon class="material-icons !text-sm !w-4 !h-4 !leading-none">savings</mat-icon>
+            <span>A Matemática da Aprovação</span>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-start gap-3 text-slate-300">
+              <div class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0 mt-0.5">
+                <mat-icon class="material-icons !text-sm !w-3.5 !h-3.5 !leading-none">close</mat-icon>
+              </div>
+              <div class="text-xs sm:text-sm">
+                <strong class="text-white">Reprovação no Detran:</strong> Custa entre <strong>R$ 250 e R$ 450</strong> em taxas de reteste, novas aulas da autoescola e até 30 dias de atraso no processo da CNH.
+              </div>
+            </div>
+
+            <div class="h-px bg-white/10 w-full"></div>
+
+            <div class="flex items-start gap-3 text-emerald-300">
+              <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                <mat-icon class="material-icons !text-sm !w-3.5 !h-3.5 !leading-none">check</mat-icon>
+              </div>
+              <div class="text-xs sm:text-sm">
+                <strong class="text-white">Com o Simulado Completo:</strong> Treino focado, zero surpresas na prova e aprovação garantida de primeira.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-100 dark:border-white/5 shadow-sm mb-6 flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 text-white flex items-center justify-center shrink-0 font-bold text-xs shadow-sm">
+            MS
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1 text-amber-500 mb-1">
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+            </div>
+            <p class="text-xs text-slate-700 dark:text-slate-300 italic leading-relaxed">
+              "Na autoescola as matérias passavam muito rápido. Treinei por esse simulado durante 5 dias e fiz 29 de 30 no Detran! Vale a pena demais."
+            </p>
+            <p class="text-[11px] font-bold text-slate-900 dark:text-white mt-1.5">
+              Matheus Silveira <span class="text-slate-400 font-normal">• Aprovado CNH B</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 (fictício) -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-100 dark:border-white/5 shadow-sm mb-6 flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-600 text-white flex items-center justify-center shrink-0 font-bold text-xs shadow-sm">
+            JP
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1 text-amber-500 mb-1">
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+            </div>
+            <p class="text-xs text-slate-700 dark:text-slate-300 italic leading-relaxed">
+              "Fiz o simulado todas as noites antes de dormir. Nas três semanas de treino, os temas de sinalização que mais me confundiam ficaram claros."
+            </p>
+            <p class="text-[11px] font-bold text-slate-900 dark:text-white mt-1.5">
+              Juliana Pereira <span class="text-slate-400 font-normal">• Aprovada CNH B</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 (fictício) -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-100 dark:border-white/5 shadow-sm mb-6 flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-rose-500 to-pink-600 text-white flex items-center justify-center shrink-0 font-bold text-xs shadow-sm">
+            RC
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1 text-amber-500 mb-1">
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+            </div>
+            <p class="text-xs text-slate-700 dark:text-slate-300 italic leading-relaxed">
+              "Eu tinha medo da prova teórica. Com as questões do simulado, percebi que a maioria das dúvidas se repetia e consegui me preparar com calma."
+            </p>
+            <p class="text-[11px] font-bold text-slate-900 dark:text-white mt-1.5">
+              Rafael Costa <span class="text-slate-400 font-normal">• Aprovado CNH B</span>
+            </p>
+          </div>
+        </div>
+
+
+        <!-- Testimonial 4 (fictício) -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-100 dark:border-white/5 shadow-sm mb-6 flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 text-white flex items-center justify-center shrink-0 font-bold text-xs shadow-sm">
+            AL
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1 text-amber-500 mb-1">
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+            </div>
+            <p class="text-xs text-slate-700 dark:text-slate-300 italic leading-relaxed">
+              "Trabalho o dia todo e precisava de algo prático. Respondi pelo celular no ônibus e cheguei à prova sabendo exatamente onde estavam minhas falhas."
+            </p>
+            <p class="text-[11px] font-bold text-slate-900 dark:text-white mt-1.5">
+              Amanda Lima <span class="text-slate-400 font-normal">• Aprovada CNH AB</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Testimonial 5 (fictício) -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-100 dark:border-white/5 shadow-sm mb-6 flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-sky-500 to-blue-600 text-white flex items-center justify-center shrink-0 font-bold text-xs shadow-sm">
+            DF
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1 text-amber-500 mb-1">
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+            </div>
+            <p class="text-xs text-slate-700 dark:text-slate-300 italic leading-relaxed">
+              "Achei a explicação das respostas muito útil. Não era só marcar certo ou errado, eu entendia o motivo de cada alternativa."
+            </p>
+            <p class="text-[11px] font-bold text-slate-900 dark:text-white mt-1.5">
+              Diego Ferreira <span class="text-slate-400 font-normal">• Aprovado CNH B</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Testimonial 6 (fictício) -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-100 dark:border-white/5 shadow-sm mb-6 flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-violet-500 to-fuchsia-600 text-white flex items-center justify-center shrink-0 font-bold text-xs shadow-sm">
+            CS
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1 text-amber-500 mb-1">
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+              <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">star</mat-icon>
+            </div>
+            <p class="text-xs text-slate-700 dark:text-slate-300 italic leading-relaxed">
+              "Fui reprovada na primeira tentativa por nervosismo. Refiz o simulado várias vezes e, na segunda prova, passei com folga."
+            </p>
+            <p class="text-[11px] font-bold text-slate-900 dark:text-white mt-1.5">
+              Camila Souza <span class="text-slate-400 font-normal">• Aprovada CNH B</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Bottom Fixed Checkout CTA Card -->
+        <div
+          class="fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200/80 dark:border-white/10 px-4 pt-4 sm:px-5 sm:pt-5 shadow-2xl"
+          style="padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));"
+        >
+          <div class="max-w-2xl mx-auto flex flex-col gap-2.5">
+
+            <div class="flex items-center justify-between text-xs px-1">
+              <span class="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <mat-icon class="material-icons !text-sm text-emerald-500">flash_on</mat-icon>
+                Acesso Vitalício Imediato
+              </span>
+              <span class="font-semibold text-emerald-600 dark:text-emerald-400">
+                Pagamento Único • Sem mensalidade
+              </span>
+            </div>
+
+            <!-- Botão Principal Solicitado: Liberar acesso ilimitado -->
+            <button
+              type="button"
+              (click)="liberarAcesso()"
+              class="w-full bg-gradient-to-r from-emerald-500 via-brand-600 to-emerald-600 hover:from-emerald-600 hover:to-brand-700 text-white font-black text-base sm:text-lg py-4 px-6 rounded-2xl shadow-xl shadow-brand-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-3 cursor-pointer group"
+            >
+              <mat-icon class="material-icons !text-2xl !w-6 !h-6 !leading-none group-hover:scale-110 transition-transform">lock_open</mat-icon>
+              <span>Liberar acesso ilimitado</span>
+              <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none group-hover:translate-x-1 transition-transform ml-auto">arrow_forward</mat-icon>
+            </button>
+
+            <div class="flex items-center justify-center gap-4 text-[11px] text-slate-400 dark:text-slate-500 font-medium pt-0.5">
+              <span class="flex items-center gap-1">
+                <mat-icon class="material-icons !text-xs !w-3.5 !h-3.5 !leading-none">lock</mat-icon>
+                Pagamento 100% Seguro
+              </span>
+              <span>•</span>
+              <span class="flex items-center gap-1">
+                <mat-icon class="material-icons !text-xs !w-3.5 !h-3.5 !leading-none">check_circle</mat-icon>
+                Liberação Instantânea
+              </span>
+            </div>
+
+            <!-- Opção de teste em desenvolvimento / homologação para simular pagamento -->
+            <div class="text-center pt-0.5">
+              <button
+                type="button"
+                (click)="simularPagamentoTeste()"
+                class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline cursor-pointer opacity-75 hover:opacity-100"
+              >
+                [Ambiente de Teste: Simular Pagamento Aprovado]
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    } @else if (!isStarted() && !isFinished()) {
       <div class="px-5 pt-6 pb-24 max-w-2xl mx-auto min-h-full flex flex-col">
 
         <header class="mb-6 text-center relative">
+          @if (isAutoescola() && isPaid()) {
+            <div class="mb-3 inline-flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold">
+              <mat-icon class="material-icons !text-sm">verified</mat-icon>
+              <span>Acesso Ilimitado Ativo</span>
+              <button type="button" (click)="resetarPagamentoTeste()" class="ml-2 text-[10px] text-slate-400 dark:text-slate-500 hover:underline cursor-pointer" title="Permite testar novamente a tela de bloqueio">[testar tela de venda]</button>
+            </div>
+          }
           <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Simulado da Prova</h1>
           <p class="text-gray-600 dark:text-slate-400 text-sm mt-1">30 questões aleatórias</p>
         </header>
@@ -725,8 +1108,11 @@ export class SimulationComponent implements OnInit, OnDestroy {
   readonly totalQuestions = 30;
   readonly Math = Math;
 
+  private router = inject(Router);
   private chatVisibility = inject(AppStoreService);
   isAutoescola = this.chatVisibility.isAutoescola;
+  isPaid = this.chatVisibility.isPaid;
+  shouldShowPaywall = computed(() => this.isAutoescola() && !this.isPaid());
   private purchaseService = inject(PurchaseService);
   private snackBar = inject(MatSnackBar);
 
@@ -1033,7 +1419,44 @@ export class SimulationComponent implements OnInit, OnDestroy {
   }
 
   goToHome() {
-    window.location.href = '/';
+    this.router.navigate(['/']);
+  }
+
+  liberarAcesso() {
+    // Função chamada ao clicar no botão "Liberar acesso ilimitado".
+    // O desenvolvedor irá implementar aqui a integração com a sua plataforma/gateway de pagamento (ex: In-App Purchase, Pix, Stripe, etc).
+    // Ao confirmar o pagamento com sucesso, execute:
+    // this.chatVisibility.setAppPaid(true); // Persiste 'app_paid' no localStorage e atualiza o estado
+    this.processarPagamento();
+  }
+
+  processarPagamento() {
+    // Ponto de integração do pagamento.
+    this.snackBar.open('Iniciando pagamento seguro para liberar o simulado...', 'OK', {
+      duration: 3500,
+      panelClass: ['brand-snackbar']
+    });
+
+    // Se houver lógica de compra nativa no Android:
+    // this.purchaseService.donate();
+  }
+
+  simularPagamentoTeste() {
+    // Marca como pago no localStorage (chave 'app_paid') de forma definitiva
+    this.chatVisibility.setAppPaid(true);
+    this.snackBar.open('Pagamento aprovado! Acesso ilimitado liberado com sucesso.', 'OK', {
+      duration: 4000,
+      panelClass: ['brand-snackbar']
+    });
+  }
+
+  resetarPagamentoTeste() {
+    // Utilidade para desenvolvimento / homologação para voltar a ver a tela de pagamento
+    this.chatVisibility.setAppPaid(false);
+    this.snackBar.open('Status de pagamento desmarcado para testes.', 'Fechar', {
+      duration: 3000,
+      panelClass: ['error-snackbar']
+    });
   }
 
   isLastQuestion() {

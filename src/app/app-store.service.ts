@@ -18,11 +18,36 @@ export class AppStoreService {
   public pushDeclinedIos = signal<boolean>(localStorage.getItem('pushDeclinedIos') === 'true');
   public onboardingData = signal<OnboardingData | null>(null);
 
+  public isPaid = signal<boolean>(this.checkIfPaid());
+
+  private checkIfPaid(): boolean {
+    if (typeof window === 'undefined' || !window.localStorage) return false;
+    return localStorage.getItem('app_paid') === 'true' || localStorage.getItem('simulado_pago') === 'true';
+  }
+
+  public setAppPaid(paid = true) {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem('app_paid', paid ? 'true' : 'false');
+    }
+    this.isPaid.set(paid);
+  }
+
   public isAutoescola = computed(() => {
     const data = this.onboardingData();
     if (data?.metodo_estudo === 'autoescola') return true;
     if (typeof window !== 'undefined' && window.localStorage) {
       if (localStorage.getItem('metodo_estudo') === 'autoescola') return true;
+      try {
+        const rawAnswers = localStorage.getItem('onboarding_answers');
+        if (rawAnswers) {
+          const parsed = JSON.parse(rawAnswers);
+          if (parsed.metodo_estudo === 'autoescola' || parsed.onboard?.metodo_estudo === 'autoescola') {
+            return true;
+          }
+        }
+      } catch {
+        // ignore
+      }
     }
     return false;
   });

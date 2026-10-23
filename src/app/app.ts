@@ -374,11 +374,23 @@ export class App implements OnInit {
   }
 
   confirmResetApp() {
+    // Preserva o status de pagamento mesmo ao refazer o questionário, conforme solicitado
+    const wasAppPaid = localStorage.getItem('app_paid');
+    const wasSimuladoPaid = localStorage.getItem('simulado_pago');
+
     localStorage.removeItem('onboarding_completed');
     localStorage.removeItem('onboarding_answers');
     localStorage.removeItem('processo_iniciado');
     localStorage.removeItem('metodo_estudo');
     localStorage.removeItem('user_points');
+
+    if (wasAppPaid !== null) {
+      localStorage.setItem('app_paid', wasAppPaid);
+    }
+    if (wasSimuladoPaid !== null) {
+      localStorage.setItem('simulado_pago', wasSimuladoPaid);
+    }
+
     this.userPoints.set(0);
     this.store.onboardingData.set(null);
     this.onboardingCompleted.set(false);
