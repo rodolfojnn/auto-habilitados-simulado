@@ -62,8 +62,8 @@ interface FloatingPoint {
         <!-- Cabeçalho: título, descrição e imagem do alvo -->
         <div class="flex items-start justify-between gap-3">
           <div class="flex-1 min-w-0">
-            <h1 class="text-[26px] leading-[1.1] font-black tracking-tight text-[#0d3b2e] dark:text-white">
-              Continue sua jornada para a <span class="text-[#2f9e4f] dark:text-emerald-400">CNH</span>
+            <h1 class="text-[23px] leading-[1.1] font-black tracking-tight text-[#0d3b2e] dark:text-white">
+              Reprovar custa mais caro que <span class="text-[#2f9e4f] dark:text-emerald-400 whitespace-nowrap">R$ 9,90</span>
             </h1>
             <p class="mt-3 text-[14px] leading-relaxed text-slate-600 dark:text-slate-300">
               O simulado completo te prepara para a prova do Detran. E agora você pode continuar estudando com acesso total.
@@ -76,32 +76,32 @@ interface FloatingPoint {
         <!-- Lista de benefícios -->
         <div class="mt-6 bg-white dark:bg-slate-900 rounded-[24px] px-5 py-2 border border-slate-100 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.05)] dark:shadow-none">
           <div class="flex items-center gap-4 py-4">
-            <div class="w-14 h-14 rounded-2xl bg-[#e6f5ea] dark:bg-emerald-500/15 text-[#2f9e4f] dark:text-emerald-400 flex items-center justify-center shrink-0">
+            <div class="w-12 h-12 rounded-2xl bg-[#e6f5ea] dark:bg-emerald-500/15 text-[#2f9e4f] dark:text-emerald-400 flex items-center justify-center shrink-0">
               <mat-icon class="material-icons !text-[28px] !w-7 !h-7 !leading-none">assignment_turned_in</mat-icon>
             </div>
             <div class="min-w-0">
               <h3 class="text-[15px] font-bold text-[#0d1f1a] dark:text-white leading-snug">Simulados completos</h3>
-              <p class="text-[13px] text-slate-500 dark:text-slate-400 leading-snug mt-0.5">Questões atualizadas e no formato da prova oficial.</p>
+              <p class="text-[13px] text-slate-500 dark:text-slate-400 leading-snug mt-0.5">Questões oficiais de prova.</p>
             </div>
           </div>
 
           <div class="flex items-center gap-4 py-4 border-t border-slate-100 dark:border-white/5">
-            <div class="w-14 h-14 rounded-2xl bg-[#e6f5ea] dark:bg-emerald-500/15 text-[#2f9e4f] dark:text-emerald-400 flex items-center justify-center shrink-0">
+            <div class="w-12 h-12 rounded-2xl bg-[#e6f5ea] dark:bg-emerald-500/15 text-[#2f9e4f] dark:text-emerald-400 flex items-center justify-center shrink-0">
               <mat-icon class="material-icons !text-[28px] !w-7 !h-7 !leading-none">bar_chart</mat-icon>
             </div>
             <div class="min-w-0">
               <h3 class="text-[15px] font-bold text-[#0d1f1a] dark:text-white leading-snug">Seu desempenho por assunto</h3>
-              <p class="text-[13px] text-slate-500 dark:text-slate-400 leading-snug mt-0.5">Saiba onde está indo bem e o que precisa melhorar.</p>
+              <p class="text-[13px] text-slate-500 dark:text-slate-400 leading-snug mt-0.5">Saiba onde precisa melhorar.</p>
             </div>
           </div>
 
           <div class="flex items-center gap-4 py-4 border-t border-slate-100 dark:border-white/5">
-            <div class="w-14 h-14 rounded-2xl bg-[#e6f5ea] dark:bg-emerald-500/15 text-[#2f9e4f] dark:text-emerald-400 flex items-center justify-center shrink-0">
+            <div class="w-12 h-12 rounded-2xl bg-[#e6f5ea] dark:bg-emerald-500/15 text-[#2f9e4f] dark:text-emerald-400 flex items-center justify-center shrink-0">
               <mat-icon class="material-icons !text-[28px] !w-7 !h-7 !leading-none">track_changes</mat-icon>
             </div>
             <div class="min-w-0">
               <h3 class="text-[15px] font-bold text-[#0d1f1a] dark:text-white leading-snug">Evolução no seu ritmo</h3>
-              <p class="text-[13px] text-slate-500 dark:text-slate-400 leading-snug mt-0.5">Acompanhe seu progresso e conquiste sua aprovação.</p>
+              <p class="text-[13px] text-slate-500 dark:text-slate-400 leading-snug mt-0.5">Acompanhe seu histórico e progresso.</p>
             </div>
           </div>
         </div>
