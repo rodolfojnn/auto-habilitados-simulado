@@ -57,7 +57,7 @@ interface FloatingPoint {
   template: `
     @if (shouldShowPaywall()) {
       <!-- TELA DE PAGAMENTO / VENDA EXCLUSIVA PARA ALUNOS DE AUTOESCOLA -->
-      <div class="w-full max-w-[400px] mx-auto min-h-full flex flex-col font-sans animate-fade-in bg-[#f3f9f5] dark:bg-slate-950 px-5 pt-8 pb-10 box-border">
+      <div class="w-full mx-auto min-h-full flex flex-col font-sans animate-fade-in bg-[#f3f9f5] dark:bg-slate-950 px-5 pt-8 pb-10 box-border">
 
         <!-- Cabeçalho: título, descrição e imagem do alvo -->
         <div class="flex items-start justify-between gap-3">
