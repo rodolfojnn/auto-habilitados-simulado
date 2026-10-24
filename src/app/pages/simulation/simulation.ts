@@ -480,35 +480,53 @@ interface FloatingPoint {
             </div>
           </div>
 
-          <!-- Upsell CTA -->
+          <!-- Upsell CTA: Curso Teórico ao Vivo -->
           <a
             href="https://teorico.dirigiragora.com.br/promo-dg"
             target="_blank"
             rel="noopener noreferrer"
-            class="block relative bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 active:scale-[0.98] transition-all rounded-[24px]
-            p-5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-none border-2 border-rose-500 mb-4 group no-underline"
+            class="block bg-white dark:bg-slate-800 active:scale-[0.99] transition-all rounded-[22px] sm:rounded-[24px]
+            p-4 sm:p-5 shadow-sm border-2 border-rose-500 dark:border-rose-500/80 mb-4 group no-underline text-left"
           >
-            <!-- Badge "Destaque" -->
-            <div class="absolute top-0 right-6 bg-rose-500 text-white text-[8px] font-black uppercase tracking-wider px-3 py-1.5 rounded-b-xl">
-              Destaque
+            <!-- Badge "PREPARE-SE COM UM INSTRUTOR" -->
+            <div class="inline-flex items-center px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 text-[10.5px] sm:text-[11px] font-bold tracking-wide uppercase">
+              PREPARE-SE COM UM INSTRUTOR
             </div>
 
-            <div class="flex items-center gap-4 mt-2">
-              <div class="w-[48px] h-[48px] rounded-[10px] bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-rose-500/20">
-                <mat-icon class="material-icons !text-[36px] !w-[36px] !h-[36px] !leading-none">school</mat-icon>
-              </div>
-              <div class="flex-1 min-w-0 pr-1">
-                <h3 class="text-[15px] font-black text-slate-900 dark:text-white leading-[1.2] mb-1.5 tracking-tight">
-                  Garanta sua aprovação!
-                </h3>
-                <p class="text-[13px] font-medium text-slate-500 dark:text-slate-400 leading-snug">
-                  Aulas ao vivo com interação real entre alunos e instrutor. 98% de aprovação. Clique e conheça!
-                </p>
-              </div>
-              <div class="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-rose-500/20 group-hover:scale-105 transition-transform">
-                <mat-icon class="material-icons !text-[24px] !w-[24px] !h-[24px] !leading-none">chevron_right</mat-icon>
-              </div>
+            <h3 class="text-[19px] sm:text-[21px] font-black text-slate-900 dark:text-white mt-3 mb-2 tracking-tight leading-snug">
+              Curso teórico ao vivo
+            </h3>
+
+            <p class="text-[13px] sm:text-[13.5px] font-normal text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+              Aulas online com instrutor real para revisar o conteúdo e tirar dúvidas antes da prova teórica.
+            </p>
+
+            <!-- Linha divisória -->
+            <div class="h-px w-full bg-slate-100 dark:bg-slate-700/60 my-4"></div>
+
+            <!-- Condição e Preço -->
+            <div class="text-[12px] sm:text-[12.5px] font-semibold text-slate-500 dark:text-slate-400 mb-1">
+              Condição especial
             </div>
+
+            <div class="text-[28px] sm:text-[30px] font-black text-slate-900 dark:text-white tracking-tight leading-none mb-1.5">
+              R$ 89,91
+            </div>
+
+            <p class="text-[11.5px] sm:text-[12px] text-slate-500 dark:text-slate-400 leading-snug mb-4">
+              De R$ 99,90 por R$ 89,91, se a oferta atual continuar válida.
+            </p>
+
+            <!-- Botão Quero conhecer o curso -->
+            <div class="w-full bg-rose-600 hover:bg-rose-700 active:bg-rose-800 transition-colors text-white font-bold py-3 sm:py-3.5 px-4 rounded-xl sm:rounded-2xl flex items-center justify-center gap-1.5 text-[14px] sm:text-[15px] shadow-sm shadow-rose-600/25">
+              <span>Quero conhecer o curso</span>
+              <mat-icon class="material-icons !text-[18px] !w-[18px] !h-[18px] !leading-none">arrow_forward</mat-icon>
+            </div>
+
+            <!-- Legenda rodapé -->
+            <p class="text-center text-[11.5px] sm:text-[12px] text-slate-500 dark:text-slate-400 mt-3 font-normal mb-0">
+              Veja como funciona antes de se matricular.
+            </p>
           </a>
 
         } @else {
