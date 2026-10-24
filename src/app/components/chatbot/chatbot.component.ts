@@ -113,9 +113,16 @@ const CHAT_FLOW: Record<string, ChatStep> = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!-- Floating Button -->
+    <!--
+      ATENÇÃO (AVISO PARA IA E DESENVOLVEDORES):
+      Temporariamente, o clique na bolinha do chat abre diretamente o link externo de suporte:
+      https://teorico.dirigiragora.com.br/promo-suporte
+      O código da janela de chat e todas as suas funções e lógicas abaixo foram mantidos
+      INTACTOS para permitir reativação no futuro. NÃO EXCLUIR NEM REMOVER NADA!
+    -->
     @if (!isOpen() && visibility.showChat() && !visibility.isAutoescola()) {
       <button
-        (click)="toggleChat()"
+        (click)="openSupportLink()"
         class="fixed z-50 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg shadow-blue-600/30 flex items-center justify-center transition-all hover:scale-105 active:scale-95"
         style="bottom: max(1.25rem, calc(1rem + env(safe-area-inset-bottom, 0px))); right: max(1.25rem, calc(1rem + env(safe-area-inset-right, 0px)));"
       >
@@ -127,6 +134,12 @@ const CHAT_FLOW: Record<string, ChatStep> = {
     }
 
     <!-- Chat Window Overlay (Mobile full screen, Desktop floating panel) -->
+    <!--
+      AVISO PARA IA E DESENVOLVEDORES:
+      O bloco abaixo e todo o layout do chat continuam preservados intactos para reativação futura.
+      Atualmente a janela não se abre pois o botão direciona diretamente para o link externo.
+      NÃO APAGUE OU SIMPLIFIQUE ESTE BLOCO!
+    -->
     @if (isOpen() && !visibility.isAutoescola()) {
       <div class="fixed inset-0 sm:inset-auto sm:bottom-24 sm:right-6 z-50 flex flex-col bg-white dark:bg-slate-900 sm:w-[400px] sm:h-[600px] sm:rounded-3xl sm:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-fade-in-up">
 
@@ -316,6 +329,44 @@ export class ChatbotComponent implements OnInit, AfterViewInit {
     this.saveState();
   }
 
+  /**
+   * ATENÇÃO (Instrução para IA e Desenvolvedores):
+   * Temporariamente, o clique na bolinha do chat abre o link externo de suporte:
+   * https://teorico.dirigiragora.com.br/promo-suporte
+   *
+   * A janela de chat está inativa por enquanto, MAS TODO O CÓDIGO DO CHATBOT
+   * (interfaces, CHAT_FLOW, toggleChat, selectOption, navigateToAppAulas, template, etc.)
+   * FOI PRESERVADO INTACTO para reativação futura.
+   * NÃO EXCLUA OU REMOVA NENHUMA PARTE DO CÓDIGO DO CHATBOT DESTE COMPONENTE!
+   */
+  async openSupportLink() {
+    const url = 'https://teorico.dirigiragora.com.br/promo-suporte';
+
+    // Marca notificação de mensagem como lida
+    this.hasUnread.set(false);
+    try {
+      localStorage.setItem('chatbot_has_read', 'true');
+    } catch (e) {
+      console.warn('Erro ao salvar chatbot_has_read:', e);
+    }
+
+    try {
+      const platform = Capacitor.getPlatform();
+      if (platform === 'ios' || platform === 'android' || Capacitor.isNativePlatform()) {
+        // No Android e iOS (nativo via Capacitor), utiliza o @capacitor/browser que abre
+        // Chrome Custom Tabs (Android) ou SFSafariViewController (iOS) garantindo funcionamento correto
+        await Browser.open({ url });
+      } else {
+        // No navegador Web Desktop ou Mobile Web
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
+    } catch (error) {
+      console.error('Erro ao abrir link externo no Browser do Capacitor, executando fallback window.open:', error);
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  }
+
+  // CÓDIGO PRESERVADO PARA REATIVAÇÃO FUTURA - NÃO REMOVER
   toggleChat() {
     this.isOpen.update(v => !v);
     if (this.isOpen()) {
