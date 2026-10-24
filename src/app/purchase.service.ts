@@ -44,12 +44,50 @@ export class PurchaseService {
       }
     ]);
 
+    // Listener de atualização de produto: garante ativação sempre que a posse for confirmada
+    store.when().productUpdated((product: any) => {
+      if (product.id === 'valor_simulado' && product.owned) {
+        console.log('Produto valor_simulado confirmado como "owned" via productUpdated!');
+        this.appStore.setAppPaid(true);
+      }
+    });
+
+    // Listener de recibos atualizados: captura compras prévias ou processadas em background
+    store.when().receiptUpdated((receipt: any) => {
+      const hasSimuladoInReceipt =
+        (typeof receipt.hasOrHadProduct === 'function' && receipt.hasOrHadProduct('valor_simulado')) ||
+        receipt.transactions?.some((t: any) => t.products?.some((p: any) => p.id === 'valor_simulado'));
+
+      const simuladoProduct = store.get('valor_simulado');
+      if (hasSimuladoInReceipt || (simuladoProduct && simuladoProduct.owned)) {
+        console.log('Recibo validou posse de valor_simulado!');
+        this.appStore.setAppPaid(true);
+      }
+    });
+
+    // Listener de recibos prontos: quando o Google Play/App Store termina de sincronizar todas as compras passadas
+    store.when().receiptsReady(() => {
+      console.log('Todos os recibos da loja foram sincronizados.');
+      const simuladoProduct = store.get('valor_simulado');
+      if (simuladoProduct && simuladoProduct.owned) {
+        this.appStore.setAppPaid(true);
+      }
+    });
+
     // Processar a conclusão e dar o feedback no evento de aprovação
     store.when().approved((transaction: any) => {
       // Finaliza a transação para o Google não reembolsar o usuário
-      transaction.finish();
+      try {
+        transaction.finish();
+      } catch (err) {
+        console.warn('Erro ao finalizar transação:', err);
+      }
 
-      const hasSimulado = transaction.products?.some((p: any) => p.id === 'valor_simulado')
+      // Verificação resiliente cobrindo todas as estruturas possíveis da v13
+      const hasSimulado =
+        transaction.products?.some((p: any) => p.id === 'valor_simulado' || p.productId === 'valor_simulado')
+        || transaction.parentReceipt?.items?.some((i: any) => i.id === 'valor_simulado')
+        || store.get('valor_simulado')?.owned
         || transaction.id === 'valor_simulado'
         || transaction.productId === 'valor_simulado';
 
@@ -161,6 +199,16 @@ export class PurchaseService {
         duration: 4000,
         panelClass: ['error-snackbar']
       });
+    }
+  }
+
+  restorePurchases() {
+    if (!Capacitor.isNativePlatform() || typeof CdvPurchase === 'undefined') return;
+    try {
+      const { store } = CdvPurchase;
+      store.restorePurchases();
+    } catch (e) {
+      console.warn('Erro ao restaurar compras:', e);
     }
   }
 }
