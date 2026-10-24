@@ -7,6 +7,7 @@ import { Capacitor } from '@capacitor/core';
 import questionsData from '../../../assets/questions.json';
 import { AppStoreService } from '../../app-store.service';
 import { PurchaseService } from '../../purchase.service';
+import { SupportModal } from '../../components/support-modal/support-modal';
 
 interface Answer {
   text: string;
@@ -52,7 +53,7 @@ interface FloatingPoint {
 @Component({
   selector: 'app-simulation',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, SupportModal],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (shouldShowPaywall()) {
@@ -144,6 +145,22 @@ interface FloatingPoint {
             Após a confirmação, o acesso será liberado imediatamente.
           </p>
         </div>
+
+        <!-- Suporte ao pagamento sutil -->
+        <div class="mt-3 text-center">
+          <button
+            type="button"
+            (click)="showSupportModal.set(true)"
+            class="text-[11px] text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 underline underline-offset-2 transition-colors cursor-pointer"
+          >
+            Precisa de suporte? clique aqui.
+          </button>
+        </div>
+
+        <app-support-modal
+          [isOpen]="showSupportModal()"
+          (closed)="showSupportModal.set(false)"
+        />
 
         <!-- Opção de teste em desenvolvimento / homologação para simular pagamento -->
         <!-- Não excluir código abaixo, quando eu precisar vou descomentar -->
@@ -852,6 +869,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
   private snackBar = inject(MatSnackBar);
 
   showDonationModal = signal<boolean>(false);
+  showSupportModal = signal<boolean>(false);
 
   questionCard = viewChild<ElementRef>('questionCard');
 

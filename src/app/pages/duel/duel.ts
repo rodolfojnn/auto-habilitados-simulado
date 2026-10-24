@@ -7,6 +7,7 @@ import questionsData from '../../../assets/questions.json';
 import { interval, Subscription } from 'rxjs';
 import { AppStoreService } from '../../app-store.service';
 import { PurchaseService } from '../../purchase.service';
+import { SupportModal } from '../../components/support-modal/support-modal';
 
 interface RawAnswer {
   text: string;
@@ -40,7 +41,7 @@ interface GameFloatingPoint {
 @Component({
   selector: 'app-duel',
   standalone: true,
-  imports: [MatIconModule, DecimalPipe],
+  imports: [MatIconModule, DecimalPipe, SupportModal],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="min-h-full bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-white font-sans selection:bg-indigo-500/30 overflow-hidden relative">
@@ -133,6 +134,22 @@ interface GameFloatingPoint {
               Após a confirmação, o acesso será liberado imediatamente.
             </p>
           </div>
+
+          <!-- Suporte ao pagamento sutil -->
+          <div class="mt-3 text-center">
+            <button
+              type="button"
+              (click)="showSupportModal.set(true)"
+              class="text-[11px] text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 underline underline-offset-2 transition-colors cursor-pointer"
+            >
+              Precisa de suporte? clique aqui.
+            </button>
+          </div>
+
+          <app-support-modal
+            [isOpen]="showSupportModal()"
+            (closed)="showSupportModal.set(false)"
+          />
 
           <!-- Opção de teste em desenvolvimento / homologação para simular pagamento -->
           <!-- Não excluir código abaixo, quando eu precisar vou descomentar -->
@@ -681,6 +698,7 @@ export class DuelComponent implements OnInit, OnDestroy {
     return platform === 'android' || platform === 'web';
   });
   shouldShowPaywall = computed(() => this.isAutoescola() && this.isAndroid() && !this.isPaid());
+  showSupportModal = signal<boolean>(false);
 
   isStarted = signal<boolean>(false);
   isSearching = signal<boolean>(false);
