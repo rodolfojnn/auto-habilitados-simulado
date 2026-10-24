@@ -95,28 +95,15 @@ const TIPS = [
       <section class="flex flex-col gap-4">
 
         <!-- Card de apoio -->
-        @if (showSupportCard() && !isAutoescola()) {
+        @if (!isAutoescola()) {
           <div class="relative flex flex-col gap-4 w-full rounded-3xl border border-indigo-100/50 bg-gradient-to-br from-indigo-50 to-blue-50/50 dark:from-indigo-900/20 dark:to-blue-900/10 p-5 shadow-sm">
-            <!-- Botão fechar -->
-            <button
-              type="button"
-              aria-label="Fechar"
-              (click)="dismissSupportCard()"
-              class="absolute right-4 top-4 text-indigo-400/70 transition-colors hover:text-indigo-600 dark:hover:text-indigo-300"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-
             <div class="flex items-start gap-4">
               <!-- Ícone -->
               <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-600 shadow-inner">
                 <mat-icon class="material-icons !text-white !text-2xl !w-6 !h-6 !leading-none flex items-center justify-center shrink-0" style="color: white;">favorite</mat-icon>
               </div>
               <!-- Texto -->
-              <div class="min-w-0 flex-1 pr-5">
+              <div class="min-w-0 flex-1">
                 <h2 class="text-base font-bold leading-tight text-slate-900 dark:text-white text-balance">
                   Apoie nosso projeto!
                 </h2>
@@ -281,7 +268,6 @@ const TIPS = [
 })
 export class HomeComponent implements OnInit {
   currentTip = signal<string>('');
-  showSupportCard = signal<boolean>(true);
   isAndroidOrWeb = Capacitor.getPlatform() !== 'ios';
 
   private purchaseService = inject(PurchaseService);
@@ -292,13 +278,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     const randomIndex = Math.floor(Math.random() * TIPS.length);
     this.currentTip.set(TIPS[randomIndex]);
-
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const isDismissed = localStorage.getItem('support_card_dismissed') === 'true';
-      if (isDismissed) {
-        this.showSupportCard.set(false);
-      }
-    }
   }
 
   async openAulasPraticas() {
@@ -353,17 +332,6 @@ export class HomeComponent implements OnInit {
         duration: 4000,
         panelClass: ['error-snackbar']
       });
-    }
-  }
-
-  dismissSupportCard() {
-    this.showSupportCard.set(false);
-    if (typeof window !== 'undefined' && window.localStorage) {
-      try {
-        localStorage.setItem('support_card_dismissed', 'true');
-      } catch (e) {
-        console.error('Erro ao salvar estado do card no localStorage:', e);
-      }
     }
   }
 }
