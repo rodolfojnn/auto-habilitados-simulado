@@ -210,13 +210,14 @@ export class LeadCaptureComponent {
         }
 
         const formVal = this.leadForm.value;
-        const processoIniciado = answers['processo_iniciado'] || localStorage.getItem('processo_iniciado') || null;
-        const metodoEstudo = answers['metodo_estudo'] || localStorage.getItem('metodo_estudo') || null;
+        const processoIniciado = answers['processo_iniciado'] || (answers['onboard'] as Record<string, unknown> | undefined)?.['processo_iniciado'] || localStorage.getItem('processo_iniciado') || null;
+        const metodoEstudo = answers['metodo_estudo'] || (answers['onboard'] as Record<string, unknown> | undefined)?.['metodo_estudo'] || localStorage.getItem('metodo_estudo') || null;
 
+        const existingOnboard = (typeof answers['onboard'] === 'object' && answers['onboard']) ? (answers['onboard'] as Record<string, unknown>) : {};
         const onboardData: Record<string, unknown> = {
+          ...existingOnboard,
           processo_iniciado: processoIniciado,
-          metodo_estudo: metodoEstudo,
-          ...(typeof answers['onboard'] === 'object' && answers['onboard'] ? (answers['onboard'] as Record<string, unknown>) : {})
+          metodo_estudo: metodoEstudo
         };
 
         answers['processo_iniciado'] = processoIniciado;

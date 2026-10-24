@@ -11,6 +11,7 @@ import { OnboardingComponent } from './pages/onboarding/onboarding';
 import { PushService } from './push.service';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { PurchaseService } from './purchase.service';
+import { Simulado } from './simulado';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -213,25 +214,34 @@ export class App implements OnInit {
   private store = inject(AppStoreService);
   isAutoescola = this.store.isAutoescola;
   private purchaseService = inject(PurchaseService);
+  private simulado = inject(Simulado);
 
   constructor() {
     this.purchaseService.initialize();
 
-    // Check if onboarding and lead are captured
+    // Validação estrita de onboarding e captura de lead
     try {
       const data = localStorage.getItem('onboarding_answers');
-      const onboardFlag = localStorage.getItem('onboarding_completed') === 'true';
+      let answers: Record<string, unknown> = {};
       if (data) {
-        const answers = JSON.parse(data);
-        const isLead = answers['lead_captured'] === true;
-        const isOnboard = onboardFlag || answers['onboarding_completed'] === true || (!!answers['processo_iniciado'] && !!answers['metodo_estudo']);
-
-        this.onboardingCompleted.set(isOnboard);
-        this.leadCaptured.set(isLead);
-      } else {
-        this.onboardingCompleted.set(onboardFlag);
-        this.leadCaptured.set(false);
+        try {
+          answers = JSON.parse(data);
+        } catch {
+          // ignore
+        }
       }
+
+      const proc = answers['processo_iniciado'] || (answers['onboard'] as Record<string, unknown> | undefined)?.['processo_iniciado'] || localStorage.getItem('processo_iniciado');
+      const met = answers['metodo_estudo'] || (answers['onboard'] as Record<string, unknown> | undefined)?.['metodo_estudo'] || localStorage.getItem('metodo_estudo');
+
+      // Obrigatoriedade estrita: o usuário só tem onboarding concluído se respondeu AMBAS as perguntas
+      const hasOnboardQuestions = !!(proc && met);
+
+      // Lead é considerado capturado se lead_captured for true ou se já houver nome em lead_data
+      const isLead = answers['lead_captured'] === true || !!((answers['lead_data'] as Record<string, unknown> | undefined)?.['nome']);
+
+      this.onboardingCompleted.set(hasOnboardQuestions);
+      this.leadCaptured.set(isLead);
     } catch {
       this.onboardingCompleted.set(false);
       this.leadCaptured.set(false);
@@ -251,6 +261,7 @@ export class App implements OnInit {
     this.initGlobalRipple();
     this.initPointsSync();
     this.checkLeadData();
+    this.simulado.syncPendingLead();
   }
 
   private checkLeadData() {
@@ -328,7 +339,7 @@ export class App implements OnInit {
     });
   }
 
-  onOnboardingCompleted(answers: Record<string, string>) {
+  async onOnboardingCompleted(answers: Record<string, string>) {
     try {
       localStorage.setItem('onboarding_completed', 'true');
       for (const [key, val] of Object.entries(answers)) {
@@ -343,14 +354,41 @@ export class App implements OnInit {
         }
       }
       delete data['onboarding'];
+
+      const onboardData: Record<string, unknown> = {
+        processo_iniciado: answers['processo_iniciado'],
+        metodo_estudo: answers['metodo_estudo'],
+        ...answers
+      };
+
       data = {
         ...data,
         ...answers,
-        onboard: answers,
+        processo_iniciado: answers['processo_iniciado'],
+        metodo_estudo: answers['metodo_estudo'],
+        onboard: onboardData,
         onboarding_completed: true
       };
+
+      // Se o usuário já tiver lead_data (usuário existente), sincroniza com os novos dados de onboard
+      if (data['lead_data'] && typeof data['lead_data'] === 'object') {
+        const leadDataObj = data['lead_data'] as Record<string, unknown>;
+        data['lead_data'] = {
+          ...leadDataObj,
+          processo_iniciado: answers['processo_iniciado'],
+          metodo_estudo: answers['metodo_estudo'],
+          onboard: onboardData
+        };
+      }
+
       localStorage.setItem('onboarding_answers', JSON.stringify(data));
       this.store.loadOnboardingData();
+
+      // Se o lead já estava capturado (usuário existente), envia postLead imediatamente com as respostas!
+      if (this.leadCaptured()) {
+        console.log('Usuário existente concluiu onboarding: enviando postLead imediatamente com respostas:', data);
+        await this.simulado.postLead(data);
+      }
     } catch (e) {
       console.error('Erro ao salvar onboarding no app:', e);
     }

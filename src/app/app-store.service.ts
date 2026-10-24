@@ -87,5 +87,22 @@ export class AppStoreService {
     }
   }
 
+  public hasValidOnboarding(): boolean {
+    if (typeof window === 'undefined' || !window.localStorage) return false;
+    try {
+      let proc = localStorage.getItem('processo_iniciado');
+      let met = localStorage.getItem('metodo_estudo');
+      const data = localStorage.getItem('onboarding_answers');
+      if (data) {
+        const parsed = JSON.parse(data);
+        if (!proc) proc = parsed.processo_iniciado || parsed.onboard?.processo_iniciado;
+        if (!met) met = parsed.metodo_estudo || parsed.onboard?.metodo_estudo;
+      }
+      return !!(proc && met);
+    } catch {
+      return false;
+    }
+  }
+
 }
 
