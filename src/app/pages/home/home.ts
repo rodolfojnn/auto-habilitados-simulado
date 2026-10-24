@@ -94,6 +94,63 @@ const TIPS = [
       <!-- Secondary Actions Grid -->
       <section class="flex flex-col gap-4">
 
+        <!-- Card de apoio -->
+        @if (showSupportCard() && !isAutoescola()) {
+          <div class="relative flex flex-col gap-4 w-full rounded-3xl border border-indigo-100/50 bg-gradient-to-br from-indigo-50 to-blue-50/50 dark:from-indigo-900/20 dark:to-blue-900/10 p-5 shadow-sm">
+            <!-- Botão fechar -->
+            <button
+              type="button"
+              aria-label="Fechar"
+              (click)="dismissSupportCard()"
+              class="absolute right-4 top-4 text-indigo-400/70 transition-colors hover:text-indigo-600 dark:hover:text-indigo-300"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+
+            <div class="flex items-start gap-4">
+              <!-- Ícone -->
+              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-600 shadow-inner">
+                <mat-icon class="material-icons !text-white !text-2xl !w-6 !h-6 !leading-none flex items-center justify-center shrink-0" style="color: white;">favorite</mat-icon>
+              </div>
+              <!-- Texto -->
+              <div class="min-w-0 flex-1 pr-5">
+                <h2 class="text-base font-bold leading-tight text-slate-900 dark:text-white text-balance">
+                  Apoie nosso projeto!
+                </h2>
+                <p class="mt-1 text-[13px] leading-snug text-slate-600 dark:text-slate-400 text-pretty">
+                  Sua contribuição ajuda a manter o app gratuito.
+                </p>
+              </div>
+            </div>
+
+            <!-- Botões -->
+            <div class="grid gap-3 mt-1" [class.grid-cols-2]="isAndroidOrWeb" [class.grid-cols-1]="!isAndroidOrWeb">
+              <button
+                type="button"
+                (click)="openReview()"
+                class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-indigo-100 dark:border-white/10 px-3 py-2.5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 transition-all hover:bg-indigo-50 dark:hover:bg-slate-700 shadow-sm active:scale-[0.98]"
+              >
+                <mat-icon class="material-icons !text-lg !w-5 !h-5 !leading-none flex items-center justify-center shrink-0">star</mat-icon>
+                <span>Avaliar</span>
+              </button>
+
+              @if (isAndroidOrWeb) {
+                <button
+                  type="button"
+                  (click)="openDonation()"
+                  class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white transition-all hover:bg-indigo-700 shadow-sm active:scale-[0.98]"
+                >
+                  <mat-icon class="material-icons !text-lg !w-5 !h-5 !leading-none flex items-center justify-center shrink-0">volunteer_activism</mat-icon>
+                  <span>Doar</span>
+                </button>
+              }
+            </div>
+          </div>
+        }
+
         <!-- Main Action: Iniciar Simulado -->
         <a routerLink="/simulado"
           class="w-full bg-white dark:bg-slate-800 px-4 py-2 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
@@ -172,63 +229,6 @@ const TIPS = [
             <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
           </div>
         </a>
-
-        <!-- Card de apoio -->
-        @if (showSupportCard() && !isAutoescola()) {
-          <div class="relative flex flex-col gap-4 w-full rounded-3xl border border-indigo-100/50 bg-gradient-to-br from-indigo-50 to-blue-50/50 dark:from-indigo-900/20 dark:to-blue-900/10 p-5 shadow-sm">
-            <!-- Botão fechar -->
-            <button
-              type="button"
-              aria-label="Fechar"
-              (click)="dismissSupportCard()"
-              class="absolute right-4 top-4 text-indigo-400/70 transition-colors hover:text-indigo-600 dark:hover:text-indigo-300"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-
-            <div class="flex items-start gap-4">
-              <!-- Ícone -->
-              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-600 shadow-inner">
-                <mat-icon class="material-icons !text-white !text-2xl !w-6 !h-6 !leading-none flex items-center justify-center shrink-0" style="color: white;">favorite</mat-icon>
-              </div>
-              <!-- Texto -->
-              <div class="min-w-0 flex-1 pr-5">
-                <h2 class="text-base font-bold leading-tight text-slate-900 dark:text-white text-balance">
-                  Apoie nosso projeto!
-                </h2>
-                <p class="mt-1 text-[13px] leading-snug text-slate-600 dark:text-slate-400 text-pretty">
-                  Sua contribuição ajuda a manter o app gratuito.
-                </p>
-              </div>
-            </div>
-
-            <!-- Botões -->
-            <div class="grid gap-3 mt-1" [class.grid-cols-2]="isAndroidOrWeb" [class.grid-cols-1]="!isAndroidOrWeb">
-              <button
-                type="button"
-                (click)="openReview()"
-                class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-indigo-100 dark:border-white/10 px-3 py-2.5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 transition-all hover:bg-indigo-50 dark:hover:bg-slate-700 shadow-sm active:scale-[0.98]"
-              >
-                <mat-icon class="material-icons !text-lg !w-5 !h-5 !leading-none flex items-center justify-center shrink-0">star</mat-icon>
-                <span>Avaliar</span>
-              </button>
-
-              @if (isAndroidOrWeb) {
-                <button
-                  type="button"
-                  (click)="openDonation()"
-                  class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white transition-all hover:bg-indigo-700 shadow-sm active:scale-[0.98]"
-                >
-                  <mat-icon class="material-icons !text-lg !w-5 !h-5 !leading-none flex items-center justify-center shrink-0">volunteer_activism</mat-icon>
-                  <span>Doar</span>
-                </button>
-              }
-            </div>
-          </div>
-        }
 
       </section>
 
