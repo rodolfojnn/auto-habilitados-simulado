@@ -409,8 +409,8 @@ interface FloatingPoint {
           <div class="flex flex-row items-center justify-between gap-4 mb-6 sm:mb-8">
             <div class="flex-1">
               <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-[1.1] tracking-tight mb-3">
-                Você foi<br/>
-                <span class="text-rose-500">reprovado!</span>
+                Pontuação<br/>
+                <span class="text-rose-500">insuficiente!</span>
               </h2>
               <p class="text-slate-500 dark:text-slate-400 font-medium text-base sm:text-lg leading-snug">
                 Estude mais e a<br class="block sm:hidden"/> aprovação virá!
@@ -516,8 +516,8 @@ interface FloatingPoint {
           <div class="flex flex-row items-center justify-between gap-4 mb-6 sm:mb-8">
             <div class="flex-1">
               <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-[1.1] tracking-tight mb-3">
-                Parabéns, você foi<br/>
-                <span class="text-emerald-500">aprovado!</span>
+                Parabéns, pontuação<br/>
+                <span class="text-emerald-500">suficiente!</span>
               </h2>
               <p class="text-slate-500 dark:text-slate-400 font-medium text-base sm:text-lg leading-snug">
                 Continue assim e<br class="block sm:hidden"/> mantenha o foco
@@ -936,7 +936,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
       // this.prepareQuestions();
       // this.isStarted.set(true);
       // this.isFinished.set(true);
-      // this.score.set(25); // Altere para testar layout aprovado (>=20) ou reprovado (<20)
+      // this.score.set(21); // Altere para testar layout aprovado (>=20) ou reprovado (<20)
       // this.modulePerformance.set({
       //   'Legislação de Trânsito': { correct: 10, incorrect: 2 },
       //   'Sinalização': { correct: 8, incorrect: 1 },
