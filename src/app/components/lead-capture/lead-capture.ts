@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, Input, Output, EventEmitter, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgxMaskDirective } from 'ngx-mask';
@@ -27,39 +27,23 @@ import { PushService } from '../../push.service';
              <ng-content></ng-content>
           </div>
 
-          <button (click)="nextStep()" class="w-full bg-brand-500 hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider">
+          <button (click)="nextStep()" class="w-full bg-brand-500 hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider cursor-pointer">
             Quero participar
           </button>
         </div>
       } @else {
         <div class="animate-fade-in-up flex flex-col gap-6">
           <div class="flex items-center gap-4 mb-2 mt-2">
-              <button type="button" [class.invisible]="step() === 1" (click)="prevStep()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+              <button type="button" [class.invisible]="step() === 1" (click)="prevStep()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors cursor-pointer">
                 <mat-icon class="material-icons !leading-none">arrow_back_ios_new</mat-icon>
              </button>
              <div class="flex-1 h-2 bg-gray-200 dark:bg-slate-800 rounded-full overflow-hidden">
-                <div class="h-full bg-brand-500 transition-all duration-300 ease-out" [style.width.%]="(step() / 2) * 100"></div>
+                <div class="h-full bg-brand-500 transition-all duration-300 ease-out" [style.width.%]="(step() / 3) * 100"></div>
              </div>
-             <span class="text-xs font-bold text-gray-500">{{ step() }}/2</span>
+             <span class="text-xs font-bold text-gray-500">{{ step() }}/3</span>
           </div>
 
-          <form [formGroup]="leadForm" (ngSubmit)="submitLead()" class="flex flex-col gap-6">
-
-            <!-- @if (step() === 2) {
-              <div class="animate-fade-in-up flex flex-col gap-2">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Qual seu WhatsApp?</h2>
-                <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Caso você ganhe ou para suporte, vamos avisar por lá.</p>
-                <input type="tel" formControlName="fone1" mask="(00) 00000-0000" placeholder="(11) 99999-9999" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg">
-              </div>
-            }
-
-            @if (step() === 3) {
-              <div class="animate-fade-in-up flex flex-col gap-2">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Seu melhor E-mail</h2>
-                <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Prometemos não mandar spam.</p>
-                <input type="email" formControlName="email" placeholder="seu@email.com" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg">
-              </div>
-            } -->
+          <form [formGroup]="leadForm" (ngSubmit)="handleFormSubmit()" class="flex flex-col gap-6">
 
             @if (step() === 1) {
               <div class="animate-fade-in-up flex flex-col gap-2">
@@ -70,10 +54,80 @@ import { PushService } from '../../push.service';
             }
 
             @if (step() === 2) {
+              <div class="animate-fade-in-up flex flex-col gap-4">
+                <div class="flex flex-col gap-1.5">
+                  <h2 class="text-xl font-bold text-gray-900 dark:text-white">Qual seu WhatsApp?</h2>
+                  <p class="text-gray-500 dark:text-slate-400 text-sm">Para avisos sobre o simulado, novidades e suporte.</p>
+                </div>
+
+                <div>
+                  <input
+                    type="tel"
+                    formControlName="fone1"
+                    mask="(00) 00000-0000"
+                    placeholder="(11) 99999-9999"
+                    class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg placeholder:text-gray-400 dark:placeholder:text-slate-500"
+                  />
+                </div>
+
+                <!-- Checkbox atraente para autorização de contato para aulas práticas -->
+                <label
+                  class="group relative flex items-start gap-3.5 p-4 rounded-2xl border transition-all cursor-pointer select-none"
+                  [class.border-brand-500]="autorizaInstrutores()"
+                  [class.bg-brand-500/5]="autorizaInstrutores()"
+                  [class.dark:bg-emerald-500/10]="autorizaInstrutores()"
+                  [class.shadow-sm]="autorizaInstrutores()"
+                  [class.border-gray-200]="!autorizaInstrutores()"
+                  [class.dark:border-slate-700]="!autorizaInstrutores()"
+                  [class.bg-gray-50/70]="!autorizaInstrutores()"
+                  [class.dark:bg-slate-800/60]="!autorizaInstrutores()"
+                  [class.hover:border-brand-400/60]="!autorizaInstrutores()"
+                >
+                  <div class="relative flex items-center justify-center shrink-0 mt-0.5">
+                    <input
+                      type="checkbox"
+                      formControlName="autoriza_contato_instrutor"
+                      (change)="onAutorizaToggle($event)"
+                      class="sr-only"
+                    />
+                    <div
+                      class="w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all duration-200"
+                      [class.bg-brand-500]="autorizaInstrutores()"
+                      [class.border-brand-500]="autorizaInstrutores()"
+                      [class.border-gray-300]="!autorizaInstrutores()"
+                      [class.dark:border-slate-600]="!autorizaInstrutores()"
+                      [class.bg-white]="!autorizaInstrutores()"
+                      [class.dark:bg-slate-900]="!autorizaInstrutores()"
+                    >
+                      @if (autorizaInstrutores()) {
+                        <mat-icon class="material-icons !text-sm !w-3.5 !h-3.5 text-slate-950 font-black !leading-none">check</mat-icon>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="flex-1 flex flex-col text-left">
+                    <div class="flex items-center gap-1.5 mb-1.5 flex-wrap">
+                      <span class="text-[11px] font-semibold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/20 flex items-center gap-0.5 px-2 py-0.5 rounded">
+                        <mat-icon class="material-icons !text-xs !w-3 !h-3 !leading-none">local_offer</mat-icon>
+                        OFERTAS EXCLUSIVAS
+                      </span>
+                    </div>
+                    <span class="text-sm font-bold text-gray-900 dark:text-white leading-snug">
+                      Quero ofertas para aulas práticas
+                    </span>
+                    <p class="text-xs text-gray-600 dark:text-slate-400 mt-1 leading-relaxed">
+                      Receba oportunidades para economizar nas aulas práticas em sua região pelo WhatsApp.
+                    </p>
+                  </div>
+                </label>
+              </div>
+            }
+
+            @if (step() === 3) {
               <div class="animate-fade-in-up flex flex-col gap-2">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white">Seu CEP</h2>
                 <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Para montarmos as ligas de ranking por região.</p>
-                <input type="tel" formControlName="cep" (input)="cepError.set(null)" mask="00000-000" placeholder="00000-000" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg" [class.border-rose-500]="!!cepError()" [class.border-gray-200]="!cepError()" [class.dark:border-slate-700]="!cepError()">
+                <input type="tel" formControlName="cep" (input)="cepError.set(null)" mask="00000-000" placeholder="00000-000" class="w-full bg-white dark:bg-slate-800 border items-center px-4 py-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-gray-900 dark:text-white text-lg placeholder:text-gray-400 dark:placeholder:text-slate-500" [class.border-rose-500]="!!cepError()" [class.border-gray-200]="!cepError()" [class.dark:border-slate-700]="!cepError()">
                 @if (cepError()) {
                   <p class="text-sm font-medium text-rose-500 mt-1 flex items-center gap-1">
                     <mat-icon class="material-icons !text-sm !w-4 !h-4 !leading-none">error</mat-icon>
@@ -83,8 +137,8 @@ import { PushService } from '../../push.service';
               </div>
             }
 
-            @if (step() === 2) {
-              <button type="submit" [disabled]="!isCurrentStepValid() || submitting() || cepLoading()" class="w-full bg-brand-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider mt-2 flex items-center justify-center gap-2">
+            @if (step() === 3) {
+              <button type="submit" [disabled]="!isCurrentStepValid() || submitting() || cepLoading()" class="w-full bg-brand-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider mt-2 flex items-center justify-center gap-2 cursor-pointer">
                 @if (submitting() || cepLoading()) {
                   <mat-icon class="material-icons animate-spin !text-xl !w-5 !h-5 !leading-none">refresh</mat-icon>
                   <span>{{ cepLoading() ? 'Validando...' : 'Enviando...' }}</span>
@@ -93,7 +147,7 @@ import { PushService } from '../../push.service';
                 }
               </button>
             } @else {
-              <button type="button" (click)="nextStep()" [disabled]="!isCurrentStepValid()" class="w-full bg-brand-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider mt-2 flex items-center justify-center gap-2">
+              <button type="button" (click)="nextStep()" [disabled]="!isCurrentStepValid()" class="w-full bg-brand-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-400 text-slate-950 font-bold py-4 rounded-full text-lg shadow-lg shadow-brand-500/20 transition-all uppercase tracking-wider mt-2 flex items-center justify-center gap-2 cursor-pointer">
                 <span>Continuar</span>
               </button>
             }
@@ -113,7 +167,7 @@ import { PushService } from '../../push.service';
     }
   `]
 })
-export class LeadCaptureComponent {
+export class LeadCaptureComponent implements OnInit {
   @Input() title = 'Completar Cadastro';
   @Input() description = 'Precisamos de algumas informações para continuar.';
   @Input() icon = 'person_add';
@@ -130,10 +184,12 @@ export class LeadCaptureComponent {
   cepLoading = signal<boolean>(false);
   cepError = signal<string | null>(null);
   submitting = signal<boolean>(false);
+  autorizaInstrutores = signal<boolean>(false);
 
   leadForm = new FormGroup({
     nome: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    fone1: new FormControl(''),
+    fone1: new FormControl('', [Validators.required, Validators.minLength(10)]),
+    autoriza_contato_instrutor: new FormControl(false),
     email: new FormControl(''),
     cep: new FormControl('', [Validators.required, Validators.minLength(8)]),
     municipio: new FormControl(''),
@@ -141,8 +197,40 @@ export class LeadCaptureComponent {
     solicitacao: new FormControl('')
   });
 
+  ngOnInit() {
+    try {
+      const data = localStorage.getItem('onboarding_answers');
+      if (data) {
+        const parsed = JSON.parse(data);
+        const lead = (parsed['lead_data'] || parsed) as Record<string, unknown> | undefined;
+        if (lead) {
+          if (typeof lead['nome'] === 'string' && lead['nome']) {
+            this.leadForm.patchValue({ nome: lead['nome'] });
+          }
+          if (typeof lead['fone1'] === 'string' && lead['fone1']) {
+            this.leadForm.patchValue({ fone1: lead['fone1'] });
+          }
+          if (typeof lead['cep'] === 'string' && lead['cep']) {
+            this.leadForm.patchValue({ cep: lead['cep'] });
+          }
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  onAutorizaToggle(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const checked = target.checked;
+    this.autorizaInstrutores.set(checked);
+    this.leadForm.get('autoriza_contato_instrutor')?.setValue(checked);
+  }
+
   nextStep() {
-    this.step.update(v => v + 1);
+    if (this.isCurrentStepValid()) {
+      this.step.update(v => v + 1);
+    }
   }
 
   prevStep() {
@@ -151,10 +239,22 @@ export class LeadCaptureComponent {
     }
   }
 
+  handleFormSubmit() {
+    if (this.step() < 3) {
+      this.nextStep();
+    } else {
+      this.submitLead();
+    }
+  }
+
   isCurrentStepValid(): boolean {
     const currentStep = this.step();
     if (currentStep === 1) return this.leadForm.get('nome')?.valid ?? false;
-    if (currentStep === 2) return this.leadForm.get('cep')?.valid ?? false;
+    if (currentStep === 2) {
+      const fone = (this.leadForm.get('fone1')?.value || '').toString().replace(/\D/g, '');
+      return fone.length >= 10 && fone.length <= 11;
+    }
+    if (currentStep === 3) return this.leadForm.get('cep')?.valid ?? false;
     return true;
   }
 
@@ -238,9 +338,16 @@ export class LeadCaptureComponent {
         answers['uf'] = formVal.uf;
         answers['fone1'] = formVal.fone1;
         answers['email'] = formVal.email;
+        answers['autoriza_contato_instrutor'] = !!formVal.autoriza_contato_instrutor;
+        answers['autoriza_aulas_praticas'] = !!formVal.autoriza_contato_instrutor;
         answers['lead_captured'] = true;
 
         localStorage.setItem('onboarding_answers', JSON.stringify(answers));
+
+        if (formVal.fone1) {
+          const digits = (formVal.fone1 as string || '').replace(/\D/g, '');
+          this.store.fone1.set(digits);
+        }
         this.store.loadOnboardingData();
 
         // Espera enviar o lead
