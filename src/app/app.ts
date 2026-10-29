@@ -233,9 +233,11 @@ export class App implements OnInit {
 
       const proc = answers['processo_iniciado'] || (answers['onboard'] as Record<string, unknown> | undefined)?.['processo_iniciado'] || localStorage.getItem('processo_iniciado');
       const met = answers['metodo_estudo'] || (answers['onboard'] as Record<string, unknown> | undefined)?.['metodo_estudo'] || localStorage.getItem('metodo_estudo');
+      const cat = answers['categorias_interesse'] || (answers['onboard'] as Record<string, unknown> | undefined)?.['categorias_interesse'] || localStorage.getItem('categorias_interesse') || answers['categorias_pratica'];
 
-      // Obrigatoriedade estrita: o usuário só tem onboarding concluído se respondeu AMBAS as perguntas
-      const hasOnboardQuestions = !!(proc && met);
+      const hasCat = Array.isArray(cat) ? cat.length > 0 : !!cat;
+      // Obrigatoriedade estrita: o usuário só tem onboarding concluído se respondeu a todas as perguntas
+      const hasOnboardQuestions = !!(proc && met && hasCat);
 
       // Lead é considerado capturado se lead_captured for true ou se já houver nome em lead_data
       const isLead = answers['lead_captured'] === true || !!((answers['lead_data'] as Record<string, unknown> | undefined)?.['nome']);
@@ -339,12 +341,18 @@ export class App implements OnInit {
     });
   }
 
-  async onOnboardingCompleted(answers: Record<string, string>) {
+  async onOnboardingCompleted(answers: Record<string, unknown>) {
     try {
       localStorage.setItem('onboarding_completed', 'true');
       for (const [key, val] of Object.entries(answers)) {
-        localStorage.setItem(key, String(val));
+        localStorage.setItem(key, typeof val === 'object' ? JSON.stringify(val) : String(val));
       }
+
+      // Limpa chaves redundantes legadas
+      localStorage.removeItem('categorias_pratica');
+      localStorage.removeItem('categorias_pratica_label');
+      localStorage.removeItem('categoria_cnh_interesse');
+      localStorage.removeItem('categoria_pratica');
 
       const existingStr = localStorage.getItem('onboarding_answers');
       let data: Record<string, unknown> = {};
@@ -354,18 +362,22 @@ export class App implements OnInit {
         }
       }
       delete data['onboarding'];
+      delete data['categorias_pratica'];
+      delete data['categorias_pratica_label'];
+      delete data['categoria_cnh_interesse'];
+      delete data['categoria_pratica'];
 
       const onboardData: Record<string, unknown> = {
         processo_iniciado: answers['processo_iniciado'],
         metodo_estudo: answers['metodo_estudo'],
-        ...answers
+        categorias_interesse: answers['categorias_interesse']
       };
 
       data = {
         ...data,
-        ...answers,
         processo_iniciado: answers['processo_iniciado'],
         metodo_estudo: answers['metodo_estudo'],
+        categorias_interesse: answers['categorias_interesse'],
         onboard: onboardData,
         onboarding_completed: true
       };
@@ -373,10 +385,16 @@ export class App implements OnInit {
       // Se o usuário já tiver lead_data (usuário existente), sincroniza com os novos dados de onboard
       if (data['lead_data'] && typeof data['lead_data'] === 'object') {
         const leadDataObj = data['lead_data'] as Record<string, unknown>;
+        delete leadDataObj['categorias_pratica'];
+        delete leadDataObj['categorias_pratica_label'];
+        delete leadDataObj['categoria_cnh_interesse'];
+        delete leadDataObj['categoria_pratica'];
+
         data['lead_data'] = {
           ...leadDataObj,
           processo_iniciado: answers['processo_iniciado'],
           metodo_estudo: answers['metodo_estudo'],
+          categorias_interesse: answers['categorias_interesse'],
           onboard: onboardData
         };
       }
@@ -427,6 +445,8 @@ export class App implements OnInit {
     localStorage.removeItem('onboarding_answers');
     localStorage.removeItem('processo_iniciado');
     localStorage.removeItem('metodo_estudo');
+    localStorage.removeItem('categorias_pratica');
+    localStorage.removeItem('categorias_interesse');
     localStorage.removeItem('user_points');
 
     if (wasAppPaid !== null) {

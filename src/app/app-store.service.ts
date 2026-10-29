@@ -5,6 +5,7 @@ import { Capacitor } from '@capacitor/core';
 export interface OnboardingData {
   processo_iniciado?: string;
   metodo_estudo?: string;
+  categorias_interesse?: string[];
   [key: string]: unknown;
 }
 
@@ -65,19 +66,34 @@ export class AppStoreService {
       const data = localStorage.getItem('onboarding_answers');
       const proc = (typeof window !== 'undefined' && window.localStorage) ? localStorage.getItem('processo_iniciado') || undefined : undefined;
       const met = (typeof window !== 'undefined' && window.localStorage) ? localStorage.getItem('metodo_estudo') || undefined : undefined;
+      let cat: string[] | undefined = undefined;
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const catRaw = localStorage.getItem('categorias_interesse') || localStorage.getItem('categorias_pratica');
+        if (catRaw) {
+          try {
+            const parsed = JSON.parse(catRaw);
+            cat = Array.isArray(parsed) ? parsed : [catRaw];
+          } catch {
+            cat = catRaw.split(',').map(s => s.trim()).filter(Boolean);
+          }
+        }
+      }
 
       if (data) {
         const parsed = JSON.parse(data);
         const onboardObj = parsed.onboard || {};
+        const catInteresse = parsed.categorias_interesse || onboardObj.categorias_interesse || cat;
         this.onboardingData.set({
           processo_iniciado: parsed.processo_iniciado || onboardObj.processo_iniciado || proc,
           metodo_estudo: parsed.metodo_estudo || onboardObj.metodo_estudo || met,
+          categorias_interesse: Array.isArray(catInteresse) ? catInteresse : (catInteresse ? [catInteresse] : undefined),
           ...onboardObj
         });
-      } else if (proc || met) {
+      } else if (proc || met || cat) {
         this.onboardingData.set({
           processo_iniciado: proc,
-          metodo_estudo: met
+          metodo_estudo: met,
+          categorias_interesse: cat
         });
       } else {
         this.onboardingData.set(null);
@@ -92,13 +108,16 @@ export class AppStoreService {
     try {
       let proc = localStorage.getItem('processo_iniciado');
       let met = localStorage.getItem('metodo_estudo');
+      let cat = localStorage.getItem('categorias_interesse') || localStorage.getItem('categorias_pratica');
       const data = localStorage.getItem('onboarding_answers');
       if (data) {
         const parsed = JSON.parse(data);
         if (!proc) proc = parsed.processo_iniciado || parsed.onboard?.processo_iniciado;
         if (!met) met = parsed.metodo_estudo || parsed.onboard?.metodo_estudo;
+        if (!cat) cat = parsed.categorias_interesse || parsed.onboard?.categorias_interesse || parsed.categorias_pratica;
       }
-      return !!(proc && met);
+      const hasCat = Array.isArray(cat) ? cat.length > 0 : !!cat;
+      return !!(proc && met && hasCat);
     } catch {
       return false;
     }

@@ -312,23 +312,36 @@ export class LeadCaptureComponent implements OnInit {
         const formVal = this.leadForm.value;
         const processoIniciado = answers['processo_iniciado'] || (answers['onboard'] as Record<string, unknown> | undefined)?.['processo_iniciado'] || localStorage.getItem('processo_iniciado') || null;
         const metodoEstudo = answers['metodo_estudo'] || (answers['onboard'] as Record<string, unknown> | undefined)?.['metodo_estudo'] || localStorage.getItem('metodo_estudo') || null;
+        const categoriasInteresse = answers['categorias_interesse'] || (answers['onboard'] as Record<string, unknown> | undefined)?.['categorias_interesse'] || localStorage.getItem('categorias_interesse') || null;
 
         const existingOnboard = (typeof answers['onboard'] === 'object' && answers['onboard']) ? (answers['onboard'] as Record<string, unknown>) : {};
+        delete existingOnboard['categorias_pratica'];
+        delete existingOnboard['categorias_pratica_label'];
+        delete existingOnboard['categoria_cnh_interesse'];
+        delete existingOnboard['categoria_pratica'];
+
         const onboardData: Record<string, unknown> = {
           ...existingOnboard,
           processo_iniciado: processoIniciado,
-          metodo_estudo: metodoEstudo
+          metodo_estudo: metodoEstudo,
+          categorias_interesse: categoriasInteresse
         };
 
         answers['processo_iniciado'] = processoIniciado;
         answers['metodo_estudo'] = metodoEstudo;
+        answers['categorias_interesse'] = categoriasInteresse;
         answers['onboard'] = onboardData;
         delete answers['onboarding'];
+        delete answers['categorias_pratica'];
+        delete answers['categorias_pratica_label'];
+        delete answers['categoria_cnh_interesse'];
+        delete answers['categoria_pratica'];
 
         answers['lead_data'] = {
           ...formVal,
           processo_iniciado: processoIniciado,
           metodo_estudo: metodoEstudo,
+          categorias_interesse: categoriasInteresse,
           onboard: onboardData
         };
 
