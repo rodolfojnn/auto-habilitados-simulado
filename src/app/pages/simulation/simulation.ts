@@ -9,6 +9,7 @@ import { AppStoreService } from '../../app-store.service';
 import { PurchaseService } from '../../purchase.service';
 import { SupportModal } from '../../components/support-modal/support-modal';
 import { PaymentProcessingModal } from '../../components/payment-processing-modal/payment-processing-modal';
+import { InAppReviewManager } from '../../in-app-review';
 
 interface Answer {
   text: string;
@@ -884,6 +885,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
 
   private router = inject(Router);
   private chatVisibility = inject(AppStoreService);
+  private inAppReview = inject(InAppReviewManager);
   isAutoescola = this.chatVisibility.isAutoescola;
   isPaid = this.chatVisibility.isPaid;
   isAndroid = computed(() => {
@@ -1132,6 +1134,14 @@ export class SimulationComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.showPointsAnim(`+${pointsEarned}`, 'positive', window.innerWidth / 2, window.innerHeight / 2);
     }, 500);
+
+    // Avaliação nativa (iOS StoreKit e Android Google Play):
+    // Dispara diretamente o requestReview sem modal prévio de confirmação quando o usuário passa no simulado (>= 20 acertos)
+    if (this.score() >= 20) {
+      setTimeout(() => {
+        this.inAppReview.requestReview();
+      }, 1200);
+    }
   }
 
   saveSimulationResult() {
@@ -1181,7 +1191,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
         if (approvedCount >= 3 && platform !== 'ios' && !this.chatVisibility.isAutoescola()) {
           setTimeout(() => {
             this.showDonationModal.set(true);
-          }, 1000);
+          }, 4000);
         }
       }
     } catch (e) {
