@@ -8,6 +8,7 @@ import { interval, Subscription } from 'rxjs';
 import { AppStoreService } from '../../app-store.service';
 import { PurchaseService } from '../../purchase.service';
 import { SupportModal } from '../../components/support-modal/support-modal';
+import { PaymentProcessingModal } from '../../components/payment-processing-modal/payment-processing-modal';
 
 interface RawAnswer {
   text: string;
@@ -41,7 +42,7 @@ interface GameFloatingPoint {
 @Component({
   selector: 'app-duel',
   standalone: true,
-  imports: [MatIconModule, DecimalPipe, SupportModal],
+  imports: [MatIconModule, DecimalPipe, SupportModal, PaymentProcessingModal],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="min-h-full bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-white font-sans selection:bg-indigo-500/30 overflow-hidden relative">
@@ -568,6 +569,15 @@ interface GameFloatingPoint {
           {{ fp.value }}
         </div>
       }
+
+      <app-payment-processing-modal
+        [isOpen]="purchaseService.isProcessingPayment()"
+        [isChecking]="purchaseService.isCheckingStatus()"
+        [isApproved]="purchaseService.paymentConfirmedJustNow() || (isPaid() && purchaseService.isProcessingPayment())"
+        (verify)="purchaseService.verifyPaymentManually()"
+        (restart)="purchaseService.restartApp()"
+        (closed)="purchaseService.dismissProcessingModal()"
+      />
     </div>
   `,
   styles: [`
@@ -686,7 +696,7 @@ export class DuelComponent implements OnInit, OnDestroy {
   @ViewChild('rivalAvatarModal') rivalAvatarModalRef?: ElementRef<HTMLElement>;
 
   private chatVisibility = inject(AppStoreService);
-  private purchaseService = inject(PurchaseService);
+  public purchaseService = inject(PurchaseService);
   private snackBar = inject(MatSnackBar);
 
   isAutoescola = this.chatVisibility.isAutoescola;

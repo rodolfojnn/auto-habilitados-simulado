@@ -8,6 +8,7 @@ import questionsData from '../../../assets/questions.json';
 import { AppStoreService } from '../../app-store.service';
 import { PurchaseService } from '../../purchase.service';
 import { SupportModal } from '../../components/support-modal/support-modal';
+import { PaymentProcessingModal } from '../../components/payment-processing-modal/payment-processing-modal';
 
 interface Answer {
   text: string;
@@ -53,7 +54,7 @@ interface FloatingPoint {
 @Component({
   selector: 'app-simulation',
   standalone: true,
-  imports: [MatIconModule, SupportModal],
+  imports: [MatIconModule, SupportModal, PaymentProcessingModal],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (shouldShowPaywall()) {
@@ -799,6 +800,15 @@ interface FloatingPoint {
         </div>
       </div>
     }
+
+    <app-payment-processing-modal
+      [isOpen]="purchaseService.isProcessingPayment()"
+      [isChecking]="purchaseService.isCheckingStatus()"
+      [isApproved]="purchaseService.paymentConfirmedJustNow() || (isPaid() && purchaseService.isProcessingPayment())"
+      (verify)="purchaseService.verifyPaymentManually()"
+      (restart)="purchaseService.restartApp()"
+      (closed)="purchaseService.dismissProcessingModal()"
+    />
   `,
   styles: [`
     .animate-fade-in { animation: fadeIn 0.4s ease-out; }
@@ -883,7 +893,7 @@ export class SimulationComponent implements OnInit, OnDestroy {
     return platform === 'android' || platform === 'web';
   });
   shouldShowPaywall = computed(() => this.isAutoescola() && this.isAndroid() && !this.isPaid());
-  private purchaseService = inject(PurchaseService);
+  public purchaseService = inject(PurchaseService);
   private snackBar = inject(MatSnackBar);
 
   showDonationModal = signal<boolean>(false);

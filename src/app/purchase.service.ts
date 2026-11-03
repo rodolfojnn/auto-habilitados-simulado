@@ -8,6 +8,10 @@ declare const CdvPurchase: any;
 @Injectable({ providedIn: 'root' })
 export class PurchaseService {
   isReady = signal(false);
+  isProcessingPayment = signal(false);
+  isCheckingStatus = signal(false);
+  paymentConfirmedJustNow = signal(false);
+
   private snackBar = inject(MatSnackBar);
   private appStore = inject(AppStoreService);
 
@@ -48,7 +52,7 @@ export class PurchaseService {
     store.when().productUpdated((product: any) => {
       if (product.id === 'valor_simulado' && product.owned) {
         console.log('Produto valor_simulado confirmado como "owned" via productUpdated!');
-        this.appStore.setAppPaid(true);
+        this.markPaidSuccess();
       }
     });
 
@@ -61,7 +65,7 @@ export class PurchaseService {
       const simuladoProduct = store.get('valor_simulado');
       if (hasSimuladoInReceipt || (simuladoProduct && simuladoProduct.owned)) {
         console.log('Recibo validou posse de valor_simulado!');
-        this.appStore.setAppPaid(true);
+        this.markPaidSuccess();
       }
     });
 
@@ -70,7 +74,7 @@ export class PurchaseService {
       console.log('Todos os recibos da loja foram sincronizados.');
       const simuladoProduct = store.get('valor_simulado');
       if (simuladoProduct && simuladoProduct.owned) {
-        this.appStore.setAppPaid(true);
+        this.markPaidSuccess();
       }
     });
 
@@ -92,8 +96,7 @@ export class PurchaseService {
         || transaction.productId === 'valor_simulado';
 
       if (hasSimulado) {
-        // Marca o app como pago permanentemente no localStorage e atualiza o estado
-        this.appStore.setAppPaid(true);
+        this.markPaidSuccess();
         this.snackBar.open('Pagamento confirmado! Acesso ilimitado ao simulado liberado.', 'Fechar', {
           duration: 5000,
           panelClass: ['brand-snackbar']
@@ -114,12 +117,20 @@ export class PurchaseService {
       // Se o usuário já comprou o simulado anteriormente no Google Play, restaura automaticamente
       const simuladoProduct = store.get('valor_simulado');
       if (simuladoProduct && simuladoProduct.owned) {
-        this.appStore.setAppPaid(true);
+        this.markPaidSuccess();
       }
     });
 
     // Inicializa o serviço para a plataforma alvo
     store.initialize([platform]);
+  }
+
+  private markPaidSuccess() {
+    this.appStore.setAppPaid(true);
+    if (this.isProcessingPayment()) {
+      this.paymentConfirmedJustNow.set(true);
+      this.isCheckingStatus.set(false);
+    }
   }
 
   donate() {
@@ -163,11 +174,18 @@ export class PurchaseService {
   }
 
   buySimulado() {
+    // Abre o modal de acompanhamento pós-pagamento imediatamente
+    this.isProcessingPayment.set(true);
+    this.paymentConfirmedJustNow.set(false);
+
+    // Se já estiver pago localmente ou nos recibos, aprova na hora
+    if (this.appStore.isPaid()) {
+      this.paymentConfirmedJustNow.set(true);
+      return;
+    }
+
     if (!Capacitor.isNativePlatform() || typeof CdvPurchase === 'undefined') {
-      this.snackBar.open('A loja de pagamentos só está disponível no aplicativo instalado.', 'Fechar', {
-        duration: 4000,
-        panelClass: ['error-snackbar']
-      });
+      // Em ambiente Web / Preview de desenvolvimento: mantém o modal aberto para teste
       return;
     }
 
@@ -200,6 +218,52 @@ export class PurchaseService {
         panelClass: ['error-snackbar']
       });
     }
+  }
+
+  verifyPaymentManually() {
+    this.isCheckingStatus.set(true);
+
+    if (this.appStore.isPaid()) {
+      this.paymentConfirmedJustNow.set(true);
+      this.isCheckingStatus.set(false);
+      return;
+    }
+
+    if (Capacitor.isNativePlatform() && typeof CdvPurchase !== 'undefined') {
+      try {
+        const { store } = CdvPurchase;
+        store.restorePurchases();
+
+        const simuladoProduct = store.get('valor_simulado');
+        if (simuladoProduct && simuladoProduct.owned) {
+          this.markPaidSuccess();
+          return;
+        }
+      } catch (e) {
+        console.warn('Erro ao verificar compras:', e);
+      }
+    }
+
+    // Delay visual de feedback para a consulta
+    setTimeout(() => {
+      this.isCheckingStatus.set(false);
+      if (this.appStore.isPaid()) {
+        this.paymentConfirmedJustNow.set(true);
+      }
+    }, 1200);
+  }
+
+  restartApp() {
+    this.restorePurchases();
+    if (typeof window !== 'undefined') {
+      window.location.reload();
+    }
+  }
+
+  dismissProcessingModal() {
+    this.isProcessingPayment.set(false);
+    this.paymentConfirmedJustNow.set(false);
+    this.isCheckingStatus.set(false);
   }
 
   restorePurchases() {
