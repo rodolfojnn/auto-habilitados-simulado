@@ -317,14 +317,14 @@ export class PaywallSuporteComponent implements OnInit, OnDestroy {
     ];
 
     if (name) {
-      lines.push(`👤 Aluno: ${name}`);
+      lines.push(`Aluno: ${name}`);
     }
     if (phone) {
-      lines.push(`📱 WhatsApp: ${phone}`);
+      lines.push(`WhatsApp: ${phone}`);
     }
     if (municipio || uf) {
       const loc = [municipio, uf].filter(Boolean).join(' - ');
-      lines.push(`📍 Localidade: ${loc}`);
+      lines.push(`Localidade: ${loc}`);
     }
 
     lines.push('Preciso de orientação sobre as etapas da minha CNH.');
