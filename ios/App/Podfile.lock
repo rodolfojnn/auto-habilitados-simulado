@@ -5,19 +5,25 @@ PODS:
     - Capacitor
   - CapacitorBrowser (7.0.5):
     - Capacitor
+  - CapacitorCommunityInAppReview (7.1.0):
+    - Capacitor
   - CapacitorCordova (7.6.8)
   - CapacitorNativeSettings (7.0.1):
     - Capacitor
   - CapacitorPushNotifications (7.0.6):
     - Capacitor
+  - CordovaPlugins (7.6.5):
+    - CapacitorCordova
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorBrowser (from `../../node_modules/@capacitor/browser`)"
+  - "CapacitorCommunityInAppReview (from `../../node_modules/@capacitor-community/in-app-review`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - CapacitorNativeSettings (from `../../node_modules/capacitor-native-settings`)
   - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
+  - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -26,21 +32,27 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/app"
   CapacitorBrowser:
     :path: "../../node_modules/@capacitor/browser"
+  CapacitorCommunityInAppReview:
+    :path: "../../node_modules/@capacitor-community/in-app-review"
   CapacitorCordova:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorNativeSettings:
     :path: "../../node_modules/capacitor-native-settings"
   CapacitorPushNotifications:
     :path: "../../node_modules/@capacitor/push-notifications"
+  CordovaPlugins:
+    :path: "../capacitor-cordova-ios-plugins"
 
 SPEC CHECKSUMS:
   Capacitor: ff6bf01336ac353098378828aff465095a89e459
   CapacitorApp: f01a913211780e0718dae9750442c3e23f96e106
   CapacitorBrowser: 6d09f59655e89aede71654ef08b98de55cf032b6
+  CapacitorCommunityInAppReview: 3756d05524c5cf2eccbc8ed460f77f8f8db6c141
   CapacitorCordova: e61ee8c40101b8cd011d0224261606a290c082cf
   CapacitorNativeSettings: bef37b3c7e2184da7416a3f162c71de19fd27593
   CapacitorPushNotifications: b8e30637549ce91468b8c4dddbef2657be831f4c
+  CordovaPlugins: d3fa86281657e87d3202173b58ed45f8c60c0935
 
-PODFILE CHECKSUM: ca9c1e01cebc26a95d5bead66af9383533188df0
+PODFILE CHECKSUM: 7bfa99da3eaee350e43270e8c75f62d1e8b63ab4
 
 COCOAPODS: 1.17.0
