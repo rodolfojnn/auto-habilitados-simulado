@@ -12,11 +12,6 @@ import { AppStoreService } from '../../app-store.service';
       <!-- Brilho decorativo do canto superior direito -->
       <div class="pointer-events-none absolute -top-16 -right-20 w-64 h-64 rounded-full bg-[#d4f5df] opacity-70 blur-2xl"></div>
 
-      <!-- Topo: ícone de menu -->
-      <div class="relative z-10 flex items-center h-8">
-        <mat-icon class="material-icons !text-[26px] !w-7 !h-7 !leading-none text-slate-500">menu</mat-icon>
-      </div>
-
       <!-- Cabeçalho: selo, título, descrição e imagem -->
       <div class="relative z-10 mt-2 flex items-start justify-between gap-3">
         <div class="flex-1 min-w-0">
@@ -42,10 +37,10 @@ import { AppStoreService } from '../../app-store.service';
       </div>
 
       <!-- Lista de benefícios -->
-      <div class="relative z-10 mt-6 bg-white rounded-[22px] px-4 border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
-        <div class="flex items-center gap-3 py-3.5">
-          <div class="w-12 h-12 rounded-2xl bg-[#e3f6ea] text-[#22a04b] flex items-center justify-center shrink-0">
-            <mat-icon class="material-icons !text-[26px] !w-6 !h-6 !leading-none">chat_bubble_outline</mat-icon>
+      <div class="relative z-10 mt-4 bg-white rounded-[22px] px-4 border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
+        <div class="flex items-center gap-3 py-2.5">
+          <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] text-[#22a04b] flex items-center justify-center shrink-0">
+            <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">chat_bubble_outline</mat-icon>
           </div>
           <div class="min-w-0">
             <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a]">Tire suas dúvidas</h3>
@@ -53,9 +48,9 @@ import { AppStoreService } from '../../app-store.service';
           </div>
         </div>
 
-        <div class="flex items-center gap-3 py-3.5 border-t border-slate-100">
-          <div class="w-12 h-12 rounded-2xl bg-[#e3f6ea] text-[#22a04b] flex items-center justify-center shrink-0">
-            <mat-icon class="material-icons !text-[26px] !w-6 !h-6 !leading-none">calendar_month</mat-icon>
+        <div class="flex items-center gap-3 py-2.5 border-t border-slate-100">
+          <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] text-[#22a04b] flex items-center justify-center shrink-0">
+            <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">calendar_month</mat-icon>
           </div>
           <div class="min-w-0">
             <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a]">Saiba como agendar</h3>
@@ -63,9 +58,9 @@ import { AppStoreService } from '../../app-store.service';
           </div>
         </div>
 
-        <div class="flex items-center gap-3 py-3.5 border-t border-slate-100">
-          <div class="w-12 h-12 rounded-2xl bg-[#e3f6ea] text-[#22a04b] flex items-center justify-center shrink-0">
-            <mat-icon class="material-icons !text-[26px] !w-6 !h-6 !leading-none">location_on</mat-icon>
+        <div class="flex items-center gap-3 py-2.5 border-t border-slate-100">
+          <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] text-[#22a04b] flex items-center justify-center shrink-0">
+            <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">location_on</mat-icon>
           </div>
           <div class="min-w-0">
             <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a]">Entenda todas as etapas</h3>
@@ -73,9 +68,9 @@ import { AppStoreService } from '../../app-store.service';
           </div>
         </div>
 
-        <div class="flex items-center gap-3 py-3.5 border-t border-slate-100">
-          <div class="w-12 h-12 rounded-2xl bg-[#e3f6ea] text-[#22a04b] flex items-center justify-center shrink-0">
-            <mat-icon class="material-icons !text-[26px] !w-6 !h-6 !leading-none">fact_check</mat-icon>
+        <div class="flex items-center gap-3 py-2.5 border-t border-slate-100">
+          <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] text-[#22a04b] flex items-center justify-center shrink-0">
+            <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">fact_check</mat-icon>
           </div>
           <div class="min-w-0">
             <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a]">Resolva problemas</h3>
