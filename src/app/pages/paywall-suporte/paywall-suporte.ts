@@ -1,14 +1,128 @@
 import { Component, ChangeDetectionStrategy, OnDestroy, OnInit, inject } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { AppStoreService } from '../../app-store.service';
 
 @Component({
   selector: 'app-paywall-suporte',
   standalone: true,
-  imports: [],
+  imports: [MatIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="px-6 py-6 max-w-lg mx-auto w-full flex flex-col items-center justify-center min-h-screen font-sans">
-      <!-- Tela paywall-suporte em branco -->
+    <div class="relative w-full max-w-[410px] min-h-screen mx-auto bg-[#f3f9f5] font-sans overflow-hidden px-5 pt-5 pb-10 box-border">
+      <!-- Brilho decorativo do canto superior direito -->
+      <div class="pointer-events-none absolute -top-16 -right-20 w-64 h-64 rounded-full bg-[#d4f5df] opacity-70 blur-2xl"></div>
+
+      <!-- Topo: ícone de menu -->
+      <div class="relative z-10 flex items-center h-8">
+        <mat-icon class="material-icons !text-[26px] !w-7 !h-7 !leading-none text-slate-500">menu</mat-icon>
+      </div>
+
+      <!-- Cabeçalho: selo, título, descrição e imagem -->
+      <div class="relative z-10 mt-2 flex items-start justify-between gap-3">
+        <div class="flex-1 min-w-0">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#22a04b] text-white text-[11px] font-bold uppercase tracking-wide">
+            <mat-icon class="material-icons !text-[16px] !w-4 !h-4 !leading-none">headset_mic</mat-icon>
+            Atendimento humano
+          </span>
+          <h1 class="mt-3 text-[25px] leading-[1.1] font-extrabold tracking-tight text-[#0f1d3a]">
+            Não fique perdido na hora de tirar <span class="text-[#22a04b]">sua CNH!</span>
+          </h1>
+          <p class="mt-3 text-[14px] leading-relaxed text-slate-600">
+            Conte com nossa equipe para orientar você em cada etapa da habilitação pelo CNH do Brasil.
+          </p>
+        </div>
+
+        <!-- PLACEHOLDER da imagem do headset: trocar por <img src="assets/paywall-suporte-headset.png" alt="" aria-hidden="true" class="w-[130px] h-[130px] object-contain" /> -->
+        <div class="relative shrink-0 w-[130px] h-[130px] rounded-full bg-[#dff5e7] flex items-center justify-center">
+          <div class="w-[104px] h-[104px] rounded-2xl border-2 border-dashed border-[#22a04b]/60 flex flex-col items-center justify-center text-center text-[10px] font-semibold text-[#22a04b]">
+            <span>Imagem headset</span>
+            <span>(placeholder)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de benefícios -->
+      <div class="relative z-10 mt-6 bg-white rounded-[22px] px-4 border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
+        <div class="flex items-center gap-3 py-3.5">
+          <div class="w-12 h-12 rounded-2xl bg-[#e3f6ea] text-[#22a04b] flex items-center justify-center shrink-0">
+            <mat-icon class="material-icons !text-[26px] !w-6 !h-6 !leading-none">chat_bubble_outline</mat-icon>
+          </div>
+          <div class="min-w-0">
+            <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a]">Tire suas dúvidas</h3>
+            <p class="text-[14px] leading-snug text-slate-500">com pessoas de verdade.</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 py-3.5 border-t border-slate-100">
+          <div class="w-12 h-12 rounded-2xl bg-[#e3f6ea] text-[#22a04b] flex items-center justify-center shrink-0">
+            <mat-icon class="material-icons !text-[26px] !w-6 !h-6 !leading-none">calendar_month</mat-icon>
+          </div>
+          <div class="min-w-0">
+            <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a]">Saiba como agendar</h3>
+            <p class="text-[14px] leading-snug text-slate-500">suas provas e exames.</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 py-3.5 border-t border-slate-100">
+          <div class="w-12 h-12 rounded-2xl bg-[#e3f6ea] text-[#22a04b] flex items-center justify-center shrink-0">
+            <mat-icon class="material-icons !text-[26px] !w-6 !h-6 !leading-none">location_on</mat-icon>
+          </div>
+          <div class="min-w-0">
+            <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a]">Entenda todas as etapas</h3>
+            <p class="text-[14px] leading-snug text-slate-500">do processo.</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 py-3.5 border-t border-slate-100">
+          <div class="w-12 h-12 rounded-2xl bg-[#e3f6ea] text-[#22a04b] flex items-center justify-center shrink-0">
+            <mat-icon class="material-icons !text-[26px] !w-6 !h-6 !leading-none">fact_check</mat-icon>
+          </div>
+          <div class="min-w-0">
+            <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a]">Resolva problemas</h3>
+            <p class="text-[14px] leading-snug text-slate-500">com facilidade.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloco bloqueado: acesso ao WhatsApp -->
+      <div class="relative z-10 mt-5 rounded-[22px] bg-[#e8f6ee]/70 border border-[#d3eddc] p-3 text-center">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-200 text-slate-600 text-[11px] font-bold uppercase tracking-wide">
+          <mat-icon class="material-icons !text-[14px] !w-3.5 !h-3.5 !leading-none">lock</mat-icon>
+          Bloqueado
+        </span>
+        <p class="mt-2 text-[12.5px] text-slate-500">Disponível após adquirir o suporte completo</p>
+        <button type="button" disabled class="mt-3 w-full flex items-center gap-3 px-4 py-3.5 rounded-full bg-slate-200 text-slate-500 cursor-not-allowed">
+          <mat-icon class="material-icons !text-[24px] !w-6 !h-6 !leading-none">chat</mat-icon>
+          <span class="flex-1 text-center text-[14px] font-semibold">Acessar suporte pelo WhatsApp</span>
+          <mat-icon class="material-icons !text-[18px] !w-[18px] !h-[18px] !leading-none">lock</mat-icon>
+        </button>
+      </div>
+
+      <!-- Card de preço -->
+      <div class="relative z-10 mt-5 rounded-[24px] bg-gradient-to-r from-[#2fb05a] to-[#16883f] text-white px-5 py-4 shadow-lg shadow-emerald-700/20 flex items-stretch">
+        <div class="flex-1 min-w-0 flex flex-col justify-center">
+          <span class="self-start px-3 py-1 rounded-full border border-white/50 text-[10px] font-semibold uppercase tracking-wider">Suporte completo</span>
+          <div class="mt-2 flex items-baseline gap-1 whitespace-nowrap">
+            <span class="text-lg font-semibold">R$</span>
+            <span class="text-[36px] leading-none font-black tracking-tight">9,90</span>
+          </div>
+          <p class="mt-1 text-[11px] leading-snug opacity-90">Pagamento único · 30 dias de suporte</p>
+        </div>
+
+        <div class="w-px bg-white/30 mx-3 shrink-0"></div>
+
+        <div class="w-[100px] shrink-0 flex flex-col items-center justify-center gap-1.5 text-center">
+          <mat-icon class="material-icons !text-[32px] !w-8 !h-8 !leading-none">verified_user</mat-icon>
+          <p class="text-[11px] leading-snug font-medium">Orientação em todas as etapas</p>
+        </div>
+      </div>
+
+      <!-- Ação principal -->
+      <button type="button" class="relative z-10 mt-4 w-full flex items-center justify-center gap-3 py-4 rounded-full bg-gradient-to-r from-[#11873f] to-[#0a6330] text-white font-bold text-[16px] shadow-lg shadow-emerald-900/30 active:scale-[0.98] transition-transform">
+        <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">credit_card</mat-icon>
+        <span>Adquirir suporte completo</span>
+        <mat-icon class="material-icons !text-[20px] !w-5 !h-5 !leading-none">arrow_forward</mat-icon>
+      </button>
     </div>
   `,
 })
