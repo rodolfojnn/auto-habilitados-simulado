@@ -52,7 +52,7 @@ import { interval, Subscription } from 'rxjs';
             <div>
               <h3 id="payment-modal-title" class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
                 @if (isApproved()) {
-                  Pagamento confirmado!
+                  {{ approvedTitle() }}
                 } @else {
                   Processando seu pagamento...
                 }
@@ -60,7 +60,7 @@ import { interval, Subscription } from 'rxjs';
 
               <p class="mt-2 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                 @if (isApproved()) {
-                  Seu acesso ilimitado ao simulado já foi liberado com sucesso. Bons estudos!
+                  {{ approvedMessage() }}
                 } @else {
                   O Google Play pode levar alguns segundos para confirmar a transação. Não se preocupe: se você concluiu a compra, o acesso ilimitado será liberado automaticamente.
                 }
@@ -96,10 +96,10 @@ import { interval, Subscription } from 'rxjs';
             @if (isApproved()) {
               <button
                 type="button"
-                (click)="handleClose()"
+                (click)="onApprovedButtonClick()"
                 class="w-full flex items-center justify-center gap-2 bg-[#0b5d3b] hover:bg-[#094d31] dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-bold text-sm sm:text-base py-3.5 px-5 rounded-2xl shadow-lg shadow-emerald-700/20 active:scale-[0.98] transition-all cursor-pointer"
               >
-                <span>Acessar o Simulado</span>
+                <span>{{ approvedButtonText() }}</span>
                 <mat-icon class="material-icons !text-xl !w-5 !h-5 !leading-none">arrow_forward</mat-icon>
               </button>
             } @else {
@@ -181,13 +181,22 @@ export class PaymentProcessingModal implements OnDestroy {
   isOpen = input<boolean>(false);
   isChecking = input<boolean>(false);
   isApproved = input<boolean>(false);
+  approvedTitle = input<string>('Pagamento confirmado!');
+  approvedMessage = input<string>('Seu acesso ilimitado ao simulado já foi liberado com sucesso. Bons estudos!');
+  approvedButtonText = input<string>('Acessar o Simulado');
 
   verify = output<void>();
   restart = output<void>();
   closed = output<void>();
+  approvedAction = output<void>();
 
   attempts = signal<number>(1);
   private pollSub?: Subscription;
+
+  onApprovedButtonClick(): void {
+    this.approvedAction.emit();
+    this.handleClose();
+  }
 
   constructor() {
     effect(() => {

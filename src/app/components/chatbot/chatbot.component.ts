@@ -330,9 +330,9 @@ export class ChatbotComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * ATENÇÃO (Instrução para IA e Desenvolvedores):
-   * Temporariamente, o clique na bolinha do chat abre o link externo de suporte:
-   * https://teorico.dirigiragora.com.br/promo-suporte
+   * Ao clicar no widget do chat:
+   * - Em dispositivos iOS: abre o link externo 'https://teorico.dirigiragora.com.br/promo-suporte' em nova aba.
+   * - Em dispositivos Android: abre a tela interna /paywall-suporte.
    *
    * A janela de chat está inativa por enquanto, MAS TODO O CÓDIGO DO CHATBOT
    * (interfaces, CHAT_FLOW, toggleChat, selectOption, navigateToAppAulas, template, etc.)
@@ -340,8 +340,6 @@ export class ChatbotComponent implements OnInit, AfterViewInit {
    * NÃO EXCLUA OU REMOVA NENHUMA PARTE DO CÓDIGO DO CHATBOT DESTE COMPONENTE!
    */
   async openSupportLink() {
-    const url = 'https://teorico.dirigiragora.com.br/promo-suporte';
-
     // Marca notificação de mensagem como lida
     this.hasUnread.set(false);
     try {
@@ -350,19 +348,28 @@ export class ChatbotComponent implements OnInit, AfterViewInit {
       console.warn('Erro ao salvar chatbot_has_read:', e);
     }
 
-    try {
-      const platform = Capacitor.getPlatform();
-      if (platform === 'ios' || platform === 'android' || Capacitor.isNativePlatform()) {
-        // No Android e iOS (nativo via Capacitor), utiliza o @capacitor/browser que abre
-        // Chrome Custom Tabs (Android) ou SFSafariViewController (iOS) garantindo funcionamento correto
-        await Browser.open({ url });
-      } else {
-        // No navegador Web Desktop ou Mobile Web
+    const platform = Capacitor.getPlatform();
+    const isIOS = platform === 'ios' || (typeof navigator !== 'undefined' && (
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+    ));
+
+    if (isIOS) {
+      // Dispositivos iOS: abre link externo de suporte em nova aba
+      const url = 'https://teorico.dirigiragora.com.br/promo-suporte';
+      try {
+        if (platform === 'ios') {
+          await Browser.open({ url });
+        } else {
+          window.open(url, '_blank', 'noopener,noreferrer');
+        }
+      } catch (error) {
+        console.error('Erro ao abrir link externo no iOS, executando fallback window.open:', error);
         window.open(url, '_blank', 'noopener,noreferrer');
       }
-    } catch (error) {
-      console.error('Erro ao abrir link externo no Browser do Capacitor, executando fallback window.open:', error);
-      window.open(url, '_blank', 'noopener,noreferrer');
+    } else {
+      // Dispositivos Android (e ambientes não-iOS / web): abre a tela paywall-suporte
+      this.router.navigate(['/paywall-suporte']);
     }
   }
 
