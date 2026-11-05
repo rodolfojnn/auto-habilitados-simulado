@@ -37,7 +37,7 @@ import { AppStoreService } from '../../app-store.service';
       <!-- Lista de benefícios -->
       <div class="relative z-10 mt-4 bg-white dark:bg-slate-900 rounded-[22px] px-4 border border-slate-100 dark:border-white/5 shadow-[0_8px_30px_rgba(0,0,0,0.05)] dark:shadow-none">
         <div class="flex items-center gap-3 py-2.5">
-          <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] dark:bg-emerald-500/15 text-[#22a04b] dark:text-emerald-400 flex items-center justify-center shrink-0">
+          <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] dark:bg-emerald-900/20 text-[#22a04b] dark:text-emerald-400 flex items-center justify-center shrink-0">
             <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">chat_bubble_outline</mat-icon>
           </div>
           <div class="min-w-0">
@@ -46,8 +46,8 @@ import { AppStoreService } from '../../app-store.service';
           </div>
         </div>
 
-        <div class="flex items-center gap-3 py-2.5 border-t border-slate-100">
-          <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] dark:bg-emerald-500/15 text-[#22a04b] dark:text-emerald-400 flex items-center justify-center shrink-0">
+        <div class="flex items-center gap-3 py-2.5 border-t border-slate-100 dark:border-white/5">
+          <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] dark:bg-emerald-900/20 text-[#22a04b] dark:text-emerald-400 flex items-center justify-center shrink-0">
             <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">calendar_month</mat-icon>
           </div>
           <div class="min-w-0">
@@ -56,8 +56,8 @@ import { AppStoreService } from '../../app-store.service';
           </div>
         </div>
 
-        <div class="flex items-center gap-3 py-2.5 border-t border-slate-100">
-          <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] dark:bg-emerald-500/15 text-[#22a04b] dark:text-emerald-400 flex items-center justify-center shrink-0">
+        <div class="flex items-center gap-3 py-2.5 border-t border-slate-100 dark:border-white/5">
+          <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] dark:bg-emerald-900/20 text-[#22a04b] dark:text-emerald-400 flex items-center justify-center shrink-0">
             <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">location_on</mat-icon>
           </div>
           <div class="min-w-0">
@@ -66,8 +66,8 @@ import { AppStoreService } from '../../app-store.service';
           </div>
         </div>
 
-        <div class="flex items-center gap-3 py-2.5 border-t border-slate-100">
-          <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] dark:bg-emerald-500/15 text-[#22a04b] dark:text-emerald-400 flex items-center justify-center shrink-0">
+        <div class="flex items-center gap-3 py-2.5 border-t border-slate-100 dark:border-white/5">
+          <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] dark:bg-emerald-900/20 text-[#22a04b] dark:text-emerald-400 flex items-center justify-center shrink-0">
             <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">fact_check</mat-icon>
           </div>
           <div class="min-w-0">
