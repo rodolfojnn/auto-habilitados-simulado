@@ -1136,8 +1136,9 @@ export class SimulationComponent implements OnInit, OnDestroy {
     }, 500);
 
     // Avaliação nativa (iOS StoreKit e Android Google Play):
-    // Dispara diretamente o requestReview sem modal prévio de confirmação quando o usuário passa no simulado (>= 20 acertos)
-    if (this.score() >= 20) {
+    // Dispara diretamente o requestReview sem modal prévio de confirmação quando o usuário passa no simulado (>= 20 acertos),
+    // apenas para alunos que NÃO são de autoescola (!isAutoescola). Usuários de autoescola (isAutoescola === true) não recebem in-app review.
+    if (this.score() >= 20 && !this.isAutoescola()) {
       setTimeout(() => {
         this.inAppReview.requestReview();
       }, 1200);

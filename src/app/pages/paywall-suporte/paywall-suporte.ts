@@ -19,16 +19,8 @@ import { PaymentProcessingModal } from '../../components/payment-processing-moda
       <!-- Brilho decorativo do canto superior direito -->
       <div class="pointer-events-none absolute -top-16 -right-20 w-64 h-64 rounded-full bg-[#d4f5df] dark:bg-emerald-500/10 opacity-70 blur-2xl"></div>
 
-      <!-- Barra Superior: Botão Voltar e Status -->
+      <!-- Barra Superior: Botão Status -->
       <div class="relative z-20 flex items-center justify-between mb-2">
-        <button
-          type="button"
-          (click)="voltar()"
-          class="w-10 h-10 rounded-full flex items-center justify-center bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-white/10 shadow-sm hover:bg-white dark:hover:bg-slate-800 transition-colors cursor-pointer active:scale-95"
-          aria-label="Voltar"
-        >
-          <mat-icon class="material-icons !text-[20px] !w-5 !h-5 !leading-none">arrow_back</mat-icon>
-        </button>
 
         @if (isPaid()) {
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-[#22a04b] dark:text-emerald-400 text-xs font-bold border border-emerald-200 dark:border-emerald-500/30">
@@ -146,9 +138,6 @@ import { PaymentProcessingModal } from '../../components/payment-processing-moda
             <span class="flex-1 text-center">Acessar suporte pelo WhatsApp</span>
             <mat-icon class="material-icons !text-[20px] !w-5 !h-5 !leading-none">open_in_new</mat-icon>
           </button>
-          <p class="mt-2 text-[11px] text-slate-500 dark:text-slate-400">
-            WhatsApp Oficial: (11) 5192-4353
-          </p>
         </div>
       }
 
@@ -162,7 +151,7 @@ import { PaymentProcessingModal } from '../../components/payment-processing-moda
               <span class="text-lg font-semibold">R$</span>
               <span class="text-[36px] leading-none font-black tracking-tight">9,90</span>
             </div>
-            <p class="mt-1 text-[11px] leading-snug opacity-90">Pagamento único · 30 dias de suporte</p>
+            <p class="mt-1 text-[11px] leading-snug opacity-90">Pagamento único</p>
           </div>
 
           <div class="w-px bg-white/30 mx-3 shrink-0"></div>
@@ -200,7 +189,7 @@ import { PaymentProcessingModal } from '../../components/payment-processing-moda
           </div>
           <div class="min-w-0 flex-1">
             <h4 class="font-bold text-[15px] leading-tight">Suporte Completo Ativo</h4>
-            <p class="text-xs opacity-90 mt-1">30 dias de orientação humana pelo WhatsApp inclusos.</p>
+            <p class="text-xs opacity-90 mt-1">Orientação humana pelo WhatsApp inclusos.</p>
           </div>
         </div>
 
