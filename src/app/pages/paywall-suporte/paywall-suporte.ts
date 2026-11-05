@@ -25,3 +25,4 @@ export class PaywallSuporteComponent implements OnInit, OnDestroy {
     this.store.showChat.set(true);
   }
 }
+
