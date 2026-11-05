@@ -38,10 +38,10 @@ import { PaymentProcessingModal } from '../../components/payment-processing-moda
             Atendimento humano
           </span>
           <h1 class="mt-3 text-[25px] leading-[1.1] font-extrabold tracking-tight text-[#0f1d3a] dark:text-white">
-            Não fique perdido na hora de tirar <span class="text-[#22a04b] dark:text-emerald-400">sua CNH!</span>
+            CNH MAIS RÁPIDA <span class="text-[#22a04b] dark:text-emerald-400">COM SUPORTE!</span>
           </h1>
           <p class="mt-3 text-[14px] leading-relaxed text-slate-600 dark:text-slate-300">
-            Conte com nossa equipe para orientar você em cada etapa da habilitação pelo CNH do Brasil.
+            Não precisa pagar caro em autoescola para ter o suporte que você merece. Faça o seu processo conosco de forma rápida e segura.
           </p>
         </div>
 
@@ -56,11 +56,11 @@ import { PaymentProcessingModal } from '../../components/payment-processing-moda
       <div class="relative z-10 mt-4 bg-white dark:bg-slate-900 rounded-[22px] px-4 border border-slate-100 dark:border-white/5 shadow-[0_8px_30px_rgba(0,0,0,0.05)] dark:shadow-none">
         <div class="flex items-center gap-3 py-2.5">
           <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] dark:bg-emerald-900/20 text-[#22a04b] dark:text-emerald-400 flex items-center justify-center shrink-0">
-            <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">chat_bubble_outline</mat-icon>
+            <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">supervisor_account</mat-icon>
           </div>
           <div class="min-w-0">
-            <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a] dark:text-white">Tire suas dúvidas</h3>
-            <p class="text-[14px] leading-snug text-slate-500 dark:text-slate-400">com pessoas de verdade.</p>
+            <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a] dark:text-white">Orientação total</h3>
+            <p class="text-[14px] leading-snug text-slate-500 dark:text-slate-400">Receba suporte humano.</p>
           </div>
         </div>
 
@@ -69,30 +69,21 @@ import { PaymentProcessingModal } from '../../components/payment-processing-moda
             <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">calendar_month</mat-icon>
           </div>
           <div class="min-w-0">
-            <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a] dark:text-white">Saiba como agendar</h3>
-            <p class="text-[14px] leading-snug text-slate-500 dark:text-slate-400">suas provas e exames.</p>
+            <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a] dark:text-white">Provas e exames</h3>
+            <p class="text-[14px] leading-snug text-slate-500 dark:text-slate-400">Seus agendamentos.</p>
           </div>
         </div>
 
         <div class="flex items-center gap-3 py-2.5 border-t border-slate-100 dark:border-white/5">
           <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] dark:bg-emerald-900/20 text-[#22a04b] dark:text-emerald-400 flex items-center justify-center shrink-0">
-            <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">location_on</mat-icon>
+            <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">chat_bubble_outline</mat-icon>
           </div>
           <div class="min-w-0">
-            <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a] dark:text-white">Entenda todas as etapas</h3>
-            <p class="text-[14px] leading-snug text-slate-500 dark:text-slate-400">do processo.</p>
+            <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a] dark:text-white">Mais cômodo e fácil</h3>
+            <p class="text-[14px] leading-snug text-slate-500 dark:text-slate-400">Resolva pelo WhatsApp.</p>
           </div>
         </div>
 
-        <div class="flex items-center gap-3 py-2.5 border-t border-slate-100 dark:border-white/5">
-          <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] dark:bg-emerald-900/20 text-[#22a04b] dark:text-emerald-400 flex items-center justify-center shrink-0">
-            <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">fact_check</mat-icon>
-          </div>
-          <div class="min-w-0">
-            <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a] dark:text-white">Resolva problemas</h3>
-            <p class="text-[14px] leading-snug text-slate-500 dark:text-slate-400">com facilidade.</p>
-          </div>
-        </div>
       </div>
 
       <!-- Bloco WhatsApp: Bloqueado (antes de pagar) / Liberado (após pagamento) -->
@@ -113,7 +104,7 @@ import { PaymentProcessingModal } from '../../components/payment-processing-moda
             class="mt-3 w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-full bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-600 dark:text-slate-300 transition-all cursor-pointer shadow-sm active:scale-[0.98]"
             title="Clique para adquirir o suporte completo e desbloquear"
           >
-            <mat-icon class="material-icons !text-[24px] !w-6 !h-6 !leading-none text-slate-500 dark:text-slate-400">chat</mat-icon>
+            <mat-icon svgIcon="whatsapp" class="material-icons !text-[24px] !w-6 !h-6 !leading-none text-slate-500 dark:text-slate-400"></mat-icon>
             <span class="flex-1 text-center text-[14px] font-semibold">Acessar suporte pelo WhatsApp</span>
             <mat-icon class="material-icons !text-[18px] !w-[18px] !h-[18px] !leading-none text-slate-500 dark:text-slate-400">lock</mat-icon>
           </button>
@@ -134,7 +125,7 @@ import { PaymentProcessingModal } from '../../components/payment-processing-moda
             (click)="openWhatsApp()"
             class="mt-3 w-full flex items-center justify-center gap-3 px-5 py-4 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold text-[15px] shadow-lg shadow-emerald-600/25 active:scale-[0.98] transition-all cursor-pointer"
           >
-            <mat-icon class="material-icons !text-[24px] !w-6 !h-6 !leading-none">chat</mat-icon>
+            <mat-icon svgIcon="whatsapp" class="material-icons !text-[24px] !w-6 !h-6 !leading-none"></mat-icon>
             <span class="flex-1 text-center">Acessar suporte pelo WhatsApp</span>
             <mat-icon class="material-icons !text-[20px] !w-5 !h-5 !leading-none">open_in_new</mat-icon>
           </button>
@@ -198,7 +189,7 @@ import { PaymentProcessingModal } from '../../components/payment-processing-moda
           (click)="openWhatsApp()"
           class="relative z-10 mt-4 w-full flex items-center justify-center gap-3 py-4 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold text-[16px] shadow-lg shadow-emerald-600/30 active:scale-[0.98] transition-all cursor-pointer"
         >
-          <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">chat</mat-icon>
+          <mat-icon svgIcon="whatsapp" class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none"></mat-icon>
           <span>Conversar no WhatsApp Agora</span>
           <mat-icon class="material-icons !text-[20px] !w-5 !h-5 !leading-none">arrow_forward</mat-icon>
         </button>
