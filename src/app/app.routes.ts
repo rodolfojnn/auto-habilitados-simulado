@@ -7,5 +7,6 @@ export const routes: Routes = [
   { path: 'ranking', loadComponent: () => import('./pages/ranking/ranking').then(m => m.RankingComponent) },
   { path: 'duelo', loadComponent: () => import('./pages/duel/duel').then(m => m.DuelComponent) },
   { path: 'iframe-container', loadComponent: () => import('./pages/iframe-container/iframe-container').then(m => m.IframeContainerPage) },
+  { path: 'paywall-suporte', loadComponent: () => import('./pages/paywall-suporte/paywall-suporte').then(m => m.PaywallSuporteComponent) },
   { path: '**', redirectTo: '' }
 ];
