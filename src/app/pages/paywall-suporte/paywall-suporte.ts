@@ -8,7 +8,7 @@ import { AppStoreService } from '../../app-store.service';
   imports: [MatIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="relative w-full max-w-[410px] min-h-screen mx-auto bg-[#f3f9f5] dark:bg-slate-950 font-sans overflow-hidden px-5 pt-5 pb-10 box-border">
+    <div class="relative w-full max-w-[440px] min-h-screen mx-auto bg-[#f3f9f5] dark:bg-slate-950 font-sans overflow-hidden px-5 pt-5 pb-10 box-border">
       <!-- Brilho decorativo do canto superior direito -->
       <div class="pointer-events-none absolute -top-16 -right-20 w-64 h-64 rounded-full bg-[#d4f5df] dark:bg-emerald-500/10 opacity-70 blur-2xl"></div>
 
@@ -28,7 +28,7 @@ import { AppStoreService } from '../../app-store.service';
         </div>
 
         <!-- Imagem do headset: versão clara e versão escura -->
-        <div class="relative shrink-0 w-[130px] h-[130px] rounded-full bg-[#dff5e7] dark:bg-emerald-500/15 flex items-center justify-center">
+        <div class="relative shrink-0 w-[130px] h-[130px] flex items-center justify-center">
           <img src="assets/headset-light.png" alt="" aria-hidden="true" class="w-[104px] h-[104px] object-contain drop-shadow-md dark:hidden" />
           <img src="assets/headset-dark.png" alt="" aria-hidden="true" class="hidden dark:block w-[104px] h-[104px] object-contain drop-shadow-md" />
         </div>
