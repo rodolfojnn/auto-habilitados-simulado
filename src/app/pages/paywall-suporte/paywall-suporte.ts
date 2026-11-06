@@ -182,27 +182,6 @@ import { PaymentProcessingModal } from '../../components/payment-processing-moda
             Após a confirmação, o acesso será liberado imediatamente.
           </p>
         </div>
-      } @else {
-        <!-- Card de Suporte Já Ativo -->
-        <div class="relative z-10 mt-5 rounded-[24px] bg-gradient-to-r from-[#2fb05a] to-[#16883f] dark:from-emerald-600 dark:to-emerald-700 text-white px-5 py-4 shadow-lg shadow-emerald-700/20 dark:shadow-emerald-900/30 flex items-center gap-4">
-          <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
-            <mat-icon class="material-icons !text-[30px] !w-[30px] !h-[30px] !leading-none">verified</mat-icon>
-          </div>
-          <div class="min-w-0 flex-1">
-            <h4 class="font-bold text-[15px] leading-tight">Suporte Completo Ativo</h4>
-            <p class="text-xs opacity-90 mt-1">Orientação humana pelo WhatsApp inclusos.</p>
-          </div>
-        </div>
-
-        <button
-          type="button"
-          (click)="openWhatsApp()"
-          class="relative z-10 mt-4 w-full flex items-center justify-center gap-3 py-4 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold text-[16px] shadow-lg shadow-emerald-600/30 active:scale-[0.98] transition-all cursor-pointer"
-        >
-          <mat-icon svgIcon="whatsapp" class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none"></mat-icon>
-          <span>Conversar no WhatsApp Agora</span>
-          <mat-icon class="material-icons !text-[20px] !w-5 !h-5 !leading-none">arrow_forward</mat-icon>
-        </button>
       }
 
       <!-- Modal de Suporte por E-mail -->
@@ -224,18 +203,6 @@ import { PaymentProcessingModal } from '../../components/payment-processing-moda
         (closed)="purchaseService.dismissProcessingModal()"
         (approvedAction)="openWhatsApp()"
       />
-
-      <!-- Opção de teste em desenvolvimento / homologação para simular pagamento -->
-      <!-- Não excluir código abaixo, quando eu precisar vou descomentar -->
-      <!-- <div class="mt-4 text-center">
-        <button
-          type="button"
-          (click)="simularPagamentoTeste()"
-          class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline cursor-pointer opacity-75 hover:opacity-100"
-        >
-          [Ambiente de Teste: Simular Pagamento Aprovado]
-        </button>
-      </div> -->
 
     </div>
   `,
