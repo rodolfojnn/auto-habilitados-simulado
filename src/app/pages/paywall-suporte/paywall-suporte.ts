@@ -84,6 +84,16 @@ import { PaymentProcessingModal } from '../../components/payment-processing-moda
           </div>
         </div>
 
+        <div class="flex items-center gap-3 py-2.5 border-t border-slate-100 dark:border-white/5">
+          <div class="w-10 h-10 rounded-xl bg-[#e3f6ea] dark:bg-emerald-900/20 text-[#22a04b] dark:text-emerald-400 flex items-center justify-center shrink-0">
+            <mat-icon class="material-icons !text-[22px] !w-[22px] !h-[22px] !leading-none">fact_check</mat-icon>
+          </div>
+          <div class="min-w-0">
+            <h3 class="text-[15px] font-bold leading-snug text-[#0f1d3a] dark:text-white">Resolva problemas</h3>
+            <p class="text-[14px] leading-snug text-slate-500 dark:text-slate-400">Sem complicações.</p>
+          </div>
+        </div>
+
       </div>
 
       <!-- Bloco WhatsApp: Bloqueado (antes de pagar) / Liberado (após pagamento) -->
