@@ -76,16 +76,17 @@ const TIPS = [
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Pronto para a sua CNH?</h1>
         <p class="text-gray-600 dark:text-slate-400 text-sm">Pratique e melhore suas chances na prova prática.</p>
       </header> -->
+
       <header>
         <img
-          style="max-height: 120px"
-          src="assets/logo-simulado-light.png"
+          style="max-height: 55px"
+          src="assets/logo-simulado-light-side.png"
           alt="Simulado CNH do Brasil"
           class="w-full h-full object-contain drop-shadow-md dark:hidden"
         />
         <img
-          style="max-height: 120px"
-          src="assets/logo-simulado-dark.png"
+          style="max-height: 55px"
+          src="assets/logo-simulado-dark-side.png"
           alt="Simulado CNH do Brasil"
           class="hidden dark:block w-full h-full object-contain drop-shadow-md"
         />
@@ -93,50 +94,6 @@ const TIPS = [
 
       <!-- Secondary Actions Grid -->
       <section class="flex flex-col gap-4">
-
-        <!-- Card de apoio -->
-        @if (!isAutoescola()) {
-          <div class="relative flex flex-col gap-4 w-full rounded-3xl border border-indigo-100/50 bg-gradient-to-br from-indigo-50 to-blue-50/50 dark:from-indigo-900/20 dark:to-blue-900/10 p-5 shadow-sm">
-            <div class="flex items-start gap-4">
-              <!-- Ícone -->
-              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-600 shadow-inner">
-                <mat-icon class="material-icons !text-white !text-2xl !w-6 !h-6 !leading-none flex items-center justify-center shrink-0" style="color: white;">favorite</mat-icon>
-              </div>
-              <!-- Texto -->
-              <div class="min-w-0 flex-1">
-                <h2 class="text-base font-bold leading-tight text-slate-900 dark:text-white text-balance">
-                  Apoie nosso projeto!
-                </h2>
-                <p class="mt-1 text-[13px] leading-snug text-slate-600 dark:text-slate-400 text-pretty">
-                  Sua contribuição ajuda a manter o app gratuito.
-                </p>
-              </div>
-            </div>
-
-            <!-- Botões -->
-            <div class="grid gap-3 mt-1" [class.grid-cols-2]="isAndroidOrWeb" [class.grid-cols-1]="!isAndroidOrWeb">
-              <button
-                type="button"
-                (click)="openReview()"
-                class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-indigo-100 dark:border-white/10 px-3 py-2.5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 transition-all hover:bg-indigo-50 dark:hover:bg-slate-700 shadow-sm active:scale-[0.98]"
-              >
-                <mat-icon class="material-icons !text-lg !w-5 !h-5 !leading-none flex items-center justify-center shrink-0">star</mat-icon>
-                <span>Avaliar</span>
-              </button>
-
-              @if (isAndroidOrWeb) {
-                <button
-                  type="button"
-                  (click)="openDonation()"
-                  class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white transition-all hover:bg-indigo-700 shadow-sm active:scale-[0.98]"
-                >
-                  <mat-icon class="material-icons !text-lg !w-5 !h-5 !leading-none flex items-center justify-center shrink-0">volunteer_activism</mat-icon>
-                  <span>Doar</span>
-                </button>
-              }
-            </div>
-          </div>
-        }
 
         <!-- Main Action: Iniciar Simulado -->
         <a routerLink="/simulado"
@@ -146,44 +103,97 @@ const TIPS = [
           </div>
           <div class="flex flex-col flex-1">
             <h3 class="font-bold text-gray-900 dark:text-white text-lg">Iniciar Simulado</h3>
-            <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">30 Questões Oficiais</p>
+            <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">Questões Oficiais</p>
           </div>
           <div class="w-10 h-10 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-500">
             <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
           </div>
         </a>
 
-        <!-- Aulas Práticas -->
-        @if (!isAutoescola()) {
-          <button type="button" (click)="openAulasPraticas()"
-            class="w-full bg-white dark:bg-slate-800 px-4 py-2 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px] text-left">
-            <div class="w-14 h-14 flex-shrink-0 bg-emerald-50 dark:bg-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/30">
-               <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">directions_car</mat-icon>
+        <!-- Multiplayer e Meu Histórico em 2 colunas -->
+        <div class="grid grid-cols-2 gap-3">
+          <!-- Duelo / Multiplayer -->
+          <a routerLink="/duelo"
+            class="flex flex-col items-center justify-center text-center rounded-3xl bg-gradient-to-br from-white to-violet-50/90 dark:from-slate-800 dark:to-violet-950/30 border border-violet-100 dark:border-violet-500/20 border-b-[4px] border-b-violet-200/80 dark:border-b-violet-500/30 px-3 py-4 shadow-md transition-all duration-300 active:scale-[0.98] active:translate-y-1 hover:border-b-[2px] hover:translate-y-[1px] cursor-pointer">
+            <div class="w-12 h-12 rounded-2xl bg-violet-100/80 dark:bg-violet-500/20 border border-violet-200/70 dark:border-violet-500/30 flex items-center justify-center text-violet-600 dark:text-violet-400 mb-2.5">
+              <mat-icon class="material-icons !text-[26px] !leading-none !w-7 !h-7">sports_esports</mat-icon>
             </div>
-            <div class="flex flex-col flex-1">
-              <h3 class="font-bold text-gray-900 dark:text-white text-lg">Aulas Práticas</h3>
-              <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">Sua CNH sem autoescola!</p>
+            <h3 class="font-bold text-gray-900 dark:text-white text-base leading-tight">Multiplayer</h3>
+            <p class="text-xs text-gray-500 dark:text-slate-400 mt-1 leading-tight">Desafie outro aluno</p>
+          </a>
+
+          <!-- Histórico -->
+          <a routerLink="/historico"
+            class="flex flex-col items-center justify-center text-center rounded-3xl bg-gradient-to-br from-white to-blue-50/90 dark:from-slate-800 dark:to-blue-950/30 border border-blue-100 dark:border-blue-500/20 border-b-[4px] border-b-blue-200/80 dark:border-b-blue-500/30 px-3 py-4 shadow-md transition-all duration-300 active:scale-[0.98] active:translate-y-1 hover:border-b-[2px] hover:translate-y-[1px] cursor-pointer">
+            <div class="w-12 h-12 rounded-2xl bg-blue-100/80 dark:bg-blue-500/20 border border-blue-200/70 dark:border-blue-500/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-2.5">
+              <mat-icon class="material-icons !text-[26px] !leading-none !w-7 !h-7">history</mat-icon>
             </div>
-            <div class="w-10 h-10 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-500">
-              <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
+            <h3 class="font-bold text-gray-900 dark:text-white text-base leading-tight">Histórico</h3>
+            <p class="text-xs text-gray-500 dark:text-slate-400 mt-1 leading-tight">Evolução e resultados</p>
+          </a>
+        </div>
+
+        <!-- Outras etapas da sua CNH -->
+        <div class="flex flex-col gap-3 mt-1">
+          <h2 class="px-1 text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+            Outras etapas da sua CNH
+          </h2>
+
+          <!-- Psicotécnico -->
+          <button type="button" (click)="openPsicotecnico()"
+            class="w-full bg-white dark:bg-slate-800 px-4 py-3.5 rounded-3xl flex items-center gap-4 shadow-sm group transition-all duration-300 active:scale-[0.98] active:translate-y-0.5 cursor-pointer border border-gray-200/80 dark:border-white/5 border-b-[3px] border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px] text-left">
+            <div class="w-13 h-13 flex-shrink-0 bg-violet-100/80 dark:bg-violet-500/20 rounded-2xl flex items-center justify-center text-violet-600 dark:text-violet-400">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
+                <circle cx="12" cy="12" r="9" />
+                <circle cx="12" cy="12" r="5.5" />
+                <circle cx="12" cy="12" r="2" />
+              </svg>
+            </div>
+            <div class="flex flex-col flex-1 min-w-0">
+              <h3 class="font-bold text-gray-900 dark:text-white text-lg leading-tight">Psicotécnico</h3>
+              <p class="text-[11px] uppercase font-semibold text-slate-600 dark:text-slate-400 tracking-wide mt-0.5 leading-snug">Treine o exame psicológico</p>
+            </div>
+            <div class="w-10 h-10 bg-gray-100/90 dark:bg-white/5 rounded-full flex items-center justify-center text-slate-600 dark:text-gray-400 shrink-0">
+              <mat-icon class="material-icons !text-lg !leading-none !w-5 !h-5">north_east</mat-icon>
             </div>
           </button>
-        }
 
-        <!-- Historico -->
-        <a routerLink="/historico"
-          class="w-full bg-white dark:bg-slate-800 px-4 py-2 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
-          <div class="w-14 h-14 flex-shrink-0 bg-blue-50 dark:bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-500/30">
-             <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">history</mat-icon>
-          </div>
-          <div class="flex flex-col flex-1">
-            <h3 class="font-bold text-gray-900 dark:text-white text-lg">Meu Histórico</h3>
-            <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">Evolução e resultados</p>
-          </div>
-          <div class="w-10 h-10 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-500">
-            <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
-          </div>
-        </a>
+          <!-- Aulas Práticas -->
+          <button type="button" (click)="openAulasPraticas()"
+            class="w-full bg-white dark:bg-slate-800 px-4 py-3.5 rounded-3xl flex items-center gap-4 shadow-sm group transition-all duration-300 active:scale-[0.98] active:translate-y-0.5 cursor-pointer border border-gray-200/80 dark:border-white/5 border-b-[3px] border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px] text-left">
+            <div class="w-13 h-13 flex-shrink-0 bg-emerald-100/75 dark:bg-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-700 dark:text-emerald-400">
+              <mat-icon class="material-icons !text-[26px] !leading-none !w-7 !h-7">directions_car</mat-icon>
+            </div>
+            <div class="flex flex-col flex-1 min-w-0">
+              <h3 class="font-bold text-gray-900 dark:text-white text-lg leading-tight">Aulas de Direção</h3>
+              <p class="text-[11px] uppercase font-semibold text-slate-600 dark:text-slate-400 tracking-wide mt-0.5 leading-snug">Atendimento em domicílio</p>
+            </div>
+            <div class="w-10 h-10 bg-gray-100/90 dark:bg-white/5 rounded-full flex items-center justify-center text-slate-600 dark:text-gray-400 shrink-0">
+              <mat-icon class="material-icons !text-lg !leading-none !w-5 !h-5">north_east</mat-icon>
+            </div>
+          </button>
+
+          <!-- Exame Prático -->
+          <button type="button" (click)="openExamePratico()"
+            class="w-full bg-white dark:bg-slate-800 px-4 py-3.5 rounded-3xl flex items-center gap-4 shadow-sm group transition-all duration-300 active:scale-[0.98] active:translate-y-0.5 cursor-pointer border border-gray-200/80 dark:border-white/5 border-b-[3px] border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px] text-left">
+            <div class="w-13 h-13 flex-shrink-0 bg-orange-100/80 dark:bg-orange-500/20 rounded-2xl flex items-center justify-center text-orange-700 dark:text-orange-400">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9" />
+                <circle cx="12" cy="12" r="2" />
+                <path d="M3.5 10.5L10 11.5" />
+                <path d="M20.5 10.5L14 11.5" />
+                <path d="M12 14v7" />
+              </svg>
+            </div>
+            <div class="flex flex-col flex-1 min-w-0">
+              <h3 class="font-bold text-gray-900 dark:text-white text-lg leading-tight">Exame Prático</h3>
+              <p class="text-[11px] uppercase font-semibold text-slate-600 dark:text-slate-400 tracking-wide mt-0.5 leading-snug">Treine a prova de direção</p>
+            </div>
+            <div class="w-10 h-10 bg-gray-100/90 dark:bg-white/5 rounded-full flex items-center justify-center text-slate-600 dark:text-gray-400 shrink-0">
+              <mat-icon class="material-icons !text-lg !leading-none !w-5 !h-5">north_east</mat-icon>
+            </div>
+          </button>
+        </div>
 
         <!-- Deixar o ranking oculto por enquanto, futuramente vamos reativar, então não excluir o código comentado abaixo -->
         <!--
@@ -202,22 +212,51 @@ const TIPS = [
         </a>
         -->
 
-        <!-- Duelo -->
-        <a routerLink="/duelo"
-          class="w-full bg-white dark:bg-slate-800 px-4 py-2 rounded-3xl flex items-center gap-4 shadow-md group transition-all duration-300 active:scale-[0.98] active:translate-y-1 cursor-pointer border-b-[4px] border border-gray-100 dark:border-white/5 border-b-gray-200 dark:border-b-white/10 hover:border-b-[2px] hover:translate-y-[1px]">
-          <div class="w-14 h-14 flex-shrink-0 bg-indigo-50 dark:bg-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-500/30">
-              <mat-icon class="material-icons !text-3xl !leading-none !w-8 !h-8">sports_esports</mat-icon>
-          </div>
-          <div class="flex flex-col flex-1">
-            <h3 class="font-bold text-gray-900 dark:text-white text-lg">Multiplayer</h3>
-            <p class="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider">Desafie outro jogador</p>
-          </div>
-          <div class="w-10 h-10 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-500">
-            <mat-icon class="material-icons !text-xl !leading-none !w-5 !h-5">chevron_right</mat-icon>
-          </div>
-        </a>
-
       </section>
+
+      <!-- Card de apoio -->
+      @if (!isAutoescola()) {
+        <div class="relative flex flex-col gap-4 w-full rounded-3xl border border-indigo-100/50 bg-gradient-to-br from-indigo-50 to-blue-50/50 dark:from-indigo-900/20 dark:to-blue-900/10 p-5 shadow-sm">
+          <div class="flex items-start gap-4">
+            <!-- Ícone -->
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-600 shadow-inner">
+              <mat-icon class="material-icons !text-white !text-2xl !w-6 !h-6 !leading-none flex items-center justify-center shrink-0" style="color: white;">favorite</mat-icon>
+            </div>
+            <!-- Texto -->
+            <div class="min-w-0 flex-1">
+              <h2 class="text-base font-bold leading-tight text-slate-900 dark:text-white text-balance">
+                Apoie nosso projeto!
+              </h2>
+              <p class="mt-1 text-[13px] leading-snug text-slate-600 dark:text-slate-400 text-pretty">
+                Ajude a manter o app gratuito.
+              </p>
+            </div>
+          </div>
+
+          <!-- Botões -->
+          <div class="grid gap-3 mt-1" [class.grid-cols-2]="isAndroidOrWeb" [class.grid-cols-1]="!isAndroidOrWeb">
+            <button
+              type="button"
+              (click)="openReview()"
+              class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-indigo-100 dark:border-white/10 px-3 py-2.5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 transition-all hover:bg-indigo-50 dark:hover:bg-slate-700 shadow-sm active:scale-[0.98]"
+            >
+              <mat-icon class="material-icons !text-lg !w-5 !h-5 !leading-none flex items-center justify-center shrink-0">star</mat-icon>
+              <span>Avaliar</span>
+            </button>
+
+            @if (isAndroidOrWeb) {
+              <button
+                type="button"
+                (click)="openDonation()"
+                class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white transition-all hover:bg-indigo-700 shadow-sm active:scale-[0.98]"
+              >
+                <mat-icon class="material-icons !text-lg !w-5 !h-5 !leading-none flex items-center justify-center shrink-0">volunteer_activism</mat-icon>
+                <span>Doar</span>
+              </button>
+            }
+          </div>
+        </div>
+      }
 
       <!-- Quick Tips Card -->
       <section class="bg-brand-50 dark:bg-slate-800 border border-brand-100 dark:border-white/5 p-5 rounded-3xl relative overflow-hidden mt-2 shadow-sm dark:shadow-lg">
@@ -280,6 +319,34 @@ export class HomeComponent implements OnInit {
     this.currentTip.set(TIPS[randomIndex]);
   }
 
+  private isIosDevice(): boolean {
+    const platform = Capacitor.getPlatform();
+    if (platform === 'ios') return true;
+    if (platform === 'android') return false;
+    return typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+  }
+
+  private async openExternalUrl(url: string) {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        await Browser.open({ url });
+      } catch (err) {
+        console.log(err);
+        window.open(url, '_blank');
+      }
+    } else {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  }
+
+  async openPsicotecnico() {
+    const url = this.isIosDevice()
+      ? 'https://apps.apple.com/br/app/psicot%C3%A9cnico-cnh-do-brasil/id6837783549'
+      : 'https://play.google.com/store/apps/details?id=br.com.psicotecnico.cnh.brasil&hl=pt_BR';
+
+    await this.openExternalUrl(url);
+  }
+
   async openAulasPraticas() {
     const platform = Capacitor.getPlatform();
     let url = 'https://www.dirigiragora.com.br';
@@ -290,16 +357,15 @@ export class HomeComponent implements OnInit {
       url = 'https://play.google.com/store/apps/details?id=br.com.dirigiragora&hl=pt_BR';
     }
 
-    if (Capacitor.isNativePlatform()) {
-      try {
-        await Browser.open({ url });
-      } catch (err) {
-        console.log(err);
-        window.open(url, '_blank');
-      }
-    } else {
-      window.open(url, '_blank');
-    }
+    await this.openExternalUrl(url);
+  }
+
+  async openExamePratico() {
+    const url = this.isIosDevice()
+      ? 'https://apps.apple.com/br/app/exame-pr%C3%A1tico-cnh-do-brasil/id6835520583'
+      : 'https://play.google.com/store/apps/details?id=br.com.examepratico.app';
+
+    await this.openExternalUrl(url);
   }
 
   async openReview() {

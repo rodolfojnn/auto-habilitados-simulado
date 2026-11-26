@@ -331,8 +331,9 @@ export class ChatbotComponent implements OnInit, AfterViewInit {
 
   /**
    * Ao clicar no widget do chat:
-   * - Em dispositivos iOS: abre o link externo 'https://teorico.dirigiragora.com.br/promo-suporte' em nova aba.
-   * - Em dispositivos Android: abre a tela interna /paywall-suporte.
+   * - Em dispositivos iOS e Android (e web): abre o link externo 'https://teorico.dirigiragora.com.br/promo-suporte'
+   *   via Capacitor Browser no app nativo ou em nova aba na web (com noopener,noreferrer).
+   * - O redirecionamento interno para /paywall-suporte no Android foi comentado temporariamente.
    *
    * A janela de chat está inativa por enquanto, MAS TODO O CÓDIGO DO CHATBOT
    * (interfaces, CHAT_FLOW, toggleChat, selectOption, navigateToAppAulas, template, etc.)
@@ -353,12 +354,12 @@ export class ChatbotComponent implements OnInit, AfterViewInit {
       /iPad|iPhone|iPod/.test(navigator.userAgent) ||
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
     ));
+    const url = 'https://teorico.dirigiragora.com.br/promo-suporte';
 
     if (isIOS) {
       // Dispositivos iOS: abre link externo de suporte em nova aba
-      const url = 'https://teorico.dirigiragora.com.br/promo-suporte';
       try {
-        if (platform === 'ios') {
+        if (Capacitor.isNativePlatform()) {
           await Browser.open({ url });
         } else {
           window.open(url, '_blank', 'noopener,noreferrer');
@@ -368,8 +369,18 @@ export class ChatbotComponent implements OnInit, AfterViewInit {
         window.open(url, '_blank', 'noopener,noreferrer');
       }
     } else {
-      // Dispositivos Android (e ambientes não-iOS / web): abre a tela paywall-suporte
-      this.router.navigate(['/paywall-suporte']);
+      // Dispositivos Android (e ambientes não-iOS / web): redireciona também para o link externo de suporte
+      // this.router.navigate(['/paywall-suporte']);
+      try {
+        if (Capacitor.isNativePlatform()) {
+          await Browser.open({ url });
+        } else {
+          window.open(url, '_blank', 'noopener,noreferrer');
+        }
+      } catch (error) {
+        console.error('Erro ao abrir link externo no Android, executando fallback window.open:', error);
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
     }
   }
 
